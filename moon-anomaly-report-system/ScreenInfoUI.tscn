@@ -21,122 +21,132 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="LeftColumn" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 240.0
-offset_bottom = 308.0
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="NameLabel" type="Label" parent="LeftColumn"]
+[node name="LeftColumn" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/LeftColumn"]
+layout_mode = 2
+text = "---"
+
+[node name="NumberLabel" type="Label" parent="HBoxContainer/LeftColumn"]
 layout_mode = 2
 
-[node name="NumberLabel" type="Label" parent="LeftColumn"]
+[node name="Ratings" type="VBoxContainer" parent="HBoxContainer/LeftColumn"]
 layout_mode = 2
 
-[node name="Ratings" type="VBoxContainer" parent="LeftColumn"]
+[node name="SeverityRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings"]
 layout_mode = 2
 
-[node name="SeverityRow" type="HBoxContainer" parent="LeftColumn/Ratings"]
+[node name="SeverityLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow"]
 layout_mode = 2
-theme_override_constants/separation = 4
+text = "SEV "
 
-[node name="SeverityLabel" type="Label" parent="LeftColumn/Ratings/SeverityRow"]
-layout_mode = 2
-
-[node name="SeverityBar" type="HBoxContainer" parent="LeftColumn/Ratings/SeverityRow"]
+[node name="SeverityBar" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow"]
 layout_mode = 2
 
-[node name="Seg1" type="ColorRect" parent="LeftColumn/Ratings/SeverityRow/SeverityBar"]
+[node name="Seg1" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg2" type="ColorRect" parent="LeftColumn/Ratings/SeverityRow/SeverityBar"]
+[node name="Seg2" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg3" type="ColorRect" parent="LeftColumn/Ratings/SeverityRow/SeverityBar"]
+[node name="Seg3" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg4" type="ColorRect" parent="LeftColumn/Ratings/SeverityRow/SeverityBar"]
+[node name="Seg4" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg5" type="ColorRect" parent="LeftColumn/Ratings/SeverityRow/SeverityBar"]
+[node name="Seg5" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="DangerRow" type="HBoxContainer" parent="LeftColumn/Ratings"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="DangerLabel" type="Label" parent="LeftColumn/Ratings/DangerRow"]
+[node name="DangerRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings"]
 layout_mode = 2
 
-[node name="DangerBar" type="HBoxContainer" parent="LeftColumn/Ratings/DangerRow"]
+[node name="DangerLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/DangerRow"]
+layout_mode = 2
+text = "DNG "
+
+[node name="DangerBar" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings/DangerRow"]
 layout_mode = 2
 
-[node name="Seg1" type="ColorRect" parent="LeftColumn/Ratings/DangerRow/DangerBar"]
+[node name="Seg1" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg2" type="ColorRect" parent="LeftColumn/Ratings/DangerRow/DangerBar"]
+[node name="Seg2" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg3" type="ColorRect" parent="LeftColumn/Ratings/DangerRow/DangerBar"]
+[node name="Seg3" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg4" type="ColorRect" parent="LeftColumn/Ratings/DangerRow/DangerBar"]
+[node name="Seg4" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg5" type="ColorRect" parent="LeftColumn/Ratings/DangerRow/DangerBar"]
+[node name="Seg5" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="ScaleRow" type="HBoxContainer" parent="LeftColumn/Ratings"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="ScaleLabel" type="Label" parent="LeftColumn/Ratings/ScaleRow"]
+[node name="ScaleRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings"]
 layout_mode = 2
 
-[node name="ScaleBar" type="HBoxContainer" parent="LeftColumn/Ratings/ScaleRow"]
+[node name="ScaleLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow"]
+layout_mode = 2
+text = "SCL "
+
+[node name="ScaleBar" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow"]
 layout_mode = 2
 
-[node name="Seg1" type="ColorRect" parent="LeftColumn/Ratings/ScaleRow/ScaleBar"]
+[node name="Seg1" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg2" type="ColorRect" parent="LeftColumn/Ratings/ScaleRow/ScaleBar"]
+[node name="Seg2" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg3" type="ColorRect" parent="LeftColumn/Ratings/ScaleRow/ScaleBar"]
+[node name="Seg3" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg4" type="ColorRect" parent="LeftColumn/Ratings/ScaleRow/ScaleBar"]
+[node name="Seg4" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg5" type="ColorRect" parent="LeftColumn/Ratings/ScaleRow/ScaleBar"]
+[node name="Seg5" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="TypeRow" type="HBoxContainer" parent="LeftColumn/Ratings"]
+[node name="TypeRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings"]
 layout_mode = 2
 
-[node name="TypeLabel" type="Label" parent="LeftColumn/Ratings/TypeRow"]
+[node name="TypeLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/TypeRow"]
 layout_mode = 2
-text = "TYPE: GEOLOGICAL"
+text = "TYPE: ---"
 
-[node name="RightColumn" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 240.0
-offset_right = 720.0
-offset_bottom = 308.0
-
-[node name="DescriptionLabel" type="RichTextLabel" parent="RightColumn"]
+[node name="RightColumn" type="Control" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="HBoxContainer/RightColumn"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

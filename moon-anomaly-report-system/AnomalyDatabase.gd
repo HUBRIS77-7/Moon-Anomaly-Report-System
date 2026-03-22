@@ -17,7 +17,7 @@ var entries: Array[Dictionary] = [
 		"danger": 1,
 		"scale": 3,
 		"type": Category.GEOLOGICAL,
-		"description": "A low-frequency acoustic anomaly emanating from the Sea of Tranquility basin. First recorded during Lunar Survey 7. Origin unknown.",
+		"description": "A low-frequency acoustic anomaly emanating from the Sea of Tranquility basin. First recorded during Lunar Survey 7. Origin unknown. The sound has been described as a rhythmic pulsing at approximately 0.3 Hz, consistent with no known geological process. Several personnel have reported auditory hallucinations after prolonged exposure to recordings. All attempts to triangulate the source have failed. Seismic sensors placed at grid coordinates 7-Alpha through 7-Delta have returned inconsistent readings. The anomaly appears to intensify during lunar perigee. Entry flagged for priority review. Secondary classification pending committee approval. Do not approach grid zero without authorization.",
 		"icon_path": "res://ICONS/anom_001.png",
 		"accessible": true
 	},

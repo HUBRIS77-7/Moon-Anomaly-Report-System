@@ -36,6 +36,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 833.0
+offset_right = -1092.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 16
@@ -45,12 +48,14 @@ layout_mode = 2
 
 [node name="CatLeft" type="Button" parent="Controls/CategoryRow"]
 layout_mode = 2
+text = "<"
 
 [node name="CategoryLabel" type="Label" parent="Controls/CategoryRow"]
 layout_mode = 2
 
 [node name="CatRight" type="Button" parent="Controls/CategoryRow"]
 layout_mode = 2
+text = ">"
 
 [node name="NumberRow" type="HBoxContainer" parent="Controls"]
 layout_mode = 2
@@ -68,9 +73,11 @@ layout_mode = 2
 
 [node name="NavLeft" type="Button" parent="Controls/NavRow"]
 layout_mode = 2
+text = "<"
 
 [node name="CurrentID" type="Label" parent="Controls/NavRow"]
 layout_mode = 2
 
 [node name="NavRight" type="Button" parent="Controls/NavRow"]
 layout_mode = 2
+text = ">"

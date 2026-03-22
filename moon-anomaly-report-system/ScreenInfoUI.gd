@@ -5,47 +5,70 @@ const SEG_ON_COLOR = Color(0.0, 0.9, 0.2)   # green lit segment
 const SEG_OFF_COLOR = Color(0.1, 0.1, 0.1)  # dark unlit segment
 const NOT_FOUND_COLOR = Color(0.9, 0.1, 0.1)
 
-@onready var name_label: Label = $LeftColumn/NameLabel
-@onready var number_label: Label = $LeftColumn/NumberLabel
-@onready var description_label: RichTextLabel = $RightColumn/DescriptionLabel
-@onready var type_label: Label = $LeftColumn/Ratings/TypeRow/TypeLabel
+@onready var name_label: Label = $HBoxContainer/LeftColumn/NameLabel
+@onready var number_label: Label = $HBoxContainer/LeftColumn/NumberLabel
+@onready var description_label: RichTextLabel = $HBoxContainer/RightColumn/DescriptionLabel
+@onready var type_label: Label = $HBoxContainer/LeftColumn/Ratings/TypeRow/TypeLabel
 
-# Bar segment groups — order must match the scene tree
 @onready var severity_segs: Array = [
-	$LeftColumn/Ratings/SeverityRow/SeverityBar/Seg1,
-	$LeftColumn/Ratings/SeverityRow/SeverityBar/Seg2,
-	$LeftColumn/Ratings/SeverityRow/SeverityBar/Seg3,
-	$LeftColumn/Ratings/SeverityRow/SeverityBar/Seg4,
-	$LeftColumn/Ratings/SeverityRow/SeverityBar/Seg5,
+	$HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar/Seg1,
+	$HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar/Seg2,
+	$HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar/Seg3,
+	$HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar/Seg4,
+	$HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar/Seg5,
 ]
 @onready var danger_segs: Array = [
-	$LeftColumn/Ratings/DangerRow/DangerBar/Seg1,
-	$LeftColumn/Ratings/DangerRow/DangerBar/Seg2,
-	$LeftColumn/Ratings/DangerRow/DangerBar/Seg3,
-	$LeftColumn/Ratings/DangerRow/DangerBar/Seg4,
-	$LeftColumn/Ratings/DangerRow/DangerBar/Seg5,
+	$HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar/Seg1,
+	$HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar/Seg2,
+	$HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar/Seg3,
+	$HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar/Seg4,
+	$HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar/Seg5,
 ]
 @onready var scale_segs: Array = [
-	$LeftColumn/Ratings/ScaleRow/ScaleBar/Seg1,
-	$LeftColumn/Ratings/ScaleRow/ScaleBar/Seg2,
-	$LeftColumn/Ratings/ScaleRow/ScaleBar/Seg3,
-	$LeftColumn/Ratings/ScaleRow/ScaleBar/Seg4,
-	$LeftColumn/Ratings/ScaleRow/ScaleBar/Seg5,
+	$HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar/Seg1,
+	$HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar/Seg2,
+	$HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar/Seg3,
+	$HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar/Seg4,
+	$HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar/Seg5,
 ]
 
 # Reference to ScreenPanelUI to push overflow text
 var panel_ui: Control = null
 
 func _ready() -> void:
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	print("NameLabel: ", $LeftColumn/NameLabel)
-	print("NumberLabel: ", $LeftColumn/NumberLabel)
-	print("TypeLabel: ", $LeftColumn/Ratings/TypeRow/TypeLabel)
-	print("DescriptionLabel: ", $RightColumn/DescriptionLabel)
-	print("SeverityBar Seg1: ", $LeftColumn/Ratings/SeverityRow/SeverityBar/Seg1)
 	clear_display()
-	$LeftColumn.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE)
-	$RightColumn.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE)
+	await get_tree().process_frame
+
+	$HBoxContainer.position = Vector2.ZERO
+	$HBoxContainer.size = Vector2(480, 308)
+
+	$HBoxContainer/LeftColumn.position = Vector2.ZERO
+	$HBoxContainer/LeftColumn.size = Vector2(240, 308)
+
+	# Right column as plain Control — no automatic layout
+	$HBoxContainer/RightColumn.position = Vector2(240, 0)
+	$HBoxContainer/RightColumn.size = Vector2(240, 308)
+	$HBoxContainer/RightColumn.clip_contents = true
+
+	# Description fills right column exactly — hard capped
+	$HBoxContainer/RightColumn/DescriptionLabel.position = Vector2(4, 32)
+	$HBoxContainer/RightColumn/DescriptionLabel.size = Vector2(236, 270)
+	$HBoxContainer/RightColumn/DescriptionLabel.scroll_active = false
+	$HBoxContainer/RightColumn/DescriptionLabel.clip_contents = true
+
+	_style_labels(self)
+
+func _style_labels(node: Node) -> void:
+	if node is Label:
+		node.add_theme_color_override("font_color", Color.WHITE)
+		node.add_theme_font_size_override("font_size", 20)
+	elif node is RichTextLabel:
+		node.add_theme_color_override("default_color", Color.WHITE)
+		node.add_theme_font_size_override("normal_font_size", 20)
+	for child in node.get_children():
+		_style_labels(child)
+
+
 
 func connect_to_panel(panel: Control) -> void:
 	panel_ui = panel
@@ -58,6 +81,8 @@ func _on_entry_changed(entry: Dictionary) -> void:
 	_populate(entry)
 
 func _populate(entry: Dictionary) -> void:
+	print("Populating with: ", entry["name"])
+	name_label.text = entry["name"]
 	name_label.text = entry["name"]
 	number_label.text = "ENTRY #" + str(entry["id"])
 	type_label.text = "TYPE: " + AnomalyDatabase.get_category_name(entry["type"])
@@ -71,24 +96,31 @@ func _set_bar(segs: Array, value: int) -> void:
 		segs[i].color = SEG_ON_COLOR if i < value else SEG_OFF_COLOR
 
 func _set_description(full_text: String) -> void:
-	# Fit as much text as possible in the right column
-	# Push remainder to the panel screen
-	description_label.text = full_text
-	await get_tree().process_frame  # wait one frame for layout to settle
-	if description_label.get_line_count() > description_label.get_visible_line_count():
-		# Text overflows — calculate what fits
-		var visible_lines = description_label.get_visible_line_count()
-		var lines = full_text.split("\n")
-		# Simple word-wrap split: send overflow to panel
-		var approx_chars = visible_lines * 38  # tune this number to your font size
-		var top_text = full_text.substr(0, approx_chars)
-		var overflow_text = full_text.substr(approx_chars)
-		description_label.text = top_text
-		if panel_ui:
-			panel_ui.set_overflow(overflow_text)
-	else:
-		if panel_ui:
-			panel_ui.set_overflow("")
+	description_label.scroll_active = false
+	description_label.clip_contents = true
+
+	# Binary search for how many words fit
+	var words = full_text.split(" ")
+	var lo = 0
+	var hi = words.size()
+	var best_fit = 0
+
+	while lo <= hi:
+		var mid = (lo + hi) / 2
+		description_label.text = " ".join(words.slice(0, mid))
+		await get_tree().process_frame
+		if description_label.get_line_count() <= description_label.get_visible_line_count():
+			best_fit = mid
+			lo = mid + 1
+		else:
+			hi = mid - 1
+
+	var top_text = " ".join(words.slice(0, best_fit))
+	var overflow_text = " ".join(words.slice(best_fit))
+
+	description_label.text = top_text
+	if panel_ui:
+		panel_ui.set_overflow(overflow_text if overflow_text.length() > 0 else "")
 
 func _show_status(status: String) -> void:
 	clear_display()

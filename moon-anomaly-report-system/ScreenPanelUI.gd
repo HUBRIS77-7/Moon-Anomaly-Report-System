@@ -13,14 +13,34 @@ var current_category: AnomalyDatabase.Category = AnomalyDatabase.Category.ALL
 @onready var current_id_label: Label = $Controls/NavRow/CurrentID
 
 func _ready() -> void:
-	$Controls/CategoryRow/CatLeft.pressed.connect(_cycle_category.bind(-1))
-	$Controls/CategoryRow/CatRight.pressed.connect(_cycle_category.bind(1))
-	$Controls/NavRow/NavLeft.pressed.connect(_navigate.bind(-1))
-	$Controls/NavRow/NavRight.pressed.connect(_navigate.bind(1))
-	$Controls/NumberRow/NumberField.text_submitted.connect(_on_number_submitted)
-	$Controls.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	$RichTextLabel.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	$HSeparator.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	await get_tree().process_frame
+
+	var controls_height = $Controls.get_minimum_size().y
+	var separator_y = 640 - controls_height - 14
+	var controls_y = 640 - controls_height - 8
+
+	$Controls.position = Vector2(0, controls_y)
+	$Controls.size = Vector2(240, controls_height)
+
+	$HSeparator.position = Vector2(0, separator_y)
+	$HSeparator.size = Vector2(240, 4)
+
+	# Fill exactly from top to separator
+	$RichTextLabel.position = Vector2(4, 4)
+	$RichTextLabel.size = Vector2(232, separator_y - 8)
+	$RichTextLabel.clip_contents = true
+	$RichTextLabel.autowrap_mode = TextServer.AUTOWRAP_WORD
+
+func _style_labels(node: Node) -> void:
+	if node is Label or node is RichTextLabel:
+		node.add_theme_color_override("font_color", Color.WHITE)
+		node.add_theme_font_size_override("font_size", 14)
+	for child in node.get_children():
+		_style_labels(child)
+
+
+
+
 
 func _load_entry(id: int) -> void:
 	current_id = id
@@ -49,3 +69,5 @@ func _on_number_submitted(text: String) -> void:
 # Called by ScreenInfoUI to pass description overflow text
 func set_overflow(text: String) -> void:
 	description_overflow.text = text
+	description_overflow.add_theme_color_override("default_color", Color.WHITE)
+	description_overflow.add_theme_font_size_override("normal_font_size", 18)
