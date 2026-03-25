@@ -10,8 +10,12 @@ data = PackedVector3Array(0.149, -0.0123, -0.4535, 0.149, 0.1153, -0.3272, 0.149
 
 [node name="NEWLSHAPE" instance=ExtResource("1_23ggo")]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ScreenInfo" index="0"]
+[node name="StaticBody3D" type="StaticBody3D" parent="ScreenInfo" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ScreenInfo/StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_ic0ia")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="ScreenPanel" index="0"]
+[node name="StaticBody3D" type="StaticBody3D" parent="ScreenPanel" index="0"]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="ScreenPanel/StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_a0xku")
