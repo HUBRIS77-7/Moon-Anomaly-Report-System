@@ -113,6 +113,9 @@ extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_5kih8")
 skeleton = NodePath("../..")
 
+[node name="NEWLSHAPE" parent="SubViewportContainer/SubViewport/Props" instance=ExtResource("15_fl3ci")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00682, 1.12477, -10.2282)
+
 [node name="Lights" type="Node" parent="SubViewportContainer/SubViewport"]
 
 [node name="SpotLight3D" type="SpotLight3D" parent="SubViewportContainer/SubViewport/Lights"]
@@ -159,6 +162,3 @@ render_target_update_mode = 4
 [node name="ScreenIconUI" parent="SubViewportContainer/ScreenViewports/IconViewport" instance=ExtResource("15_5yptt")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="NEWLSHAPE" parent="." instance=ExtResource("15_fl3ci")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00682, 1.12477, -10.2282)

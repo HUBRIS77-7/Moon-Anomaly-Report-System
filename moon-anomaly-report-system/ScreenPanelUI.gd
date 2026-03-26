@@ -13,6 +13,12 @@ var current_category: AnomalyDatabase.Category = AnomalyDatabase.Category.ALL
 @onready var current_id_label: Label = $Controls/NavRow/CurrentID
 
 func _ready() -> void:
+	$Controls/CategoryRow/CatLeft.pressed.connect(_cycle_category.bind(-1))
+	$Controls/CategoryRow/CatRight.pressed.connect(_cycle_category.bind(1))
+	$Controls/NavRow/NavLeft.pressed.connect(_navigate.bind(-1))
+	$Controls/NavRow/NavRight.pressed.connect(_navigate.bind(1))
+	$Controls/NumberRow/NumberField.text_submitted.connect(_on_number_submitted)
+
 	await get_tree().process_frame
 
 	var controls_height = $Controls.get_minimum_size().y
@@ -21,11 +27,8 @@ func _ready() -> void:
 
 	$Controls.position = Vector2(0, controls_y)
 	$Controls.size = Vector2(240, controls_height)
-
 	$HSeparator.position = Vector2(0, separator_y)
 	$HSeparator.size = Vector2(240, 4)
-
-	# Fill exactly from top to separator
 	$RichTextLabel.position = Vector2(4, 4)
 	$RichTextLabel.size = Vector2(232, separator_y - 8)
 	$RichTextLabel.clip_contents = true

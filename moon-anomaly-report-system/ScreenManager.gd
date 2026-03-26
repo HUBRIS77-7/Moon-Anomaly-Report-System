@@ -4,8 +4,8 @@ extends Node
 @onready var panel_ui: Control = $PanelViewport/ScreenPanelUI
 @onready var info_ui: Control = $InfoViewport/ScreenInfoUI
 @onready var icon_ui: Control = $IconViewport/ScreenIconUI
-@onready var screen_panel_mesh: MeshInstance3D = get_node("../../NEWLSHAPE/ScreenPanel")
-@onready var screen_info_mesh: MeshInstance3D = get_node("../../NEWLSHAPE/ScreenInfo")
+@onready var screen_panel_mesh: MeshInstance3D = get_node("../SubViewport/Props/NEWLSHAPE/ScreenPanel")
+@onready var screen_info_mesh: MeshInstance3D = get_node("../SubViewport/Props/NEWLSHAPE/ScreenInfo")
 @onready var screen_icon_mesh: MeshInstance3D = get_node("../SubViewport/Props/COMPUTER3D2/ScreenIcon")
 @onready var camera: Camera3D = get_node("../SubViewport/Camera3D")
 
