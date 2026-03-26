@@ -137,7 +137,6 @@ script = ExtResource("12_fl3ci")
 
 [node name="PanelViewport" type="SubViewport" parent="SubViewportContainer/ScreenViewports"]
 transparent_bg = true
-handle_input_locally = false
 size = Vector2i(240, 639)
 size_2d_override = Vector2i(240, 640)
 size_2d_override_stretch = true
@@ -146,7 +145,6 @@ render_target_update_mode = 4
 [node name="ScreenPanelUI" parent="SubViewportContainer/ScreenViewports/PanelViewport" instance=ExtResource("13_dm3ob")]
 
 [node name="InfoViewport" type="SubViewport" parent="SubViewportContainer/ScreenViewports"]
-handle_input_locally = false
 size = Vector2i(480, 308)
 size_2d_override = Vector2i(480, 308)
 render_target_update_mode = 4
@@ -155,7 +153,6 @@ render_target_update_mode = 4
 
 [node name="IconViewport" type="SubViewport" parent="SubViewportContainer/ScreenViewports"]
 transparent_bg = true
-handle_input_locally = false
 size = Vector2i(256, 256)
 render_target_update_mode = 4
 
