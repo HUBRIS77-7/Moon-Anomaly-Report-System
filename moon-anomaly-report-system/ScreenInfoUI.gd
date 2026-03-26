@@ -53,7 +53,7 @@ func _ready() -> void:
 	# Description fills right column exactly — hard capped
 	$HBoxContainer/RightColumn/DescriptionLabel.position = Vector2(4, 32)
 	$HBoxContainer/RightColumn/DescriptionLabel.size = Vector2(236, 270)
-	$HBoxContainer/RightColumn/DescriptionLabel.scroll_active = false
+	$HBoxContainer/RightColumn/DescriptionLabel.scroll_active = true
 	$HBoxContainer/RightColumn/DescriptionLabel.clip_contents = true
 
 	_style_labels(self)

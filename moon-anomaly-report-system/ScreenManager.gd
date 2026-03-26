@@ -1,5 +1,4 @@
-# ScreenManager.gd  —  DEBUG VERSION
-# Run the game, click on the screen panel, and paste the Output log here.
+# ScreenManager.gd
 extends Node
 
 @onready var panel_ui: Control       = $PanelViewport/ScreenPanelUI
@@ -11,21 +10,16 @@ extends Node
 @onready var camera: Camera3D        = get_node("../SubViewport/Camera3D")
 
 var _screen_map: Array = []
+var _focused_viewport: SubViewport = null
+var _last_vp_pos: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
-	print("--- ScreenManager _ready ---")
-	print("  panel_ui:        ", panel_ui)
-	print("  info_ui:         ", info_ui)
-	print("  screen_panel_mesh: ", screen_panel_mesh)
-	print("  screen_info_mesh:  ", screen_info_mesh)
-	print("  camera:          ", camera)
-
 	$InfoViewport.size  = Vector2i(480, 308)
 	$PanelViewport.size = Vector2i(240, 640)
 	$IconViewport.size  = Vector2i(256, 256)
 
-	print("  PanelViewport handle_input_locally: ", $PanelViewport.handle_input_locally)
-	print("  InfoViewport  handle_input_locally: ", $InfoViewport.handle_input_locally)
+	$PanelViewport.handle_input_locally = false
+	$InfoViewport.handle_input_locally  = false
 
 	info_ui.connect_to_panel(panel_ui)
 	icon_ui.connect_to_panel(panel_ui)
@@ -37,11 +31,6 @@ func _ready() -> void:
 	panel_ui._load_entry(1)
 	_register_screen(screen_panel_mesh, $PanelViewport, Vector2(240, 640))
 	_register_screen(screen_info_mesh,  $InfoViewport,  Vector2(480, 308))
-
-	print("  _screen_map size after register: ", _screen_map.size())
-	for s in _screen_map:
-		print("    body=", s["body"], "  col_shape=", s["col_shape"],
-			  "  shape=", s["col_shape"].shape if s["col_shape"] else "NULL")
 
 # ── Registration ────────────────────────────────────────────────────────────
 
@@ -82,69 +71,75 @@ func _register_screen(mesh: MeshInstance3D, viewport: SubViewport, size: Vector2
 # ── Input ────────────────────────────────────────────────────────────────────
 
 func _input(event: InputEvent) -> void:
-	# Only log on a real left-click press to avoid log spam
-	if not (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
+	# Forward keyboard events to whichever viewport was last clicked
+	if event is InputEventKey:
+		if _focused_viewport != null:
+			_focused_viewport.push_input(event)
+			get_viewport().set_input_as_handled()
 		return
 
-	print("=== _input LEFT CLICK ===")
-	print("  _screen_map.size(): ", _screen_map.size())
+	if not (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT):
+		return
 
-	var mouse_pos  := get_viewport().get_mouse_position()
-	print("  get_viewport(): ", get_viewport())
-	print("  mouse_pos: ", mouse_pos)
+	# Forward the release to the same viewport and position as the press
+	if not event.pressed:
+		if _focused_viewport != null:
+			_forward_event(event, _focused_viewport, _last_vp_pos)
+			get_viewport().set_input_as_handled()
+		return
+
+	# From here: only press events
+	var mouse_pos := camera.get_viewport().get_mouse_position()
 
 	var ray_origin := camera.project_ray_origin(mouse_pos)
 	var ray_end    := ray_origin + camera.project_ray_normal(mouse_pos) * 100.0
 
-	# Try the camera's own world first
 	var space := camera.get_world_3d().direct_space_state
 	var query  := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
 	query.collision_mask = 2
 	var result := space.intersect_ray(query)
-	print("  Raycast (mask=2, camera world): ", result)
-
-	# Try with all layers in case collision_layer is wrong
-	var query_all := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
-	var result_all := space.intersect_ray(query_all)
-	print("  Raycast (all layers, camera world): ", result_all)
 
 	if result.is_empty():
-		print("  >> No hit with mask=2. Nothing forwarded.")
+		_focused_viewport = null
 		return
 
 	var hit_body = result["collider"]
-	print("  Hit body: ", hit_body)
-	print("  Hit pos:  ", result["position"])
 
 	for screen in _screen_map:
-		print("  Comparing hit ", hit_body, " vs registered ", screen["body"])
 		if screen["body"] == hit_body:
-			print("  >> MATCH FOUND")
-			var vp_pos := _world_to_viewport(
+			_focused_viewport = screen["viewport"]
+			_last_vp_pos = _world_to_viewport(
 				result["position"], screen["col_shape"], screen["size"]
 			)
-			print("  >> Forwarding to viewport ", screen["viewport"], " at pos ", vp_pos)
-			_forward_event(event, screen["viewport"], vp_pos)
+			_forward_event(event, screen["viewport"], _last_vp_pos)
 			get_viewport().set_input_as_handled()
 			return
 
-	print("  >> Hit something but it's not in _screen_map")
+	_focused_viewport = null
 
 func _world_to_viewport(world_pos: Vector3,
 		col_shape: CollisionShape3D, vp_size: Vector2) -> Vector2:
 	var local: Vector3    = col_shape.global_transform.affine_inverse() * world_pos
 	var box:   BoxShape3D = col_shape.shape as BoxShape3D
-	print("    col_shape global_transform: ", col_shape.global_transform)
-	print("    local hit pos: ", local, "  box size: ", box.size)
 
 	var uv_x :=        (local.z + box.size.z * 0.5) / box.size.z
 	var uv_y := 1.0 - (local.y + box.size.y * 0.5) / box.size.y
-	print("    uv: (", uv_x, ", ", uv_y, ")")
 	return Vector2(uv_x * vp_size.x, uv_y * vp_size.y)
 
 func _forward_event(event: InputEvent, viewport: SubViewport, pos: Vector2) -> void:
 	var e := event.duplicate()
-	if e is InputEventMouseButton or e is InputEventMouseMotion:
+	if e is InputEventMouseButton:
+		e.position        = pos
+		e.global_position = pos
+		# Inject a hover motion event first so Button widgets enter hover state
+		# before the click arrives — without this, buttons silently ignore clicks
+		if e.pressed:
+			var motion := InputEventMouseMotion.new()
+			motion.position        = pos
+			motion.global_position = pos
+			viewport.push_input(motion)
+		viewport.push_input(e)
+	elif e is InputEventMouseMotion:
 		e.position        = pos
 		e.global_position = pos
 		viewport.push_input(e)

@@ -1,7 +1,7 @@
 # AnomalyDatabase.gd
 extends Node
 
-enum Category { ALL, MEDICAL, SECURITY, GEOLOGICAL, ATMOSPHERIC, UNKNOWN }
+enum Category { ALL, MEDICAL, SECURITY, GEOLOGICAL, ATMOSPHERIC, UNKNOWN, GENERAL }
 
 const NOT_FOUND = "NOT_FOUND"
 const NOT_ACCESSIBLE = "NOT_ACCESSIBLE"
@@ -11,14 +11,14 @@ const NOT_ACCESSIBLE = "NOT_ACCESSIBLE"
 var entries: Array[Dictionary] = [
 	{
 		"id": 1,
-		"name": "Mare Tranquillitatis Hum",
-		"category": Category.GEOLOGICAL,
+		"name": "Incorrect Clearence Code",
+		"category": Category.SECURITY,
 		"severity": 2,
 		"danger": 1,
 		"scale": 3,
 		"type": Category.GEOLOGICAL,
-		"description": "A low-frequency acoustic anomaly emanating from the Sea of Tranquility basin. First recorded during Lunar Survey 7. Origin unknown. The sound has been described as a rhythmic pulsing at approximately 0.3 Hz, consistent with no known geological process. Several personnel have reported auditory hallucinations after prolonged exposure to recordings. All attempts to triangulate the source have failed. Seismic sensors placed at grid coordinates 7-Alpha through 7-Delta have returned inconsistent readings. The anomaly appears to intensify during lunar perigee. Entry flagged for priority review. Secondary classification pending committee approval. Do not approach grid zero without authorization.",
-		"icon_path": "res://ICONS/anom_001.png",
+		"description": "All avenues of access into restricted or otherwise locked areas of the complexes that make up the Primary Lunar Construction (PLC) are controlled by Access Cards. Every individual upon the lunar surface possesses a clearence code. This individual is attempting to access a area that their code does not permit.        Upon use of a incorrect clearence code, a access terminal will beep loudly and display the words 'incorrect clearence'.",
+		"icon_path": "res://wp12013121.jpg",
 		"accessible": true
 	},
 	{
@@ -31,7 +31,7 @@ var entries: Array[Dictionary] = [
 		"type": Category.SECURITY,
 		"description": "",
 		"icon_path": "",
-		"accessible": false
+		"accessible": true
 	},
 ]
 
