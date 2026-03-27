@@ -44,6 +44,15 @@ func _ready() -> void:
 
 	$HBoxContainer/LeftColumn.position = Vector2.ZERO
 	$HBoxContainer/LeftColumn.size = Vector2(240, 308)
+	$HBoxContainer/LeftColumn/NameLabel.autowrap_mode = TextServer.AUTOWRAP_WORD
+	$HBoxContainer/LeftColumn/NameLabel.custom_minimum_size = Vector2(240, 0)
+
+	$HBoxContainer/LeftColumn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	$HBoxContainer/LeftColumn.size_flags_stretch_ratio = 1.0
+	$HBoxContainer/RightColumn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	$HBoxContainer/RightColumn.size_flags_stretch_ratio = 1.0
+
+
 
 	# Right column as plain Control — no automatic layout
 	$HBoxContainer/RightColumn.position = Vector2(240, 0)
@@ -53,8 +62,9 @@ func _ready() -> void:
 	# Description fills right column exactly — hard capped
 	$HBoxContainer/RightColumn/DescriptionLabel.position = Vector2(4, 32)
 	$HBoxContainer/RightColumn/DescriptionLabel.size = Vector2(236, 270)
-	$HBoxContainer/RightColumn/DescriptionLabel.scroll_active = true
-	$HBoxContainer/RightColumn/DescriptionLabel.clip_contents = true
+	$HBoxContainer/RightColumn/DescriptionLabel.scroll_active = false
+	$HBoxContainer/RightColumn/DescriptionLabel.clip_contents = false
+	$HBoxContainer/RightColumn/DescriptionLabel.autowrap_mode = TextServer.AUTOWRAP_WORD  # add this
 
 	_style_labels(self)
 
@@ -99,7 +109,6 @@ func _set_description(full_text: String) -> void:
 	description_label.scroll_active = false
 	description_label.clip_contents = true
 
-	# Binary search for how many words fit
 	var words = full_text.split(" ")
 	var lo = 0
 	var hi = words.size()
@@ -109,14 +118,15 @@ func _set_description(full_text: String) -> void:
 		var mid = (lo + hi) / 2
 		description_label.text = " ".join(words.slice(0, mid))
 		await get_tree().process_frame
-		if description_label.get_line_count() <= description_label.get_visible_line_count():
+		await get_tree().process_frame
+		if description_label.get_content_height() <= description_label.size.y:
 			best_fit = mid
 			lo = mid + 1
 		else:
 			hi = mid - 1
 
-	var top_text = " ".join(words.slice(0, best_fit))
-	var overflow_text = " ".join(words.slice(best_fit))
+	var top_text = " ".join(words.slice(0, best_fit)).strip_edges()
+	var overflow_text = " ".join(words.slice(best_fit)).strip_edges()
 
 	description_label.text = top_text
 	if panel_ui:

@@ -8,13 +8,13 @@ varying vec3 affine_uv;
 
 void vertex() {
     vec4 clip_pos = PROJECTION_MATRIX * MODELVIEW_MATRIX * vec4(VERTEX, 1.0);
-    
+
     // Vertex snapping
     clip_pos.xy = floor(clip_pos.xy / clip_pos.w * snap_resolution + 0.5)
                   / snap_resolution * clip_pos.w;
-    
+
     POSITION = clip_pos;
-    
+
     // Pass UVs for affine warping
     affine_uv = vec3(UV * clip_pos.w, clip_pos.w);
 }
