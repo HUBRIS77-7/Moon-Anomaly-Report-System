@@ -238,7 +238,76 @@ var entries: Array[Dictionary] = [
 		"accessible": true
 	},
 	{
-		
+		"id": 20,
+		"name": "Drone Crash",
+		"category": Category.INDUSTRIAL,
+		"severity": 2,
+		"danger": 3,
+		"scale": 1,
+		"type": Category.INDUSTRIAL,
+		"description": "Drone Crashes are a common type of crash around industrial areas of the moon due to the high population of them. While the signs of a drone crash are obvious, the caller will typically ask you to perform a diagnostic on the drone that caused the accident. Please interface with the Data Transmission functionality of your primary terminal in order to receive and parse the data. \n \n If a crash is made up of more than 20 drones, please file under Major Drone Accident (50) \n \n If you believe the crash is caused by an outside force, designate as Industrial Sabotage (#55)" ,
+		"icon_path": "",
+		"accessible": true
+	},
+	{
+		"id": 21,
+		"name": "EVA Suit Misuse",
+		"category": Category.SECURITY,
+		"severity": 1,
+		"danger": 2,
+		"scale": 2,
+		"type": Category.SECURITY,
+		"description": "EVA Suit Misuse is often a result, or in better words, symptom of larger violations of the Lunar Surface Laws established by the PLC. As per regulation, EVA suits are not to be used in the commission of any crime, traspass onto restricted land, traspass onto decommissioned stations, and use beyond the orbit of the Moon or below the Moon’s crust. \n \n Additionally, the use of an EVA suit outside of permitted hours 8:00 DH to 5:00 LH unless permitted via command. \n \n EVA Suit Misuse is punishable by 30 orbits within PLC jail.",
+		"icon_path": "",
+		"accessible": true
+	},
+	{
+		"id": 22,
+		"name": "Rover Computational Error",
+		"category": Category.SCIENTIFIC,
+		"severity": 2,
+		"danger": 2,
+		"scale": 1,
+		"type": Category.SCIENTIFIC,
+		"description": "Of the many errors that can occur with lunar rovers, computational errors regarding their computing systems are the most common on units manufactured before 2050 and before the Standards of Lunar Technology Act. Due to the nature of this type of incident, Incident Reporters will have to interface with the rover computational board in order to rectify the issue. Please use your primary terminal in order to do so. \n \n If the rover has crashed, please designate as Rover Crash (#53) instead.",
+		"icon_path": "",
+		"accessible": true
+	},
+	{
+		"id": 23,
+		"name": "Cave-In",
+		"category": Category.GEOLOGICAL,
+		"severity": 1,
+		"danger": 1,
+		"scale": 1,
+		"type": Category.GENERAL,
+		"description": "Cave-Ins are a very common event when exploring lunar caves and or lava tunnels. While the signs of a cave-in are obvious to describe, the primary issue with designating a cave-in is receiving a signal from the caller at all due to poor reception. Individuals involved in a cave in often have spotty reception, and may drop out of the call before fully complete. \n \n Additionally, due to the nature of lunar caves, some calls may need you to utilize lunar cave maps in order to identify where the caller is. These are located on your primary terminal.  ",
+		"icon_path": "",
+		"accessible": true
+	},
+	{
+		"id": 24,
+		"name": "Major Injury",
+		"category": Category.MEDICAL,
+		"severity": 3,
+		"danger": 3,
+		"scale": 1,
+		"type": Category.MEDICAL,
+		"description": "Unlike minor injuries, Major Injuries are significantly more dangerous, and must be handled more urgently. Additionally, Major Injuries have been ‘sub-designated’, which has led to there being entries for specific major injuries. These will not be listed here. This entry exists for injuries that are more general, such as broken bones and such, and not specific entries like Gunshot Wound (#54) and Long-Term Radiation Exposure (#55)",
+		"icon_path": "",
+		"accessible": true
+	},
+	{
+		"id": 25,
+		"name": "Apollo Muscaria",
+		"category": Category.BIOLOGICAL,
+		"severity": 2,
+		"danger": 3,
+		"scale": 3,
+		"type": Category.BIOLOGICAL,
+		"description": "Apollo Muscaria is a exotic, purple and white speckled, lunar mushroom that was discovered growing on the Apollo 11 lander, hence its name. However, Apollo Muscaria is one of the many biological threats upon the Moon as well, as it emits massive quantities of poisonous spores into the space around it. When introduced into a pressurized and atmospheric environment, Apollo Muscaria can poison entire stations if not handled quickly. \n \n If the caller has been poisoned by Apollo Muscaria, please refer to Apollo Muscaria Poisoning (#26) for designation.",
+		"icon_path": "",
+		"accessible": true
 	}
 ]
 
