@@ -1,6 +1,8 @@
 # ScreenManager.gd
 extends Node
 
+@onready var desktop_ui: Control = $DesktopViewport/DesktopUI
+@onready var screen_desktop_mesh: MeshInstance3D = get_node("../SubViewport/Props/BIGTERMINAL/ScreenPC")
 @onready var panel_ui: Control       = $PanelViewport/ScreenPanelUI
 @onready var info_ui: Control        = $InfoViewport/ScreenInfoUI
 @onready var icon_ui: Control        = $IconViewport/ScreenIconUI
@@ -14,6 +16,10 @@ var _focused_viewport: SubViewport = null
 var _last_vp_pos: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
+	$DesktopViewport.size = Vector2i(640, 640)
+	$DesktopViewport.handle_input_locally = false
+	_apply_viewport_texture(screen_desktop_mesh, $DesktopViewport, 0)
+	_register_screen(screen_desktop_mesh, $DesktopViewport, Vector2(480, 640))
 	$InfoViewport.size  = Vector2i(480, 308)
 	$PanelViewport.size = Vector2i(240, 640)
 	$IconViewport.size  = Vector2i(256, 256)
