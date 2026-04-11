@@ -48,8 +48,7 @@ func _on_taskbar_pressed(window: Panel, btn: Button) -> void:
 
 func _on_window_closed(window: Panel) -> void:
 	if _taskbar_map.has(window):
-		_taskbar_map[window].queue_free()
-		_taskbar_map.erase(window)
+		_taskbar_map[window].button_pressed = false
 
 func _on_window_minimized(window: Panel) -> void:
 	if _taskbar_map.has(window):

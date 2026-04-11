@@ -43,7 +43,7 @@ func _on_titlebar_input(event: InputEvent) -> void:
 
 func _on_close() -> void:
 	closed.emit(self)
-	queue_free()
+	hide()
 
 func _on_minimize() -> void:
 	minimized.emit(self)
