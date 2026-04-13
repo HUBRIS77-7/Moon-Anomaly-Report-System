@@ -148,16 +148,16 @@ func _input(event: InputEvent) -> void:
 
 	_focused_viewport = null
 	
-# Check moon icons on layer 4
+	_focused_viewport = null
+
+	# Check moon icons on layer 4
 	var query4 := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
 	query4.collision_mask = 4
 	var moon_result := space.intersect_ray(query4)
-
 	if not moon_result.is_empty():
 		var call_id = moon.get_call_id_for_body(moon_result["collider"])
 		if call_id != -1:
 			print("Moon icon clicked! Call ID: ", call_id)
-		# This is where CallManager.incoming_call(call_id) will go later
 
 
 func _world_to_viewport(world_pos: Vector3,
