@@ -14,6 +14,7 @@ func _ready() -> void:
 	add_icon(3, Vector3(-0.6,  0.5,  0.6))
 	add_icon(4, Vector3( 0.3, -0.3, -0.9))
 
+
 func _process(delta: float) -> void:
 	var yaw   := 0.0
 	var pitch := 0.0
@@ -39,21 +40,15 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 	add_child(icon)
 	icon.position = direction * surface_radius
 
-	# In Godot, a node's forward face is its -Z axis.
-	# We want the front face pointing outward (away from moon centre),
-	# so the local +Z axis must point INWARD (toward moon centre = -direction).
-	var z_axis := -direction
-
-	# Project world UP onto the tangent plane of the sphere at this point,
-	# so the icon stands as upright as possible. Fall back to FORWARD if at a pole.
+# Z points outward from moon (cross faces player)
+	var z_axis := direction
+	# Y is tangent to sphere surface, as upright as possible
 	var y_axis := Vector3.UP - Vector3.UP.dot(direction) * direction
 	if y_axis.length_squared() < 0.0001:
 		y_axis = Vector3.FORWARD - Vector3.FORWARD.dot(direction) * direction
 	y_axis = y_axis.normalized()
-
 	var x_axis := y_axis.cross(z_axis).normalized()
 
-	# Apply scale directly into the basis so it isn't overwritten later
 	icon.transform.basis = Basis(
 		x_axis * icon_scale,
 		y_axis * icon_scale,
