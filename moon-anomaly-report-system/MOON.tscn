@@ -98,6 +98,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00528, 1.12069, -10.2522)
 [node name="THEMOON" parent="SubViewportContainer/SubViewport/Props" instance=ExtResource("6_dm3ob")]
 transform = Transform3D(0.006, 0, 0, 0, 0.006, 0, 0, 0, 0.006, 5.822, 1.445, -9.348)
 script = ExtResource("8_umcxk")
+surface_radius = 28.0
 
 [node name="PrimaryRoom2" parent="SubViewportContainer/SubViewport/Props" instance=ExtResource("9_nhxhy")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5.57497, 0.0707287, -11.0747)

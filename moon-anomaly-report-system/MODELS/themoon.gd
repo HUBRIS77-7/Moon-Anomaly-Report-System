@@ -5,6 +5,7 @@ extends Node3D
 @export var surface_radius: float = 32.0
 @export var icon_scale: float = 50.0
 @export var icon_collision_radius: float = 2.5
+@export var icon_hover: float = 0.0
 
 var _body_to_call_id: Dictionary = {}
 
@@ -31,31 +32,25 @@ func _process(delta: float) -> void:
 	if pitch != 0.0:
 		rotate_object_local(Vector3.RIGHT, pitch)
 
-# ── Public API ───────────────────────────────────────────────────────────────
 
 func add_icon(call_id: int, direction: Vector3) -> void:
 	direction = direction.normalized()
 
 	var icon: Node3D = preload("res://MoonIcon.tscn").instantiate()
 	add_child(icon)
-	icon.position = direction * surface_radius
 
-# Z points outward from moon (cross faces player)
-	var z_axis := direction
-	# Y is tangent to sphere surface, as upright as possible
-	var y_axis := Vector3.UP - Vector3.UP.dot(direction) * direction
-	if y_axis.length_squared() < 0.0001:
-		y_axis = Vector3.FORWARD - Vector3.FORWARD.dot(direction) * direction
-	y_axis = y_axis.normalized()
-	var x_axis := y_axis.cross(z_axis).normalized()
+	var world_scale := global_transform.basis.get_scale().x
+	var local_hover := icon_hover / world_scale if world_scale > 0.0 else icon_hover
 
-	icon.transform.basis = Basis(
-		x_axis * icon_scale,
-		y_axis * icon_scale,
-		z_axis * icon_scale
-	)
+	icon.position = direction * (surface_radius + local_hover)
+	icon.scale = Vector3.ONE * icon_scale
 
-	# Collision body on layer 4
+	var up_hint := Vector3.UP if abs(direction.dot(Vector3.UP)) < 0.99 else Vector3.FORWARD
+	icon.look_at(icon.global_position + direction, up_hint)
+	icon.rotate_object_local(Vector3.RIGHT, PI / 2.0)
+
+	_set_cull_margin(icon)
+
 	var body := StaticBody3D.new()
 	body.collision_layer = 4
 	body.collision_mask  = 0
@@ -68,6 +63,7 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 
 	_body_to_call_id[body] = call_id
 
+
 func remove_icon(call_id: int) -> void:
 	for body: StaticBody3D in _body_to_call_id.keys():
 		if _body_to_call_id[body] == call_id:
@@ -76,5 +72,13 @@ func remove_icon(call_id: int) -> void:
 				body.get_parent().queue_free()
 			return
 
+
 func get_call_id_for_body(body: Object) -> int:
 	return _body_to_call_id.get(body, -1)
+
+
+func _set_cull_margin(node: Node) -> void:
+	if node is MeshInstance3D:
+		node.extra_cull_margin = 16384.0
+	for child in node.get_children():
+		_set_cull_margin(child)
