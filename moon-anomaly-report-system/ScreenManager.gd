@@ -19,6 +19,25 @@ var _focused_col_shape: CollisionShape3D = null
 var _focused_vp_size: Vector2 = Vector2.ZERO
 var _focused_flip_x: bool = false
 
+const DEBUG_CALL_DATA = {
+	"caller_name":        "Technician R. Voss",
+	"caller_photo":       "res://ICONS/Maxwell.jpg",
+	"audio_path":         "",
+	"audio_length":       45.0,
+	"transcription":      "This is Voss at Sector 7. We've had a Luna Shake "\
+						+ "down here — cracks along the south corridor, power "\
+						+ "flickered twice. Nothing's collapsed but it doesn't "\
+						+ "feel stable. Requesting a designation and guidance.",
+	"additional_details": "Caller sounded calm but was breathing heavily. "\
+						+ "Background noise suggests nearby machinery is still running.",
+	"tasks": [
+		"Cross-reference with geological survey map",
+		"Check for nearby volatile regolith deposits",
+		"Confirm power status in Sector 7",
+	],
+	"anomaly_ids": [4, 13],
+}
+
 func _ready() -> void:
 	$DesktopViewport.size = Vector2i(640, 640)
 	$DesktopViewport.handle_input_locally = false
@@ -83,6 +102,13 @@ func _register_screen(mesh: MeshInstance3D, viewport: SubViewport, size: Vector2
 # ── Input ────────────────────────────────────────────────────────────────────
 
 func _input(event: InputEvent) -> void:
+	# ── DEBUG: F1 opens a test call window on the BIGTERMINAL desktop ──
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_F1:
+			desktop_ui.spawn_call_window(DEBUG_CALL_DATA)
+			get_viewport().set_input_as_handled()
+			return
+
 	if event is InputEventKey:
 		if _focused_viewport != null:
 			_focused_viewport.push_input(event)
@@ -147,8 +173,6 @@ func _input(event: InputEvent) -> void:
 			return
 
 	_focused_viewport = null
-	
-	_focused_viewport = null
 
 	# Check moon icons on layer 4
 	var query4 := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
@@ -157,9 +181,63 @@ func _input(event: InputEvent) -> void:
 	if not moon_result.is_empty():
 		var call_id = moon.get_call_id_for_body(moon_result["collider"])
 		if call_id != -1:
-			print("Moon icon clicked! Call ID: ", call_id)
+			var data = _build_call_data(call_id)
+			if data.size() > 0:
+				desktop_ui.receive_call(data)
+#---BUILD-CALL---#
+func _build_call_data(call_id: int) -> Dictionary:
+	match call_id:
+		1:
+			return {
+				"caller_name":        "Station 7 — Cmdr. Reyes",
+				"caller_photo":       "res://ICONS/Maxwell.jpg",
+				"duration":           55.0,
+				"audio":              "",
+				"transcription":
+					"Yes, hello, this is Commander Reyes from Station Seven. "
+					+ "We've had repeating seismic readings since 04:00 Lunar Hours. "
+					+ "Small tremors, every three minutes. Two fuel lines are vibrating. "
+					+ "Our geologist says it feels different from a normal Luna Shake.",
+				"additional_details":
+					"Station 7 sits 2 km from the Kepler Ridge fault zone. "
+					+ "Fixed-interval seismic activity may indicate an artificial source.",
+				"tasks": [
+					"Ask if Volatile Regolith warnings are active nearby",
+					"Check Satellite Database for recent orbital changes",
+					"Confirm drill shutdown has been logged with Industrial",
+				],
+			}
+		2:
+			return {
+				"caller_name":   "Medical Bay — Nurse Okoro",
+				"caller_photo":  "",
+				"duration":      40.0,
+				"audio":         "",
+				"transcription": "We have a crew member reporting chest pains after EVA. "
+					+ "Suit logs show a micro-tear repaired mid-walk. Duration was 90 minutes.",
+				"additional_details": "Possible regolith exposure. Check suit log ref #A-441.",
+				"tasks": [
+					"Confirm EVA suit was flagged in the equipment log",
+					"Ask how long symptoms have been present",
+				],
+			}
+		# add more call IDs here as you add moon icons
+	return {}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+#------#
 func _world_to_viewport(world_pos: Vector3,
 		col_shape: CollisionShape3D, vp_size: Vector2, flip_x: bool = false) -> Vector2:
 	var local: Vector3    = col_shape.global_transform.affine_inverse() * world_pos
