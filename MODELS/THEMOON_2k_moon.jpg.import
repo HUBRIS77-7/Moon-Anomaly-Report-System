@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6hh3m1aaee8x"
-path.s3tc="res://.godot/imported/PrimaryRoom2_Apollo_14_Lunar_Module_(LM)_on_the_moon.jpg-7858b246b4e34d33423f2888368a92f9.s3tc.ctex"
+uid="uid://bbc26128emuko"
+path.s3tc="res://.godot/imported/THEMOON_2k_moon.jpg-1088d4902c5c9e37bbef852fd2916bc9.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "19025d689e14f90dddf6f50c1bac027d"
+"md5": "a843be4fa46d60a8d6507a63453b4f27"
 }
 
 [deps]
 
-source_file="res://MODELS/PrimaryRoom2_Apollo_14_Lunar_Module_(LM)_on_the_moon.jpg"
-dest_files=["res://.godot/imported/PrimaryRoom2_Apollo_14_Lunar_Module_(LM)_on_the_moon.jpg-7858b246b4e34d33423f2888368a92f9.s3tc.ctex"]
+source_file="res://MODELS/THEMOON_2k_moon.jpg"
+dest_files=["res://.godot/imported/THEMOON_2k_moon.jpg-1088d4902c5c9e37bbef852fd2916bc9.s3tc.ctex"]
 
 [params]
 

@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GameState="*res://gamestate.gd"
 AnomalyDatabase="*res://AnomalyDatabase.gd"
+CallDatabase="*res://CallDatabase.gd"
 
 [display]
 

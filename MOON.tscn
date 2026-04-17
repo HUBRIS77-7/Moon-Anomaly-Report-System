@@ -9,13 +9,13 @@
 [ext_resource type="Script" uid="uid://c37mr3amtstah" path="res://TerminalManager.gd" id="8_76u4v"]
 [ext_resource type="Script" uid="uid://14qfty1t4xpf" path="res://MODELS/themoon.gd" id="8_umcxk"]
 [ext_resource type="PackedScene" uid="uid://doxi8pfe33ofs" path="res://MODELS/PrimaryRoom2.glb" id="9_nhxhy"]
-[ext_resource type="PackedScene" uid="uid://rkpnxjpdsf8y" path="res://TSCN Model/bigterminal.tscn" id="11_dm3ob"]
+[ext_resource type="PackedScene" uid="uid://rkpnxjpdsf8y" path="res://bigterminal.tscn" id="11_dm3ob"]
 [ext_resource type="Script" uid="uid://qjdfhebko8hu" path="res://ScreenManager.gd" id="12_fl3ci"]
 [ext_resource type="PackedScene" uid="uid://csrnwa2dbor3q" path="res://Desktop.tscn" id="13_6073h"]
 [ext_resource type="PackedScene" uid="uid://bks7g0pqa1872" path="res://ScreenPanelUI.tscn" id="13_dm3ob"]
 [ext_resource type="PackedScene" uid="uid://duabjwhfrwpqf" path="res://ScreenInfoUI.tscn" id="14_6073h"]
 [ext_resource type="PackedScene" uid="uid://n5p4y8mns38b" path="res://ScreenIconUI.tscn" id="15_5yptt"]
-[ext_resource type="PackedScene" uid="uid://dqcsr7o68noaf" path="res://TSCN Model/NEWLSHAPE.tscn" id="15_fl3ci"]
+[ext_resource type="PackedScene" uid="uid://dqcsr7o68noaf" path="res://NEWLSHAPE.tscn" id="15_fl3ci"]
 
 [sub_resource type="Environment" id="Environment_nhxhy"]
 ambient_light_color = Color(0.338739, 0.338739, 0.338739, 1)
