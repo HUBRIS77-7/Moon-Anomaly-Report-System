@@ -13,12 +13,13 @@
 #   "audio":             String,   # res:// path to AudioStream or ""
 # }
 
+
+# CallWindowUI.gd (smaller 580x500 variant used by Callwindowui.tscn)
 extends Control
 
 signal call_submitted(anomaly_id: int)
 signal call_declined
 
-# ── Palette ─────────────────────────────────────────────────────────────────
 const C_BG        := Color(0.04, 0.04, 0.04)
 const C_PANEL     := Color(0.08, 0.08, 0.08)
 const C_BORDER    := Color(0.22, 0.22, 0.22)
@@ -30,7 +31,6 @@ const C_AMBER     := Color(0.95, 0.70, 0.10)
 const C_SELECTED  := Color(0.10, 0.35, 0.18)
 const C_BAR_BG    := Color(0.12, 0.12, 0.12)
 
-# ── State ────────────────────────────────────────────────────────────────────
 enum Phase { INCOMING, ACTIVE, DONE }
 var _phase: Phase = Phase.INCOMING
 
@@ -38,41 +38,34 @@ var _call_data: Dictionary = {}
 var _duration: float = 60.0
 var _elapsed: float = 0.0
 var _transcription_full: String = ""
-var _transcription_shown: int = 0   # chars revealed so far
+var _transcription_shown: int = 0
 var _selected_anomaly_id: int = -1
 var _tasks_checks: Array[bool] = []
 
-# ── Node refs ────────────────────────────────────────────────────────────────
 var _incoming_layer: Control
 var _active_layer: Control
 
-# incoming
 var _inc_photo: TextureRect
 var _inc_name: Label
 var _inc_accept: Button
 var _inc_decline: Button
 
-# active – header
 var _act_photo: TextureRect
 var _act_name: Label
-var _act_bar: ColorRect          # fill indicator inside bar bg
+var _act_bar: ColorRect
 var _act_bar_bg: ColorRect
 var _act_time_label: Label
 
-# active – left column
 var _transcription_rtl: RichTextLabel
 var _extra_rtl: RichTextLabel
 
-# active – right column
 var _tasks_vbox: VBoxContainer
 var _anomaly_scroll: ScrollContainer
 var _anomaly_vbox: VBoxContainer
 var _submit_btn: Button
 
-# audio
 var _audio_player: AudioStreamPlayer
 
-# ── Public API ────────────────────────────────────────────────────────────────
 func setup(data: Dictionary) -> void:
 	_call_data = data
 	_duration           = float(data.get("duration", 60.0))
@@ -83,18 +76,19 @@ func setup(data: Dictionary) -> void:
 	for _t in tasks:
 		_tasks_checks.append(false)
 
-	# Fill incoming screen
 	_inc_name.text = data.get("caller_name", "UNKNOWN CALLER")
 	var photo_path: String = data.get("caller_photo", "")
 	if photo_path != "" and ResourceLoader.exists(photo_path):
 		_inc_photo.texture = load(photo_path)
+		# FIX: re-enforce size after texture load
+		_inc_photo.size = Vector2(72, 72)
 
-	# Fill active header
 	_act_name.text = _inc_name.text
 	if photo_path != "" and ResourceLoader.exists(photo_path):
 		_act_photo.texture = load(photo_path)
+		# FIX: re-enforce size after texture load
+		_act_photo.size = Vector2(56, 56)
 
-	# Tasks checklist
 	for child in _tasks_vbox.get_children():
 		child.queue_free()
 	for i in range(tasks.size()):
@@ -122,9 +116,8 @@ func setup(data: Dictionary) -> void:
 
 	_refresh_submit()
 
-# ── Build UI ──────────────────────────────────────────────────────────────────
 func _ready() -> void:
-	custom_minimum_size = Vector2(580, 500)  # was 640, 600
+	custom_minimum_size = Vector2(580, 500)
 	_build_background()
 	_build_incoming_layer()
 	_build_active_layer()
@@ -147,20 +140,17 @@ func _build_incoming_layer() -> void:
 	_incoming_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_incoming_layer)
 
-	# Dimmed overlay
 	var overlay := ColorRect.new()
 	overlay.color = Color(0.0, 0.0, 0.0, 0.75)
 	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_incoming_layer.add_child(overlay)
 
-	# Central card
 	var card := _make_panel(Color(0.10, 0.10, 0.10), C_BORDER)
 	card.custom_minimum_size = Vector2(280, 200)
 	card.size = Vector2(280, 220)
-	card.position = Vector2((640 - 280) / 2.0, (600 - 220) / 2.0)  # = (180, 190)
+	card.clip_contents = true  # FIX: prevent photo rendering outside card
 	_incoming_layer.add_child(card)
 
-	# Incoming label
 	var inc_lbl := Label.new()
 	inc_lbl.text = "INCOMING CALL"
 	inc_lbl.position = Vector2(0, 10)
@@ -169,10 +159,12 @@ func _build_incoming_layer() -> void:
 	_style_label(inc_lbl, 11, C_AMBER)
 	card.add_child(inc_lbl)
 
-	# Photo
+	# FIX: EXPAND_KEEP_SIZE + custom_minimum_size prevents texture from overriding size
 	_inc_photo = TextureRect.new()
 	_inc_photo.position = Vector2(104, 36)
 	_inc_photo.size = Vector2(72, 72)
+	_inc_photo.custom_minimum_size = Vector2(72, 72)
+	_inc_photo.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 	_inc_photo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_inc_photo.texture = _default_photo_texture()
 	card.add_child(_inc_photo)
@@ -185,43 +177,43 @@ func _build_incoming_layer() -> void:
 	_style_label(_inc_name, 14, C_TEXT)
 	card.add_child(_inc_name)
 
-	# Accept button
 	_inc_accept = _make_button("ACCEPT", C_GREEN, Color(0.02, 0.10, 0.04))
 	_inc_accept.position = Vector2(20, 156)
 	_inc_accept.size = Vector2(110, 36)
 	_inc_accept.pressed.connect(_on_accept)
 	card.add_child(_inc_accept)
 
-	# Decline button
 	_inc_decline = _make_button("DECLINE", C_RED, Color(0.10, 0.02, 0.02))
 	_inc_decline.position = Vector2(150, 156)
 	_inc_decline.size = Vector2(110, 36)
 	_inc_decline.pressed.connect(_on_decline)
 	card.add_child(_inc_decline)
 
-# ─── ACTIVE LAYER ─────────────────────────────────────────────────────────────
 func _build_active_layer() -> void:
 	_active_layer = Control.new()
 	_active_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_active_layer)
 
 	const PAD   := 8
-	const W     := 580   # was 640
-	const H     := 500   # was 600
-	const HDR_H := 64      # header row height
-	const COL_L := 320   # was 374
 	const COL_R := 242   # was 254 — W - PAD*3 - COL_L
-	const COL_R_X := COL_L + PAD * 2  # stays the same formula
+	const W     := 580
+	const H     := 500
+	const HDR_H := 64
+	const COL_L := 320
+	const COL_R := 242
+	const COL_R_X := COL_L + PAD * 2
 
-	# ── HEADER ──────────────────────────────────────────────────────────────
 	var hdr := _make_panel(C_PANEL, C_BORDER)
 	hdr.position = Vector2(PAD, PAD)
 	hdr.size = Vector2(W - PAD * 2, HDR_H)
 	_active_layer.add_child(hdr)
 
+	# FIX: EXPAND_KEEP_SIZE + custom_minimum_size prevents texture from overriding size
 	_act_photo = TextureRect.new()
 	_act_photo.position = Vector2(4, 4)
 	_act_photo.size = Vector2(56, 56)
+	_act_photo.custom_minimum_size = Vector2(56, 56)
+	_act_photo.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 	_act_photo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_act_photo.texture = _default_photo_texture()
 	hdr.add_child(_act_photo)
@@ -232,33 +224,27 @@ func _build_active_layer() -> void:
 	_style_label(_act_name, 13, C_TEXT)
 	hdr.add_child(_act_name)
 
-	# Progress bar background
 	_act_bar_bg = ColorRect.new()
 	_act_bar_bg.position = Vector2(66, 30)
 	_act_bar_bg.size = Vector2(W - PAD * 2 - 200, 14)
 	_act_bar_bg.color = C_BAR_BG
 	hdr.add_child(_act_bar_bg)
 
-	# Progress bar fill
 	_act_bar = ColorRect.new()
 	_act_bar.position = Vector2(0, 0)
 	_act_bar.size = Vector2(0, 14)
 	_act_bar.color = C_GREEN
 	_act_bar_bg.add_child(_act_bar)
 
-	# Time label
 	_act_time_label = Label.new()
 	_act_time_label.position = Vector2(66, 46)
 	_act_time_label.size = Vector2(160, 16)
 	_style_label(_act_time_label, 10, C_DIM)
 	hdr.add_child(_act_time_label)
 
-	# ── LEFT COLUMN ──────────────────────────────────────────────────────────
 	const LEFT_Y    := HDR_H + PAD * 2
 	const TRANS_H   := 240
-	const EXTRA_H   := 600 - LEFT_Y - TRANS_H - PAD * 3 - PAD
 
-	# Transcription panel
 	var trans_panel := _make_panel(C_PANEL, C_BORDER)
 	trans_panel.position = Vector2(PAD, LEFT_Y)
 	trans_panel.size = Vector2(COL_L, TRANS_H)
@@ -285,7 +271,6 @@ func _build_active_layer() -> void:
 	_transcription_rtl.add_theme_font_size_override("normal_font_size", 11)
 	trans_scroll.add_child(_transcription_rtl)
 
-	# Additional details panel
 	var extra_panel := _make_panel(C_PANEL, C_BORDER)
 	extra_panel.position = Vector2(PAD, LEFT_Y + TRANS_H + PAD)
 	extra_panel.size = Vector2(COL_L, EXTRA_H)
@@ -306,11 +291,8 @@ func _build_active_layer() -> void:
 	_extra_rtl.add_theme_font_size_override("normal_font_size", 11)
 	extra_panel.add_child(_extra_rtl)
 
-	# ── RIGHT COLUMN ──────────────────────────────────────────────────────────
 	const TASKS_H  := 130
-	const ANOM_H := 500 - LEFT_Y - TASKS_H - 48 - PAD * 4  # was 600 - ...
 
-	# Tasks panel
 	var tasks_panel := _make_panel(C_PANEL, C_BORDER)
 	tasks_panel.position = Vector2(COL_R_X, LEFT_Y)
 	tasks_panel.size = Vector2(COL_R, TASKS_H)
@@ -331,7 +313,6 @@ func _build_active_layer() -> void:
 	_tasks_vbox.custom_minimum_size = Vector2(COL_R - 20, 0)
 	tasks_scroll.add_child(_tasks_vbox)
 
-	# Anomaly list panel
 	var anom_panel := _make_panel(C_PANEL, C_BORDER)
 	anom_panel.position = Vector2(COL_R_X, LEFT_Y + TASKS_H + PAD)
 	anom_panel.size = Vector2(COL_R, ANOM_H)
@@ -342,7 +323,6 @@ func _build_active_layer() -> void:
 	anom_hdr.size = Vector2(COL_R, 18)
 	anom_panel.add_child(anom_hdr)
 
-	# Search bar inside anomaly panel
 	var search := LineEdit.new()
 	search.position = Vector2(4, 20)
 	search.size = Vector2(COL_R - 8, 18)
@@ -364,14 +344,11 @@ func _build_active_layer() -> void:
 
 	_populate_anomaly_list("")
 
-	# Submit button
 	_submit_btn = _make_button("SUBMIT REPORT", C_GREEN, Color(0.02, 0.10, 0.04))
-	_submit_btn.position = Vector2(COL_R_X, 500 - PAD - 40)  # was 600 - PAD - 40
 	_submit_btn.size = Vector2(COL_R, 40)
 	_submit_btn.pressed.connect(_on_submit)
 	_active_layer.add_child(_submit_btn)
 
-# ── Anomaly list population ───────────────────────────────────────────────────
 func _populate_anomaly_list(filter: String) -> void:
 	for child in _anomaly_vbox.get_children():
 		child.queue_free()
@@ -399,10 +376,9 @@ func _on_anomaly_search(text: String) -> void:
 
 func _on_anomaly_selected(entry_id: int) -> void:
 	_selected_anomaly_id = entry_id
-	_populate_anomaly_list("")     # refresh to show new highlight
+	_populate_anomaly_list("")
 	_refresh_submit()
 
-# ── Transitions ───────────────────────────────────────────────────────────────
 func _show_phase(phase: Phase) -> void:
 	_phase = phase
 	_incoming_layer.visible = (phase == Phase.INCOMING)
@@ -427,14 +403,12 @@ func _on_submit() -> void:
 	_show_phase(Phase.DONE)
 	_audio_player.stop()
 
-# ── Per-frame update ──────────────────────────────────────────────────────────
 func _process(delta: float) -> void:
 	if _phase != Phase.ACTIVE:
 		return
 
 	_elapsed = min(_elapsed + delta, _duration)
 
-	# Progress bar
 	var ratio: float = _elapsed / _duration if _duration > 0.0 else 1.0
 	_act_bar.size.x = _act_bar_bg.size.x * ratio
 
@@ -446,11 +420,9 @@ func _process(delta: float) -> void:
 	else:
 		_act_bar.color = C_RED
 
-	# Time display
 	var remaining := _duration - _elapsed
 	_act_time_label.text = "%s  |  -%s" % [_fmt_time(_elapsed), _fmt_time(remaining)]
 
-	# Typewriter transcription reveal
 	var target_chars := int((_elapsed / _duration) * float(_transcription_full.length()))
 	target_chars = min(target_chars, _transcription_full.length())
 	if target_chars > _transcription_shown:
@@ -474,7 +446,6 @@ func _refresh_submit() -> void:
 	_submit_btn.disabled = not can_submit
 	_submit_btn.modulate = Color.WHITE if can_submit else Color(0.4, 0.4, 0.4)
 
-# ── Style helpers ─────────────────────────────────────────────────────────────
 func _make_panel(bg: Color, border: Color) -> Panel:
 	var p := Panel.new()
 	var s := StyleBoxFlat.new()
