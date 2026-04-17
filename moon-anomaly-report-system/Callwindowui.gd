@@ -106,10 +106,8 @@ func setup(data: Dictionary) -> void:
 		row.add_child(lbl)
 		_tasks_vbox.add_child(row)
 
-	# Extra details
 	_extra_rtl.text = data.get("additional_details", "")
 
-	# Audio
 	var audio_path: String = data.get("audio", "")
 	if audio_path != "" and ResourceLoader.exists(audio_path):
 		_audio_player.stream = load(audio_path)
@@ -134,7 +132,6 @@ func _build_audio_player() -> void:
 	_audio_player = AudioStreamPlayer.new()
 	add_child(_audio_player)
 
-# ─── INCOMING LAYER ───────────────────────────────────────────────────────────
 func _build_incoming_layer() -> void:
 	_incoming_layer = Control.new()
 	_incoming_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -148,6 +145,7 @@ func _build_incoming_layer() -> void:
 	var card := _make_panel(Color(0.10, 0.10, 0.10), C_BORDER)
 	card.custom_minimum_size = Vector2(280, 200)
 	card.size = Vector2(280, 220)
+	card.position = Vector2((580 - 280) / 2.0, (500 - 220) / 2.0)
 	card.clip_contents = true  # FIX: prevent photo rendering outside card
 	_incoming_layer.add_child(card)
 
@@ -169,7 +167,6 @@ func _build_incoming_layer() -> void:
 	_inc_photo.texture = _default_photo_texture()
 	card.add_child(_inc_photo)
 
-	# Name label
 	_inc_name = Label.new()
 	_inc_name.position = Vector2(0, 116)
 	_inc_name.size = Vector2(280, 24)
@@ -195,7 +192,6 @@ func _build_active_layer() -> void:
 	add_child(_active_layer)
 
 	const PAD   := 8
-	const COL_R := 242   # was 254 — W - PAD*3 - COL_L
 	const W     := 580
 	const H     := 500
 	const HDR_H := 64
@@ -206,6 +202,7 @@ func _build_active_layer() -> void:
 	var hdr := _make_panel(C_PANEL, C_BORDER)
 	hdr.position = Vector2(PAD, PAD)
 	hdr.size = Vector2(W - PAD * 2, HDR_H)
+	hdr.clip_contents = true  # FIX: prevent photo overflow
 	_active_layer.add_child(hdr)
 
 	# FIX: EXPAND_KEEP_SIZE + custom_minimum_size prevents texture from overriding size
@@ -244,6 +241,7 @@ func _build_active_layer() -> void:
 
 	const LEFT_Y    := HDR_H + PAD * 2
 	const TRANS_H   := 240
+	const EXTRA_H   := 500 - LEFT_Y - TRANS_H - PAD * 3 - PAD
 
 	var trans_panel := _make_panel(C_PANEL, C_BORDER)
 	trans_panel.position = Vector2(PAD, LEFT_Y)
@@ -292,6 +290,7 @@ func _build_active_layer() -> void:
 	extra_panel.add_child(_extra_rtl)
 
 	const TASKS_H  := 130
+	const ANOM_H := 500 - LEFT_Y - TASKS_H - 48 - PAD * 4
 
 	var tasks_panel := _make_panel(C_PANEL, C_BORDER)
 	tasks_panel.position = Vector2(COL_R_X, LEFT_Y)
@@ -345,6 +344,7 @@ func _build_active_layer() -> void:
 	_populate_anomaly_list("")
 
 	_submit_btn = _make_button("SUBMIT REPORT", C_GREEN, Color(0.02, 0.10, 0.04))
+	_submit_btn.position = Vector2(COL_R_X, 500 - PAD - 40)
 	_submit_btn.size = Vector2(COL_R, 40)
 	_submit_btn.pressed.connect(_on_submit)
 	_active_layer.add_child(_submit_btn)
@@ -412,7 +412,6 @@ func _process(delta: float) -> void:
 	var ratio: float = _elapsed / _duration if _duration > 0.0 else 1.0
 	_act_bar.size.x = _act_bar_bg.size.x * ratio
 
-	# Colour bar: green → amber → red as call progresses
 	if ratio < 0.5:
 		_act_bar.color = C_GREEN
 	elif ratio < 0.8:
@@ -429,11 +428,9 @@ func _process(delta: float) -> void:
 		_transcription_shown = target_chars
 		_transcription_rtl.text = _transcription_full.substr(0, _transcription_shown)
 
-	# Auto-scroll transcript to bottom
 	await get_tree().process_frame
 	_transcription_rtl.scroll_to_line(_transcription_rtl.get_line_count() - 1)
 
-# ── Submit guard ──────────────────────────────────────────────────────────────
 func _refresh_submit() -> void:
 	if _submit_btn == null:
 		return
