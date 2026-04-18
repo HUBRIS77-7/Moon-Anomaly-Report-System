@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://oki8ftkdu85q"]
-
-[ext_resource type="PackedScene" uid="uid://ckvbf52qoih5n" path="res://MODELS/THEMOON.glb" id="1_r3e4s"]
-
-[node name="THEMOON" instance=ExtResource("1_r3e4s")]
