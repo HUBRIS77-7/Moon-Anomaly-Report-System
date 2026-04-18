@@ -84,5 +84,6 @@ func _apply_win95_style() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_F5:
-			if CallDatabase.has_next_call():
-				receive_call(CallDatabase.next_call())
+			var db := get_node("/root/CallDatabase")
+			if db.has_next_call():
+				receive_call(db.next_call())

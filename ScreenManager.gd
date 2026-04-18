@@ -86,8 +86,9 @@ func _input(event: InputEvent) -> void:
 	# ── DEBUG: F1 opens the next queued call on the BIGTERMINAL desktop ─────
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_F1:
-			if CallDatabase.has_next_call():
-				desktop_ui.spawn_call_window(CallDatabase.next_call())
+			var db := get_node("/root/CallDatabase")
+			if db.has_next_call():
+				desktop_ui.spawn_call_window(db.next_call())
 			get_viewport().set_input_as_handled()
 			return
 
@@ -173,7 +174,7 @@ func _input(event: InputEvent) -> void:
 	if not moon_result.is_empty():
 		var call_id = moon.get_call_id_for_body(moon_result["collider"])
 		if call_id != -1:
-			var data := CallDatabase.get_call(call_id)
+			var data: Dictionary = get_node("/root/CallDatabase").get_call(call_id)
 			if not data.has("status"):
 				desktop_ui.receive_call(data)
 

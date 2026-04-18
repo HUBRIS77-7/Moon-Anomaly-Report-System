@@ -1,0 +1,174 @@
+[gd_scene load_steps=20 format=3 uid="uid://cvtigpfwoj35b"]
+
+[ext_resource type="PackedScene" uid="uid://b4y4mvhccf284" path="res://MODELS/COMPUTER3D2.glb" id="1_kjgfg"]
+[ext_resource type="PackedScene" uid="uid://dslefmee0wyl6" path="res://MODELS/NUTABLE.glb" id="3_5kih8"]
+[ext_resource type="Shader" uid="uid://beul868rkbqby" path="res://post_processing.gdshader" id="3_kjgfg"]
+[ext_resource type="PackedScene" uid="uid://ga8riqoebbby" path="res://MODELS/PrimaryTable.glb" id="4_ffdot"]
+[ext_resource type="PackedScene" uid="uid://5qqggnu7y4u8" path="res://MODELS/MOONPROJECTER.glb" id="5_5kih8"]
+[ext_resource type="PackedScene" uid="uid://oki8ftkdu85q" path="res://TSCN Model/themoon.tscn" id="6_dm3ob"]
+[ext_resource type="Script" uid="uid://c37mr3amtstah" path="res://TerminalManager.gd" id="8_76u4v"]
+[ext_resource type="Script" uid="uid://14qfty1t4xpf" path="res://MODELS/themoon.gd" id="8_umcxk"]
+[ext_resource type="PackedScene" uid="uid://doxi8pfe33ofs" path="res://MODELS/PrimaryRoom2.glb" id="9_nhxhy"]
+[ext_resource type="PackedScene" uid="uid://rkpnxjpdsf8y" path="res://bigterminal.tscn" id="11_dm3ob"]
+[ext_resource type="Script" uid="uid://qjdfhebko8hu" path="res://ScreenManager.gd" id="12_fl3ci"]
+[ext_resource type="PackedScene" uid="uid://csrnwa2dbor3q" path="res://Desktop.tscn" id="13_6073h"]
+[ext_resource type="PackedScene" uid="uid://bks7g0pqa1872" path="res://ScreenPanelUI.tscn" id="13_dm3ob"]
+[ext_resource type="PackedScene" uid="uid://duabjwhfrwpqf" path="res://ScreenInfoUI.tscn" id="14_6073h"]
+[ext_resource type="PackedScene" uid="uid://n5p4y8mns38b" path="res://ScreenIconUI.tscn" id="15_5yptt"]
+[ext_resource type="PackedScene" uid="uid://dqcsr7o68noaf" path="res://NEWLSHAPE.tscn" id="15_fl3ci"]
+
+[sub_resource type="Environment" id="Environment_nhxhy"]
+ambient_light_color = Color(0.338739, 0.338739, 0.338739, 1)
+ambient_light_energy = 9.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kjgfg"]
+render_priority = 0
+shader = ExtResource("3_kjgfg")
+
+[sub_resource type="QuadMesh" id="QuadMesh_5kih8"]
+flip_faces = true
+size = Vector2(2, 2)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+canvas_cull_mask = 4294967039
+size = Vector2i(1280, 960)
+size_2d_override = Vector2i(360, 240)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1.19249e-08, 0, 1, 0, 1, 0, -1, 0, 1.19249e-08, 5.06861, 1.31797, -10.3821)
+fov = 53.5
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport"]
+environment = SubResource("Environment_nhxhy")
+
+[node name="TerminalStuff" type="Node" parent="SubViewportContainer/SubViewport"]
+
+[node name="TerminalManager" type="Node" parent="SubViewportContainer/SubViewport/TerminalStuff" node_paths=PackedStringArray("camera", "anchors")]
+script = ExtResource("8_76u4v")
+camera = NodePath("../../Camera3D")
+anchors = [NodePath("../Terminal3/CameraAnchor3"), NodePath("../Terminal2/CameraAnchor2"), NodePath("../Terminal1/CameraAnchor1")]
+
+[node name="Terminal1" type="Node3D" parent="SubViewportContainer/SubViewport/TerminalStuff"]
+
+[node name="CameraAnchor1" type="Marker3D" parent="SubViewportContainer/SubViewport/TerminalStuff/Terminal1"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5.069, 1.318, -10.38)
+
+[node name="Terminal2" type="Node3D" parent="SubViewportContainer/SubViewport/TerminalStuff"]
+
+[node name="CameraAnchor2" type="Marker3D" parent="SubViewportContainer/SubViewport/TerminalStuff/Terminal2"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5.81104, 1.392, -10.41)
+
+[node name="Terminal3" type="Node3D" parent="SubViewportContainer/SubViewport/TerminalStuff"]
+
+[node name="CameraAnchor3" type="Marker3D" parent="SubViewportContainer/SubViewport/TerminalStuff/Terminal3"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6.48926, 1.392, -10.55)
+
+[node name="Props" type="Node" parent="SubViewportContainer/SubViewport"]
+
+[node name="Tables" type="Node" parent="SubViewportContainer/SubViewport/Props"]
+
+[node name="PrimaryTable" parent="SubViewportContainer/SubViewport/Props/Tables" instance=ExtResource("4_ffdot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.81342, 0.0944088, -9.35591)
+
+[node name="NUTABLE" parent="SubViewportContainer/SubViewport/Props/Tables" instance=ExtResource("3_5kih8")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.64786, 0.579524, -10.5258)
+
+[node name="NUTABLE2" parent="SubViewportContainer/SubViewport/Props/Tables" instance=ExtResource("3_5kih8")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.91754, 0.579524, -10.5153)
+
+[node name="MOONPROJECTER" parent="SubViewportContainer/SubViewport/Props/Tables" instance=ExtResource("5_5kih8")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5.82245, 1.11591, -9.36362)
+
+[node name="COMPUTER3D2" parent="SubViewportContainer/SubViewport/Props" instance=ExtResource("1_kjgfg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00528, 1.12069, -10.2522)
+
+[node name="THEMOON" parent="SubViewportContainer/SubViewport/Props" instance=ExtResource("6_dm3ob")]
+transform = Transform3D(0.006, 0, 0, 0, 0.006, 0, 0, 0, 0.006, 5.822, 1.445, -9.348)
+script = ExtResource("8_umcxk")
+surface_radius = 28.0
+
+[node name="PrimaryRoom2" parent="SubViewportContainer/SubViewport/Props" instance=ExtResource("9_nhxhy")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5.57497, 0.0707287, -11.0747)
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0205951, 9.53674e-07, -0.0050354)
+visible = false
+material_override = SubResource("ShaderMaterial_kjgfg")
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_5kih8")
+skeleton = NodePath("../..")
+
+[node name="NEWLSHAPE" parent="SubViewportContainer/SubViewport/Props" instance=ExtResource("15_fl3ci")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00682, 1.12477, -10.2282)
+
+[node name="BIGTERMINAL" parent="SubViewportContainer/SubViewport/Props" instance=ExtResource("11_dm3ob")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 7.68369, 1.3388, -10.5212)
+
+[node name="Lights" type="Node" parent="SubViewportContainer/SubViewport"]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="SubViewportContainer/SubViewport/Lights"]
+transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 5.57587, 2.97664, -10.0242)
+light_color = Color(0.999587, 1, 0.930702, 1)
+spot_range = 5.734
+spot_angle = 70.0
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="SubViewportContainer/SubViewport/Lights"]
+transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 5.98255, 2.66035, -8.32203)
+light_color = Color(0.999587, 1, 0.930702, 1)
+light_energy = 2.0
+light_indirect_energy = 2.0
+spot_range = 5.734
+spot_angle = 70.0
+
+[node name="ScreenViewports" type="Node" parent="SubViewportContainer"]
+script = ExtResource("12_fl3ci")
+
+[node name="DesktopViewport" type="SubViewport" parent="SubViewportContainer/ScreenViewports"]
+handle_input_locally = false
+size = Vector2i(640, 640)
+size_2d_override = Vector2i(640, 640)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="DesktopUI" parent="SubViewportContainer/ScreenViewports/DesktopViewport" instance=ExtResource("13_6073h")]
+
+[node name="PanelViewport" type="SubViewport" parent="SubViewportContainer/ScreenViewports"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(240, 639)
+size_2d_override = Vector2i(240, 640)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="ScreenPanelUI" parent="SubViewportContainer/ScreenViewports/PanelViewport" instance=ExtResource("13_dm3ob")]
+
+[node name="InfoViewport" type="SubViewport" parent="SubViewportContainer/ScreenViewports"]
+handle_input_locally = false
+size = Vector2i(480, 308)
+size_2d_override = Vector2i(480, 308)
+render_target_update_mode = 4
+
+[node name="ScreenInfoUI" parent="SubViewportContainer/ScreenViewports/InfoViewport" instance=ExtResource("14_6073h")]
+
+[node name="IconViewport" type="SubViewport" parent="SubViewportContainer/ScreenViewports"]
+transparent_bg = true
+size = Vector2i(256, 256)
+render_target_update_mode = 4
+
+[node name="ScreenIconUI" parent="SubViewportContainer/ScreenViewports/IconViewport" instance=ExtResource("15_5yptt")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]

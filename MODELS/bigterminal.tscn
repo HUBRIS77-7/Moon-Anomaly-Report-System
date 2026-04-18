@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://rkpnxjpdsf8y"]
+
+[ext_resource type="PackedScene" uid="uid://b2ts8iq1fmxv" path="res://MODELS/BIGTERMINAL.glb" id="1_8vqi8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h4lde"]
+size = Vector3(0.001, 0.707001, 0.710251)
+
+[node name="BIGTERMINAL" instance=ExtResource("1_8vqi8")]
+
+[node name="ScreenPC" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00135684, 0.0037607, 0.000110388)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="ScreenPC" index="0"]
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ScreenPC/StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.361805, -0.0023652, 0.000175503)
+shape = SubResource("BoxShape3D_h4lde")

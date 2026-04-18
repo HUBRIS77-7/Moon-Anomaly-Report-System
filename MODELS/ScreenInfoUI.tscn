@@ -1,0 +1,152 @@
+[gd_scene load_steps=2 format=3 uid="uid://duabjwhfrwpqf"]
+
+[ext_resource type="Script" uid="uid://w4aimxsj87gm" path="res://ScreenInfoUI.gd" id="1_aat41"]
+
+[node name="Control" type="Control"]
+custom_minimum_size = Vector2(480, 308)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_aat41")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftColumn" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/LeftColumn"]
+layout_mode = 2
+text = "---"
+
+[node name="NumberLabel" type="Label" parent="HBoxContainer/LeftColumn"]
+layout_mode = 2
+
+[node name="Ratings" type="VBoxContainer" parent="HBoxContainer/LeftColumn"]
+layout_mode = 2
+
+[node name="SeverityRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings"]
+layout_mode = 2
+
+[node name="SeverityLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow"]
+layout_mode = 2
+text = "SEV "
+
+[node name="SeverityBar" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow"]
+layout_mode = 2
+
+[node name="Seg1" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="Seg2" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="Seg3" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="Seg4" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="Seg5" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="DangerRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings"]
+layout_mode = 2
+
+[node name="DangerLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/DangerRow"]
+layout_mode = 2
+text = "DNG "
+
+[node name="DangerBar" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings/DangerRow"]
+layout_mode = 2
+
+[node name="Seg1" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="Seg2" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="Seg3" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="Seg4" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="Seg5" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="ScaleRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings"]
+layout_mode = 2
+
+[node name="ScaleLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow"]
+layout_mode = 2
+text = "SCL "
+
+[node name="ScaleBar" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow"]
+layout_mode = 2
+
+[node name="Seg1" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="Seg2" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="Seg3" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="Seg4" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="Seg5" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
+custom_minimum_size = Vector2(20, 12)
+layout_mode = 2
+
+[node name="TypeRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings"]
+layout_mode = 2
+
+[node name="TypeLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/TypeRow"]
+layout_mode = 2
+text = "TYPE: ---"
+
+[node name="RightColumn" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="HBoxContainer/RightColumn"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

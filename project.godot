@@ -24,8 +24,10 @@ CallDatabase="*res://CallDatabase.gd"
 [display]
 
 window/size/viewport_width=1280
-window/size/viewport_height=960
+window/size/viewport_height=720
+window/size/mode=4
 window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 
 [input]
 
@@ -63,6 +65,7 @@ moon_down={
 [rendering]
 
 shading/overrides/force_vertex_shading=true
+viewport/transparent_background=true
 anti_aliasing/overrides/force_vertex_shading=false
 anti_aliasing/stretch/mode="disabled"
 anti_aliasing/size/viewport_height=648
