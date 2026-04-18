@@ -11,6 +11,7 @@ extends Node
 @onready var screen_icon_mesh:  MeshInstance3D = get_node("../SubViewport/Props/COMPUTER3D2/ScreenIcon")
 @onready var camera: Camera3D        = get_node("../SubViewport/Camera3D")
 @onready var moon: Node3D = get_node("../SubViewport/Props/THEMOON")
+@onready var terminal_manager: Node = get_node("../SubViewport/TerminalStuff/TerminalManager")
 
 var _screen_map: Array = []
 var _focused_viewport: SubViewport = null
@@ -86,9 +87,8 @@ func _input(event: InputEvent) -> void:
 	# ── DEBUG: F1 opens the next queued call on the BIGTERMINAL desktop ─────
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_F1:
-			var db := get_node("/root/CallDatabase")
-			if db.has_next_call():
-				desktop_ui.spawn_call_window(db.next_call())
+			if CallDatabase.has_next_call():
+				desktop_ui.spawn_call_window(CallDatabase.next_call())
 			get_viewport().set_input_as_handled()
 			return
 
@@ -148,6 +148,19 @@ func _input(event: InputEvent) -> void:
 
 	if result.is_empty():
 		_focused_viewport = null
+		# Nothing on layer 2 — check moon icons on layer 4
+		var query4 := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
+		query4.collision_mask = 4
+		var moon_result := space.intersect_ray(query4)
+		if not moon_result.is_empty():
+			var call_id = moon.get_call_id_for_body(moon_result["collider"])
+			if call_id != -1:
+				var data := CallDatabase.get_call(call_id)
+				if not data.has("status"):
+					desktop_ui.receive_call(data)
+					# anchors array is [Terminal3(0), Terminal2(1), Terminal1(2)]
+					# Terminal2 faces the BIGTERMINAL
+					terminal_manager.go_to_index(1)
 		return
 
 	var hit_body = result["collider"]
@@ -166,17 +179,6 @@ func _input(event: InputEvent) -> void:
 			return
 
 	_focused_viewport = null
-
-	# Check moon icons on layer 4
-	var query4 := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
-	query4.collision_mask = 4
-	var moon_result := space.intersect_ray(query4)
-	if not moon_result.is_empty():
-		var call_id = moon.get_call_id_for_body(moon_result["collider"])
-		if call_id != -1:
-			var data: Dictionary = get_node("/root/CallDatabase").get_call(call_id)
-			if not data.has("status"):
-				desktop_ui.receive_call(data)
 
 # ── Viewport helpers ──────────────────────────────────────────────────────────
 

@@ -50,3 +50,11 @@ func travel_to(anchor: Marker3D) -> void:
 	)
 	await tween.finished
 	is_traveling = false
+
+func go_to_index(index: int) -> void:
+	if is_traveling or index == current_index:
+		return
+	if index < 0 or index >= anchors.size():
+		return
+	current_index = index
+	await travel_to(anchors[current_index])

@@ -1,14 +1,14 @@
 [gd_scene load_steps=20 format=3 uid="uid://cvtigpfwoj35b"]
 
-[ext_resource type="PackedScene" uid="uid://b4y4mvhccf284" path="res://MODELS/COMPUTER3D2.glb" id="1_kjgfg"]
-[ext_resource type="PackedScene" uid="uid://dslefmee0wyl6" path="res://MODELS/NUTABLE.glb" id="3_5kih8"]
+[ext_resource type="PackedScene" uid="uid://b4y4mvhccf284" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/COMPUTER3D2.glb" id="1_kjgfg"]
+[ext_resource type="PackedScene" uid="uid://dslefmee0wyl6" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/NUTABLE.glb" id="3_5kih8"]
 [ext_resource type="Shader" uid="uid://beul868rkbqby" path="res://post_processing.gdshader" id="3_kjgfg"]
-[ext_resource type="PackedScene" uid="uid://ga8riqoebbby" path="res://MODELS/PrimaryTable.glb" id="4_ffdot"]
-[ext_resource type="PackedScene" uid="uid://5qqggnu7y4u8" path="res://MODELS/MOONPROJECTER.glb" id="5_5kih8"]
+[ext_resource type="PackedScene" uid="uid://ga8riqoebbby" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/PrimaryTable.glb" id="4_ffdot"]
+[ext_resource type="PackedScene" uid="uid://5qqggnu7y4u8" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/MOONPROJECTER.glb" id="5_5kih8"]
 [ext_resource type="PackedScene" uid="uid://oki8ftkdu85q" path="res://TSCN Model/themoon.tscn" id="6_dm3ob"]
 [ext_resource type="Script" uid="uid://c37mr3amtstah" path="res://TerminalManager.gd" id="8_76u4v"]
-[ext_resource type="Script" uid="uid://14qfty1t4xpf" path="res://MODELS/themoon.gd" id="8_umcxk"]
-[ext_resource type="PackedScene" uid="uid://doxi8pfe33ofs" path="res://MODELS/PrimaryRoom2.glb" id="9_nhxhy"]
+[ext_resource type="Script" uid="uid://14qfty1t4xpf" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/themoon.gd" id="8_umcxk"]
+[ext_resource type="PackedScene" uid="uid://doxi8pfe33ofs" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/PrimaryRoom2.glb" id="9_nhxhy"]
 [ext_resource type="PackedScene" uid="uid://rkpnxjpdsf8y" path="res://TSCN Model/bigterminal.tscn" id="11_dm3ob"]
 [ext_resource type="Script" uid="uid://qjdfhebko8hu" path="res://ScreenManager.gd" id="12_fl3ci"]
 [ext_resource type="PackedScene" uid="uid://csrnwa2dbor3q" path="res://Desktop.tscn" id="13_6073h"]
@@ -99,6 +99,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00528, 1.12069, -10.2522)
 transform = Transform3D(0.006, 0, 0, 0, 0.006, 0, 0, 0, 0.006, 5.822, 1.445, -9.348)
 script = ExtResource("8_umcxk")
 surface_radius = 28.0
+icon_collision_radius = 2.5
 
 [node name="PrimaryRoom2" parent="SubViewportContainer/SubViewport/Props" instance=ExtResource("9_nhxhy")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5.57497, 0.0707287, -11.0747)

@@ -4,16 +4,19 @@ extends Node3D
 @export var spin_speed: float = 1.0
 @export var surface_radius: float = 32.0
 @export var icon_scale: float = 50.0
-@export var icon_collision_radius: float = 2.5
+@export var icon_collision_radius: float = 6.0  # bump this up temporarily
 @export var icon_hover: float = 0.0
+
 
 var _body_to_call_id: Dictionary = {}
 
 func _ready() -> void:
+	await get_tree().process_frame
 	add_icon(1, Vector3( 0.0,  1.0,  0.0))
 	add_icon(2, Vector3( 1.0,  0.2,  0.0))
 	add_icon(3, Vector3(-0.6,  0.5,  0.6))
 	add_icon(4, Vector3( 0.3, -0.3, -0.9))
+	print("Moon icon bodies registered: ", _body_to_call_id.size())
 
 
 func _process(delta: float) -> void:
@@ -51,9 +54,10 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 
 	_set_cull_margin(icon)
 
-	var body := StaticBody3D.new()
+	var body := AnimatableBody3D.new()  # ← was StaticBody3D
 	body.collision_layer = 4
 	body.collision_mask  = 0
+	body.sync_to_physics = false        # ← add this so it moves with parent
 	icon.add_child(body)
 	var col    := CollisionShape3D.new()
 	var sphere := SphereShape3D.new()
