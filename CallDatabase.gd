@@ -36,6 +36,7 @@ var entries: Array[Dictionary] = [
 		"additional_details":
 			"Station 7 sits 2 km from the Kepler Ridge fault zone. "
 			+ "Fixed-interval seismic activity may indicate an artificial source.",
+		 "correct_anomaly_id": 13, 
 		"tasks": [
 			"Ask if Volatile Regolith warnings are active nearby",
 			"Check Satellite Database for recent orbital changes",
@@ -52,6 +53,7 @@ var entries: Array[Dictionary] = [
 			"We have a crew member reporting chest pains after EVA. "
 			+ "Suit logs show a micro-tear repaired mid-walk. Duration was 90 minutes.",
 		"additional_details": "Possible regolith exposure. Check suit log ref #A-441.",
+		 "correct_anomaly_id": 1, 
 		"tasks": [
 			"Confirm EVA suit was flagged in the equipment log",
 			"Ask how long symptoms have been present",

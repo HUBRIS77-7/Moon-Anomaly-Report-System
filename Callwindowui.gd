@@ -24,7 +24,8 @@ signal call_declined
 # ── Font ─────────────────────────────────────────────────────────────────────
 # Set this to your font's res:// path, e.g. "res://fonts/VT323-Regular.ttf"
 # Leave as "" to use Godot's built-in default font.
-const FONT_PATH := ""
+const FONT_PATH := "res://W95F.otf"
+@export var transcription_speed: float = 3.0   # increase to reveal faster
 
 # ── Font sizes ────────────────────────────────────────────────────────────────
 # Edit these to rescale text across the whole window.
@@ -60,6 +61,7 @@ var _transcription_full: String = ""
 var _transcription_shown: int = 0
 var _selected_anomaly_id: int = -1
 var _tasks_checks: Array[bool] = []
+var _correct_anomaly_id: int = -1
 
 var _incoming_layer: Control
 var _active_layer: Control
@@ -94,6 +96,7 @@ func setup(data: Dictionary) -> void:
 	_call_data = data
 	_duration           = float(data.get("duration", 60.0))
 	_transcription_full = data.get("transcription", "")
+	_correct_anomaly_id = data.get("correct_anomaly_id", -1)
 
 	var tasks: Array = data.get("tasks", [])
 	_tasks_checks.clear()
@@ -491,6 +494,17 @@ func _on_decline() -> void:
 func _on_submit() -> void:
 	if _selected_anomaly_id == -1:
 		return
+
+	if _correct_anomaly_id != -1:
+		if _selected_anomaly_id == _correct_anomaly_id:
+			print("[SUBMIT] CORRECT — filed as #%d" % _selected_anomaly_id)
+		else:
+			print("[SUBMIT] WRONG — filed as #%d, correct was #%d" % [
+				_selected_anomaly_id, _correct_anomaly_id
+			])
+	else:
+		print("[SUBMIT] No correct answer defined for this call. Filed as #%d" % _selected_anomaly_id)
+
 	call_submitted.emit(_selected_anomaly_id)
 	_show_phase(Phase.DONE)
 	_audio_player.stop()
@@ -516,7 +530,7 @@ func _process(delta: float) -> void:
 	var remaining := _duration - _elapsed
 	_act_time_label.text = "%s  |  -%s" % [_fmt_time(_elapsed), _fmt_time(remaining)]
 
-	var target_chars := int((_elapsed / _duration) * float(_transcription_full.length()))
+	var target_chars := int((_elapsed / _duration) * float(_transcription_full.length()) * transcription_speed)
 	target_chars = min(target_chars, _transcription_full.length())
 	if target_chars > _transcription_shown:
 		_transcription_shown = target_chars
