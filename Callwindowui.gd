@@ -24,18 +24,22 @@ signal call_declined
 # ── Font ─────────────────────────────────────────────────────────────────────
 # Set this to your font's res:// path, e.g. "res://fonts/VT323-Regular.ttf"
 # Leave as "" to use Godot's built-in default font.
+<<<<<<< Updated upstream
 const FONT_PATH := "res://W95F.otf"
+=======
+const FONT_PATH := "res://Ac437_IBM_BIOS.ttf"
+>>>>>>> Stashed changes
 @export var transcription_speed: float = 3.0   # increase to reveal faster
 
 # ── Font sizes ────────────────────────────────────────────────────────────────
 # Edit these to rescale text across the whole window.
 const FONT_SIZES := {
-	"heading":     11,   # "INCOMING CALL" label, section header bars
-	"caller_name": 14,   # caller name on the incoming card
-	"info":        13,   # caller name in the active-call header
-	"body":        11,   # transcription, extra details, task labels, checkboxes
+	"heading":     13,   # "INCOMING CALL" label, section header bars
+	"caller_name": 11,   # caller name on the incoming card
+	"info":        12,   # caller name in the active-call header
+	"body":        10,   # transcription, extra details, task labels, checkboxes
 	"meta":        10,   # search box, anomaly list entries, section bar titles
-	"submit":      12,   # accept / decline / submit report buttons
+	"submit":      13,   # accept / decline / submit report buttons
 	"timer":       10,   # elapsed / remaining time label
 }
 

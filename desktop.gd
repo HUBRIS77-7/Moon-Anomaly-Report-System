@@ -16,13 +16,34 @@ func receive_call(data: Dictionary) -> void:
 	var win = spawn_window("INCOMING CALL", call_ui, Vector2(580, 524))
 	win.position = Vector2(0, 0)
 	call_ui.setup(data)
+
+	var correct_id: int = data.get("correct_anomaly_id", -1)
+
 	call_ui.call_submitted.connect(func(anomaly_id: int):
-		print("Filed as anomaly #", anomaly_id)
-		# hook into scoring / game state here later
+		# ── Record result ─────────────────────────────────────────────────────
+		var was_correct := (correct_id != -1 and anomaly_id == correct_id)
+		GameState.record_call(was_correct)
+
+		var total    := GameState.total_calls
+		var accuracy := GameState.accuracy_percent
+		print(
+			"[CALL RESULT] Filed as #%d | Correct: %s | Score: %d/%d (%.0f%%)" % [
+				anomaly_id,
+				"YES" if was_correct else "NO — correct was #%d" % correct_id,
+				GameState.calls_correct,
+				total,
+				accuracy
+			]
+		)
 		_destroy_window(win)
 	)
+
 	call_ui.call_declined.connect(func():
-		print("Call declined")
+		print("[CALL DECLINED] Score unchanged: %d/%d (%.0f%%)" % [
+			GameState.calls_correct,
+			GameState.total_calls,
+			GameState.accuracy_percent
+		])
 	)
 
 ## Fully removes a window and its taskbar button.

@@ -53,7 +53,11 @@ var entries: Array[Dictionary] = [
 			"We have a crew member reporting chest pains after EVA. "
 			+ "Suit logs show a micro-tear repaired mid-walk. Duration was 90 minutes.",
 		"additional_details": "Possible regolith exposure. Check suit log ref #A-441.",
+<<<<<<< Updated upstream
 		 "correct_anomaly_id": 1, 
+=======
+		 "correct_anomaly_id": 10, 
+>>>>>>> Stashed changes
 		"tasks": [
 			"Confirm EVA suit was flagged in the equipment log",
 			"Ask how long symptoms have been present",

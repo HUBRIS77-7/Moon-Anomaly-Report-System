@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://umffmsrhgssn"
-path="res://.godot/imported/W95F.otf-72f6dfb7d3c5c195feaed8701950429e.fontdata"
+uid="uid://cm8v5645gfnf4"
+path="res://.godot/imported/VT323-Regular.ttf-a909885e332eb2f927eda9bb4af05f00.fontdata"
 
 [deps]
 
-source_file="res://W95F.otf"
-dest_files=["res://.godot/imported/W95F.otf-72f6dfb7d3c5c195feaed8701950429e.fontdata"]
+source_file="res://VT323-Regular.ttf"
+dest_files=["res://.godot/imported/VT323-Regular.ttf-a909885e332eb2f927eda9bb4af05f00.fontdata"]
 
 [params]
 
