@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://csrnwa2dbor3q"]
+[gd_scene format=3 uid="uid://csrnwa2dbor3q"]
 
-[ext_resource type="Script" uid="uid://csws2ywr4k50a" path="res://Desktop.gd" id="1_desk"]
+[ext_resource type="Script" uid="uid://csws2ywr4k50a" path="res://desktop.gd" id="1_desk"]
 
-[node name="DesktopUI" type="Control"]
+[node name="DesktopUI" type="Control" unique_id=548783667]
 custom_minimum_size = Vector2(640, 640)
 layout_mode = 3
 anchors_preset = 15
@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_desk")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2004937635]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,7 +21,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.502, 0.502, 1)
 
-[node name="WindowLayer" type="Control" parent="."]
+[node name="WindowLayer" type="Control" parent="." unique_id=2928103]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,7 +30,7 @@ offset_bottom = -36.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Taskbar" type="Panel" parent="."]
+[node name="Taskbar" type="Panel" parent="." unique_id=365989679]
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 1
 anchors_preset = 12
@@ -40,7 +40,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="TaskbarItems" type="HBoxContainer" parent="Taskbar"]
+[node name="TaskbarItems" type="HBoxContainer" parent="Taskbar" unique_id=917175479]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
