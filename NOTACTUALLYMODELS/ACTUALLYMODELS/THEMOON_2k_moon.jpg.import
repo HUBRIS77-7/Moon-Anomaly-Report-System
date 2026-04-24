@@ -9,11 +9,7 @@ metadata={
 "vram_texture": true
 }
 generator_parameters={
-<<<<<<< Updated upstream
-"md5": "9645f0dbdd48d760929868f6424b2bed"
-=======
-"md5": "a843be4fa46d60a8d6507a63453b4f27"
->>>>>>> Stashed changes
+"md5": "4c9114d682ac5270a443a456deec9774"
 }
 
 [deps]
@@ -26,6 +22,8 @@ dest_files=["res://.godot/imported/THEMOON_2k_moon.jpg-830a0b86fa80bcea504f4a03f
 compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
+compress/uastc_level=0
+compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
@@ -33,6 +31,10 @@ mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
+process/channel_remap/red=0
+process/channel_remap/green=1
+process/channel_remap/blue=2
+process/channel_remap/alpha=3
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
