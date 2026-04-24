@@ -4,18 +4,26 @@ extends Node3D
 @export var spin_speed: float = 1.0
 @export var surface_radius: float = 32.0
 @export var icon_scale: float = 50.0
-@export var icon_collision_radius: float = 6.0  # bump this up temporarily
+@export var icon_collision_radius: float = 6.0
 @export var icon_hover: float = 0.0
 
+## Minimum angular separation between icons (degrees).
+## Increase if icons overlap; decrease if you have many calls.
+@export var min_icon_separation_deg: float = 35.0
 
 var _body_to_call_id: Dictionary = {}
 
 func _ready() -> void:
 	await get_tree().process_frame
-	add_icon(1, Vector3( 0.0,  1.0,  0.0))
-	add_icon(2, Vector3( 1.0,  0.2,  0.0))
-	add_icon(3, Vector3(-0.6,  0.5,  0.6))
-	add_icon(4, Vector3( 0.3, -0.3, -0.9))
+
+	var placed_directions: Array[Vector3] = []
+	var min_dot := cos(deg_to_rad(min_icon_separation_deg))
+
+	for entry in CallDatabase.entries:
+		var dir := _random_spread_direction(placed_directions, min_dot)
+		placed_directions.append(dir)
+		add_icon(entry["id"], dir)
+
 	print("Moon icon bodies registered: ", _body_to_call_id.size())
 
 
@@ -52,7 +60,7 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 	icon.look_at(icon.global_position + direction, up_hint)
 	icon.rotate_object_local(Vector3.RIGHT, PI / 2.0)
 
-	_make_icon_transparent(icon)  # ← add this line here
+	_make_icon_transparent(icon)
 	_set_cull_margin(icon)
 
 	var body := AnimatableBody3D.new()
@@ -83,7 +91,6 @@ func _make_icon_transparent(node: Node) -> void:
 				new_mat.albedo_color = col
 				node.set_surface_override_material(i, new_mat)
 			else:
-				# ShaderMaterial or null — stamp a fresh green material
 				var new_mat := StandardMaterial3D.new()
 				new_mat.albedo_color = Color(0.0, 0.6, 0.1, 1.0)
 				new_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
@@ -113,3 +120,31 @@ func _set_cull_margin(node: Node) -> void:
 		node.extra_cull_margin = 16384.0
 	for child in node.get_children():
 		_set_cull_margin(child)
+
+
+# ── Random placement helpers ──────────────────────────────────────────────────
+
+## Returns a random unit vector separated from all existing ones by at least
+## min_dot (in dot-product terms). Falls back after 100 failed attempts.
+func _random_spread_direction(existing: Array[Vector3], min_dot: float) -> Vector3:
+	for _attempt in range(100):
+		var dir := _random_sphere_direction()
+		var too_close := false
+		for other in existing:
+			if dir.dot(other) > min_dot:
+				too_close = true
+				break
+		if not too_close:
+			return dir
+	return _random_sphere_direction()
+
+
+## Uniformly distributed random point on the unit sphere.
+func _random_sphere_direction() -> Vector3:
+	var theta := randf() * TAU
+	var phi   := acos(randf_range(-1.0, 1.0))
+	return Vector3(
+		sin(phi) * cos(theta),
+		cos(phi),
+		sin(phi) * sin(theta)
+	)
