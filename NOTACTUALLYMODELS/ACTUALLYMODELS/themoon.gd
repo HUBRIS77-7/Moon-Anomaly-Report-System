@@ -52,12 +52,13 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 	icon.look_at(icon.global_position + direction, up_hint)
 	icon.rotate_object_local(Vector3.RIGHT, PI / 2.0)
 
+	_make_icon_transparent(icon)  # ← add this line here
 	_set_cull_margin(icon)
 
-	var body := AnimatableBody3D.new()  # ← was StaticBody3D
+	var body := AnimatableBody3D.new()
 	body.collision_layer = 4
 	body.collision_mask  = 0
-	body.sync_to_physics = false        # ← add this so it moves with parent
+	body.sync_to_physics = false
 	icon.add_child(body)
 	var col    := CollisionShape3D.new()
 	var sphere := SphereShape3D.new()
@@ -66,6 +67,32 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 	body.add_child(col)
 
 	_body_to_call_id[body] = call_id
+
+
+func _make_icon_transparent(node: Node) -> void:
+	if node is MeshInstance3D and node.mesh:
+		for i in range(node.mesh.get_surface_count()):
+			var mat = node.get_active_material(i)
+			if mat is BaseMaterial3D:
+				var new_mat = mat.duplicate() as BaseMaterial3D
+				new_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+				new_mat.render_priority = 2
+				new_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+				var col = new_mat.albedo_color
+				col.a = 1.0
+				new_mat.albedo_color = col
+				node.set_surface_override_material(i, new_mat)
+			else:
+				# ShaderMaterial or null — stamp a fresh green material
+				var new_mat := StandardMaterial3D.new()
+				new_mat.albedo_color = Color(0.0, 0.6, 0.1, 1.0)
+				new_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+				new_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+				new_mat.render_priority = 2
+				new_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+				node.set_surface_override_material(i, new_mat)
+	for child in node.get_children():
+		_make_icon_transparent(child)
 
 
 func remove_icon(call_id: int) -> void:

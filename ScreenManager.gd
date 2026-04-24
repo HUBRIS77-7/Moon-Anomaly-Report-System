@@ -217,6 +217,9 @@ func _apply_viewport_texture(mesh: MeshInstance3D,
 		push_error("ScreenManager: mesh reference is null!")
 		return
 	var mat := StandardMaterial3D.new()
+	mat.transparency               = BaseMaterial3D.TRANSPARENCY_ALPHA  # ← forces transparent pass
+	mat.render_priority            = 1
+	mat.texture_filter             = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	mat.albedo_texture             = viewport.get_texture()
 	mat.shading_mode               = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.emission_enabled           = true
