@@ -1,4 +1,4 @@
-# MODELS/themoon.gd
+# NOTACTUALLYMODELS/ACTUALLYMODELS/themoon.gd
 extends Node3D
 
 @export var spin_speed: float = 1.0
@@ -7,42 +7,66 @@ extends Node3D
 @export var icon_collision_radius: float = 6.0
 @export var icon_hover: float = 0.0
 
-## Minimum angular separation between icons (degrees).
-## Increase if icons overlap; decrease if you have many calls.
-@export var min_icon_separation_deg: float = 35.0
+## How "directly" the camera must face an icon to show the full version.
+## 0.90 ≈ within ~26°.  Increase toward 1.0 for a tighter cone.
+@export var look_dot_threshold: float = 0.90
 
+## Assign in the Inspector, OR leave null to auto-find "../../Camera3D".
+@export var camera: Camera3D
+
+# body → call_id
 var _body_to_call_id: Dictionary = {}
+# body → { "full": Node3D, "mini": Node3D }
+var _body_to_icons: Dictionary = {}
+
+# ── Lifecycle ─────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
 	await get_tree().process_frame
 
-	var placed_directions: Array[Vector3] = []
-	var min_dot := cos(deg_to_rad(min_icon_separation_deg))
+	# Auto-find the camera if it wasn't assigned in the Inspector.
+	if camera == null:
+		camera = get_node_or_null("../../Camera3D")
 
+	# Spawn icons from CallDatabase — only entries with an "icon_direction" field.
 	for entry in CallDatabase.entries:
-		var dir := _random_spread_direction(placed_directions, min_dot)
-		placed_directions.append(dir)
-		add_icon(entry["id"], dir)
+		var dir: Vector3 = entry.get("icon_direction", Vector3.ZERO)
+		if dir != Vector3.ZERO:
+			add_icon(entry["id"], dir)
 
 	print("Moon icon bodies registered: ", _body_to_call_id.size())
 
 
 func _process(delta: float) -> void:
+	# ── Spin controls ─────────────────────────────────────────────────────────
 	var yaw   := 0.0
 	var pitch := 0.0
-	if Input.is_action_pressed("moon_left"):
-		yaw += spin_speed * delta
-	if Input.is_action_pressed("moon_right"):
-		yaw -= spin_speed * delta
-	if Input.is_action_pressed("moon_up"):
-		pitch += spin_speed * delta
-	if Input.is_action_pressed("moon_down"):
-		pitch -= spin_speed * delta
-	if yaw != 0.0:
-		rotate_y(yaw)
-	if pitch != 0.0:
-		rotate_object_local(Vector3.RIGHT, pitch)
+	if Input.is_action_pressed("moon_left"):  yaw   += spin_speed * delta
+	if Input.is_action_pressed("moon_right"): yaw   -= spin_speed * delta
+	if Input.is_action_pressed("moon_up"):    pitch += spin_speed * delta
+	if Input.is_action_pressed("moon_down"):  pitch -= spin_speed * delta
+	if yaw   != 0.0: rotate_y(yaw)
+	if pitch != 0.0: rotate_object_local(Vector3.RIGHT, pitch)
 
+	# ── Icon LOD: full ↔ mini based on camera look direction ──────────────────
+	if camera == null:
+		return
+
+	var cam_forward := -camera.global_transform.basis.z
+
+	for body in _body_to_icons.keys():
+		if not is_instance_valid(body):
+			continue
+		var icons = _body_to_icons[body]
+		var to_icon: Vector3 = body.global_position - camera.global_position
+		if to_icon.length_squared() < 0.0001:
+			continue
+		var looking: bool = cam_forward.dot(to_icon.normalized()) >= look_dot_threshold
+		icons["full"].visible = looking
+		icons["mini"].visible = not looking
+
+
+# ── Icon management ───────────────────────────────────────────────────────────
 
 func add_icon(call_id: int, direction: Vector3) -> void:
 	direction = direction.normalized()
@@ -60,7 +84,7 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 	icon.look_at(icon.global_position + direction, up_hint)
 	icon.rotate_object_local(Vector3.RIGHT, PI / 2.0)
 
-	_make_icon_transparent(icon)
+	_make_icon_transparent(icon)  # ← add this line here
 	_set_cull_margin(icon)
 
 	var body := AnimatableBody3D.new()
@@ -77,6 +101,7 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 	_body_to_call_id[body] = call_id
 
 
+# Add this new function anywhere in the script
 func _make_icon_transparent(node: Node) -> void:
 	if node is MeshInstance3D and node.mesh:
 		for i in range(node.mesh.get_surface_count()):
@@ -85,66 +110,32 @@ func _make_icon_transparent(node: Node) -> void:
 				var new_mat = mat.duplicate() as BaseMaterial3D
 				new_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 				new_mat.render_priority = 2
-				new_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-				var col = new_mat.albedo_color
-				col.a = 1.0
-				new_mat.albedo_color = col
-				node.set_surface_override_material(i, new_mat)
-			else:
-				var new_mat := StandardMaterial3D.new()
-				new_mat.albedo_color = Color(0.0, 0.6, 0.1, 1.0)
-				new_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-				new_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-				new_mat.render_priority = 2
-				new_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 				node.set_surface_override_material(i, new_mat)
 	for child in node.get_children():
 		_make_icon_transparent(child)
 
 
 func remove_icon(call_id: int) -> void:
-	for body: StaticBody3D in _body_to_call_id.keys():
-		if _body_to_call_id[body] == call_id:
-			_body_to_call_id.erase(body)
-			if is_instance_valid(body) and is_instance_valid(body.get_parent()):
-				body.get_parent().queue_free()
-			return
+	for body: AnimatableBody3D in _body_to_call_id.keys():
+		if _body_to_call_id[body] != call_id:
+			continue
+		_body_to_call_id.erase(body)
+		_body_to_icons.erase(body)
+		# body.get_parent() is the root Node3D created in add_icon.
+		# Freeing it removes full icon, mini icon, and collision body together.
+		if is_instance_valid(body) and is_instance_valid(body.get_parent()):
+			body.get_parent().queue_free()
+		return
 
 
 func get_call_id_for_body(body: Object) -> int:
 	return _body_to_call_id.get(body, -1)
 
 
+# ── Helpers ───────────────────────────────────────────────────────────────────
+
 func _set_cull_margin(node: Node) -> void:
 	if node is MeshInstance3D:
 		node.extra_cull_margin = 16384.0
 	for child in node.get_children():
 		_set_cull_margin(child)
-
-
-# ── Random placement helpers ──────────────────────────────────────────────────
-
-## Returns a random unit vector separated from all existing ones by at least
-## min_dot (in dot-product terms). Falls back after 100 failed attempts.
-func _random_spread_direction(existing: Array[Vector3], min_dot: float) -> Vector3:
-	for _attempt in range(100):
-		var dir := _random_sphere_direction()
-		var too_close := false
-		for other in existing:
-			if dir.dot(other) > min_dot:
-				too_close = true
-				break
-		if not too_close:
-			return dir
-	return _random_sphere_direction()
-
-
-## Uniformly distributed random point on the unit sphere.
-func _random_sphere_direction() -> Vector3:
-	var theta := randf() * TAU
-	var phi   := acos(randf_range(-1.0, 1.0))
-	return Vector3(
-		sin(phi) * cos(theta),
-		cos(phi),
-		sin(phi) * sin(theta)
-	)

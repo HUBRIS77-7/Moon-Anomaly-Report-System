@@ -5,17 +5,20 @@
 # {
 #   "id":                 int,
 #   "caller_name":        String,
-#   "caller_photo":       String,   # res:// path or "" for no photo
-#   "duration":           float,    # call length in seconds
-#   "audio":              String,   # res:// path to AudioStream or ""
+#   "caller_photo":       String,       # res:// path or "" for no photo
+#   "duration":           float,        # call length in seconds
+#   "audio":              String,       # res:// path to AudioStream or ""
 #   "transcription":      String,
 #   "additional_details": String,
-#   "tasks":              Array,    # Array[String]
+#   "tasks":              Array,        # Array[String]
+#   "correct_anomaly_id": int,          # -1 if no correct answer defined
+#   "icon_direction":     Vector3,      # direction on the moon surface; omit or
+#                                       # leave as Vector3.ZERO for no icon
 # }
 
 extends Node
 
-const NOT_FOUND := "NOT_FOUND"
+const NOT_FOUND    := "NOT_FOUND"
 const NO_MORE_CALLS := "NO_MORE_CALLS"
 
 # Tracks which index in `entries` to dispatch next.
@@ -36,12 +39,14 @@ var entries: Array[Dictionary] = [
 		"additional_details":
 			"Station 7 sits 2 km from the Kepler Ridge fault zone. "
 			+ "Fixed-interval seismic activity may indicate an artificial source.",
-		 "correct_anomaly_id": 13, 
+		"correct_anomaly_id": 13,
 		"tasks": [
 			"Ask if Volatile Regolith warnings are active nearby",
 			"Check Satellite Database for recent orbital changes",
 			"Confirm drill shutdown has been logged with Industrial",
 		],
+		# Top of the moon — roughly the "north pole" face toward the player.
+		"icon_direction": Vector3(0.0, 1.0, 0.0),
 	},
 	{
 		"id":                 2,
@@ -53,13 +58,28 @@ var entries: Array[Dictionary] = [
 			"We have a crew member reporting chest pains after EVA. "
 			+ "Suit logs show a micro-tear repaired mid-walk. Duration was 90 minutes.",
 		"additional_details": "Possible regolith exposure. Check suit log ref #A-441.",
-		 "correct_anomaly_id": 1, 
+		"correct_anomaly_id": 10,
 		"tasks": [
 			"Confirm EVA suit was flagged in the equipment log",
 			"Ask how long symptoms have been present",
 		],
+		# Right-side equator.
+		"icon_direction": Vector3(1.0, 0.2, 0.0),
 	},
 	# ── Add new calls below. Give each a unique id. ───────────────────────────
+	# Template:
+	# {
+	#     "id":                 3,
+	#     "caller_name":        "...",
+	#     "caller_photo":       "",
+	#     "duration":           60.0,
+	#     "audio":              "",
+	#     "transcription":      "...",
+	#     "additional_details": "...",
+	#     "correct_anomaly_id": -1,
+	#     "tasks":              [],
+	#     "icon_direction":     Vector3(-0.6, 0.5, 0.6),  # pick any unit-ish direction
+	# },
 ]
 
 

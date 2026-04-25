@@ -148,17 +148,21 @@ func _input(event: InputEvent) -> void:
 
 	if result.is_empty():
 		_focused_viewport = null
+
 		# Nothing on layer 2 — check moon icons on layer 4
 		var query4 := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
 		query4.collision_mask = 4
 		var moon_result := space.intersect_ray(query4)
+
 		if not moon_result.is_empty():
 			var call_id = moon.get_call_id_for_body(moon_result["collider"])
 			if call_id != -1:
 				var data := CallDatabase.get_call(call_id)
 				if not data.has("status"):
 					desktop_ui.receive_call(data)
-					# anchors array is [Terminal3(0), Terminal2(1), Terminal1(2)]
+					# Remove the icon from the moon — it has been claimed.
+					moon.remove_icon(call_id)
+					# anchors: Terminal3(0), Terminal2(1), Terminal1(2)
 					# Terminal2 faces the BIGTERMINAL
 					terminal_manager.go_to_index(1)
 		return
