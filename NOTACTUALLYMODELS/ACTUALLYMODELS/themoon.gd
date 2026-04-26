@@ -71,27 +71,38 @@ func _process(delta: float) -> void:
 func add_icon(call_id: int, direction: Vector3) -> void:
 	direction = direction.normalized()
 
-	var icon: Node3D = preload("res://MoonIcon.tscn").instantiate()
-	add_child(icon)
-
 	var world_scale := global_transform.basis.get_scale().x
 	var local_hover := icon_hover / world_scale if world_scale > 0.0 else icon_hover
 
-	icon.position = direction * (surface_radius + local_hover)
-	icon.scale = Vector3.ONE * icon_scale
+	# One root per icon — all children spin with the moon together
+	var root := Node3D.new()
+	add_child(root)
+	root.position = direction * (surface_radius + local_hover)
 
 	var up_hint := Vector3.UP if abs(direction.dot(Vector3.UP)) < 0.99 else Vector3.FORWARD
-	icon.look_at(icon.global_position + direction, up_hint)
-	icon.rotate_object_local(Vector3.RIGHT, PI / 2.0)
+	root.look_at(root.global_position + direction, up_hint)
+	root.rotate_object_local(Vector3.RIGHT, PI / 2.0)
 
-	_make_icon_transparent(icon)  # ← add this line here
-	_set_cull_margin(icon)
+	# Full icon — shown when camera looks directly at this slot
+	var full_icon: Node3D = preload("res://MoonIcon.tscn").instantiate()
+	full_icon.scale = Vector3.ONE * icon_scale
+	root.add_child(full_icon)
+	_make_icon_transparent(full_icon)
+	_set_cull_margin(full_icon)
 
+	# Mini icon — shown when camera is looking elsewhere
+	var mini_icon: Node3D = preload("res://MiniIcon.tscn").instantiate()
+	mini_icon.scale = Vector3.ONE * (icon_scale * 0.35)
+	mini_icon.visible = false
+	root.add_child(mini_icon)
+	_set_cull_margin(mini_icon)
+
+	# Collision body on the root so raycasts survive moon rotation
 	var body := AnimatableBody3D.new()
 	body.collision_layer = 4
 	body.collision_mask  = 0
 	body.sync_to_physics = false
-	icon.add_child(body)
+	root.add_child(body)
 	var col    := CollisionShape3D.new()
 	var sphere := SphereShape3D.new()
 	sphere.radius = icon_collision_radius
@@ -99,6 +110,7 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 	body.add_child(col)
 
 	_body_to_call_id[body] = call_id
+	_body_to_icons[body]   = {"full": full_icon, "mini": mini_icon}
 
 
 # Add this new function anywhere in the script
