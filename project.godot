@@ -24,6 +24,7 @@ config/icon="res://icon.svg"
 GameState="*res://gamestate.gd"
 AnomalyDatabase="*res://AnomalyDatabase.gd"
 CallDatabase="*res://CallDatabase.gd"
+DayEndScreen="*uid://iigee6tx1jp"
 
 [display]
 

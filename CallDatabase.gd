@@ -4,30 +4,31 @@
 # Each entry shape:
 # {
 #   "id":                 int,
+#   "day":                int,          # Which day this call appears on (1–5)
 #   "caller_name":        String,
-#   "caller_photo":       String,       # res:// path or "" for no photo
-#   "duration":           float,        # call length in seconds
-#   "audio":              String,       # res:// path to AudioStream or ""
+#   "caller_photo":       String,
+#   "duration":           float,
+#   "audio":              String,
 #   "transcription":      String,
 #   "additional_details": String,
-#   "tasks":              Array,        # Array[String]
-#   "correct_anomaly_id": int,          # -1 if no correct answer defined
-#   "icon_direction":     Vector3,      # direction on the moon surface; omit or
-#                                       # leave as Vector3.ZERO for no icon
+#   "tasks":              Array,
+#   "correct_anomaly_id": int,
+#   "icon_direction":     Vector3,
 # }
 
 extends Node
 
-const NOT_FOUND    := "NOT_FOUND"
+const NOT_FOUND     := "NOT_FOUND"
 const NO_MORE_CALLS := "NO_MORE_CALLS"
 
-# Tracks which index in `entries` to dispatch next.
+# Tracks which index in `entries` to dispatch next (used by the F5 debug key).
 var _queue_index: int = 0
 
 var entries: Array[Dictionary] = [
 	{
 		"id":                 1,
-		"caller_name":        "Station 7 — Cmdr. Reyes",
+		"day":                1,
+		"caller_name":        "Polar Station 07 — Cmdr. Reyes",
 		"caller_photo":       "res://ICONS/Maxwell.jpg",
 		"duration":           55.0,
 		"audio":              "",
@@ -45,12 +46,12 @@ var entries: Array[Dictionary] = [
 			"Check Satellite Database for recent orbital changes",
 			"Confirm drill shutdown has been logged with Industrial",
 		],
-		# Top of the moon — roughly the "north pole" face toward the player.
 		"icon_direction": Vector3(0.0, 1.0, 0.0),
 	},
 	{
 		"id":                 2,
-		"caller_name":        "Medical Bay — Nurse Okoro",
+		"day":                1,
+		"caller_name":        "Medical Bay, Central Lunar Station — Nurse Okoro",
 		"caller_photo":       "",
 		"duration":           40.0,
 		"audio":              "",
@@ -63,13 +64,26 @@ var entries: Array[Dictionary] = [
 			"Confirm EVA suit was flagged in the equipment log",
 			"Ask how long symptoms have been present",
 		],
-		# Right-side equator.
 		"icon_direction": Vector3(1.0, 0.2, 0.0),
 	},
-	# ── Add new calls below. Give each a unique id. ───────────────────────────
+{
+	"id":                 3,
+	"day":                2,
+	"caller_name":        "Mining Sector B — Foreman Vasquez",
+	"caller_photo":       "",
+	"duration":           50.0,
+	"audio":              "",
+	"transcription":      "...",
+	"additional_details": "...",
+	"correct_anomaly_id": 3,
+	"tasks":              ["Check sector evacuation log"],
+	"icon_direction":     Vector3(-0.6, 0.5, 0.4),
+},
+	# ── Add new calls below. Give each a unique id and assign a day (1–5). ───
 	# Template:
 	# {
 	#     "id":                 3,
+	#     "day":                2,
 	#     "caller_name":        "...",
 	#     "caller_photo":       "",
 	#     "duration":           60.0,
@@ -78,13 +92,22 @@ var entries: Array[Dictionary] = [
 	#     "additional_details": "...",
 	#     "correct_anomaly_id": -1,
 	#     "tasks":              [],
-	#     "icon_direction":     Vector3(-0.6, 0.5, 0.6),  # pick any unit-ish direction
+	#     "icon_direction":     Vector3(-0.6, 0.5, 0.6),
 	# },
 ]
 
 
-## Returns the next call in sequence and advances the queue.
-## Returns {"status": NO_MORE_CALLS} when all calls have been dispatched.
+## Returns all calls assigned to a specific day number.
+func get_calls_for_day(day: int) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for entry in entries:
+		if entry.get("day", 1) == day:
+			result.append(entry)
+	return result
+
+
+## Returns the next call in the global queue (used by the F5 debug key).
+## Returns {"status": NO_MORE_CALLS} when exhausted.
 func next_call() -> Dictionary:
 	if _queue_index >= entries.size():
 		return {"status": NO_MORE_CALLS}
@@ -93,19 +116,17 @@ func next_call() -> Dictionary:
 	return entry
 
 
-## Returns true if there are still calls waiting to be dispatched.
+## True if there are still calls waiting in the global queue.
 func has_next_call() -> bool:
 	return _queue_index < entries.size()
 
 
-## Resets the queue back to the first call.
-## Useful for restarting a shift or debug resets.
+## Resets the global queue back to the first call.
 func reset_queue() -> void:
 	_queue_index = 0
 
 
 ## Fetch a specific call by id regardless of queue state.
-## Useful for moon-icon triggered calls and debug lookups.
 func get_call(id: int) -> Dictionary:
 	for entry in entries:
 		if entry["id"] == id:

@@ -88,7 +88,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_F1:
 			if CallDatabase.has_next_call():
-				desktop_ui.spawn_call_window(CallDatabase.next_call())
+				desktop_ui.receive_call(CallDatabase.next_call())   # was spawn_call_window (bug fix)
 			get_viewport().set_input_as_handled()
 			return
 
@@ -149,7 +149,6 @@ func _input(event: InputEvent) -> void:
 	if result.is_empty():
 		_focused_viewport = null
 
-		# Nothing on layer 2 — check moon icons on layer 4
 		var query4 := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
 		query4.collision_mask = 4
 		var moon_result := space.intersect_ray(query4)
@@ -160,10 +159,7 @@ func _input(event: InputEvent) -> void:
 				var data := CallDatabase.get_call(call_id)
 				if not data.has("status"):
 					desktop_ui.receive_call(data)
-					# Remove the icon from the moon — it has been claimed.
 					moon.remove_icon(call_id)
-					# anchors: Terminal3(0), Terminal2(1), Terminal1(2)
-					# Terminal2 faces the BIGTERMINAL
 					terminal_manager.go_to_index(1)
 		return
 
@@ -221,7 +217,7 @@ func _apply_viewport_texture(mesh: MeshInstance3D,
 		push_error("ScreenManager: mesh reference is null!")
 		return
 	var mat := StandardMaterial3D.new()
-	mat.transparency               = BaseMaterial3D.TRANSPARENCY_ALPHA  # ← forces transparent pass
+	mat.transparency               = BaseMaterial3D.TRANSPARENCY_ALPHA
 	mat.render_priority            = 1
 	mat.texture_filter             = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	mat.albedo_texture             = viewport.get_texture()

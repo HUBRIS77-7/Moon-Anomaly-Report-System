@@ -24,17 +24,17 @@ var _body_to_icons: Dictionary = {}
 func _ready() -> void:
 	await get_tree().process_frame
 
-	# Auto-find the camera if it wasn't assigned in the Inspector.
 	if camera == null:
 		camera = get_node_or_null("../../Camera3D")
 
-	# Spawn icons from CallDatabase — only entries with an "icon_direction" field.
-	for entry in CallDatabase.entries:
-		var dir: Vector3 = entry.get("icon_direction", Vector3.ZERO)
-		if dir != Vector3.ZERO:
-			add_icon(entry["id"], dir)
+	# Connect to GameState so icons refresh whenever a new day begins.
+	GameState.day_started.connect(_on_day_started)
 
-	print("Moon icon bodies registered: ", _body_to_call_id.size())
+	_spawn_icons_for_day(GameState.current_day)
+
+	print("Moon icon bodies registered for day %d: %d" % [
+		GameState.current_day, _body_to_call_id.size()
+	])
 
 
 func _process(delta: float) -> void:
@@ -66,6 +66,27 @@ func _process(delta: float) -> void:
 		icons["mini"].visible = not looking
 
 
+# ── Day management ────────────────────────────────────────────────────────────
+
+func _on_day_started(day_number: int) -> void:
+	_clear_all_icons()
+	_spawn_icons_for_day(day_number)
+	print("Moon icons refreshed for day %d: %d icons" % [day_number, _body_to_call_id.size()])
+
+func _clear_all_icons() -> void:
+	for body: AnimatableBody3D in _body_to_call_id.keys():
+		if is_instance_valid(body) and is_instance_valid(body.get_parent()):
+			body.get_parent().queue_free()
+	_body_to_call_id.clear()
+	_body_to_icons.clear()
+
+func _spawn_icons_for_day(day: int) -> void:
+	for entry in CallDatabase.get_calls_for_day(day):
+		var dir: Vector3 = entry.get("icon_direction", Vector3.ZERO)
+		if dir != Vector3.ZERO:
+			add_icon(entry["id"], dir)
+
+
 # ── Icon management ───────────────────────────────────────────────────────────
 
 func add_icon(call_id: int, direction: Vector3) -> void:
@@ -74,7 +95,6 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 	var world_scale := global_transform.basis.get_scale().x
 	var local_hover := icon_hover / world_scale if world_scale > 0.0 else icon_hover
 
-	# One root per icon — all children spin with the moon together
 	var root := Node3D.new()
 	add_child(root)
 	root.position = direction * (surface_radius + local_hover)
@@ -83,21 +103,18 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 	root.look_at(root.global_position + direction, up_hint)
 	root.rotate_object_local(Vector3.RIGHT, PI / 2.0)
 
-	# Full icon — shown when camera looks directly at this slot
 	var full_icon: Node3D = preload("res://MoonIcon.tscn").instantiate()
 	full_icon.scale = Vector3.ONE * icon_scale
 	root.add_child(full_icon)
 	_make_icon_transparent(full_icon)
 	_set_cull_margin(full_icon)
 
-	# Mini icon — shown when camera is looking elsewhere
 	var mini_icon: Node3D = preload("res://MiniIcon.tscn").instantiate()
 	mini_icon.scale = Vector3.ONE * (icon_scale * 0.35)
 	mini_icon.visible = false
 	root.add_child(mini_icon)
 	_set_cull_margin(mini_icon)
 
-	# Collision body on the root so raycasts survive moon rotation
 	var body := AnimatableBody3D.new()
 	body.collision_layer = 4
 	body.collision_mask  = 0
@@ -113,7 +130,6 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 	_body_to_icons[body]   = {"full": full_icon, "mini": mini_icon}
 
 
-# Add this new function anywhere in the script
 func _make_icon_transparent(node: Node) -> void:
 	if node is MeshInstance3D and node.mesh:
 		for i in range(node.mesh.get_surface_count()):
@@ -133,8 +149,6 @@ func remove_icon(call_id: int) -> void:
 			continue
 		_body_to_call_id.erase(body)
 		_body_to_icons.erase(body)
-		# body.get_parent() is the root Node3D created in add_icon.
-		# Freeing it removes full icon, mini icon, and collision body together.
 		if is_instance_valid(body) and is_instance_valid(body.get_parent()):
 			body.get_parent().queue_free()
 		return

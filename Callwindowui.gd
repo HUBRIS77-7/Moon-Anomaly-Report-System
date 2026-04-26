@@ -1,45 +1,22 @@
 # CallWindowUI.gd
-# Drop this Control into spawn_window() in desktop.gd.
-# Feed it a call_data Dictionary before showing it (see setup() below).
-#
-# FONT: Drop your .ttf file into res:// (or a subfolder) and update FONT_PATH below.
-#       Set FONT_PATH = "" to use Godot's default font.
-#
-# call_data shape:
-# {
-#   "caller_name":       String,
-#   "caller_photo":      String,   # res:// path or "" for default
-#   "duration":          float,    # total call length in seconds
-#   "transcription":     String,   # full call transcript
-#   "additional_details":String,   # lore/hidden info shown below transcript
-#   "tasks":             Array,    # Array[String] — checklist items
-#   "audio":             String,   # res:// path to AudioStream or ""
-# }
-
 extends Control
 
 signal call_submitted(anomaly_id: int)
 signal call_declined
 
-# ── Font ─────────────────────────────────────────────────────────────────────
-# Set this to your font's res:// path, e.g. "res://fonts/VT323-Regular.ttf"
-# Leave as "" to use Godot's built-in default font.
 const FONT_PATH := "res://Ac437_IBM_BIOS.ttf"
-@export var transcription_speed: float = 3.0   # increase to reveal faster
+@export var transcription_speed: float = 3.0
 
-# ── Font sizes ────────────────────────────────────────────────────────────────
-# Edit these to rescale text across the whole window.
 const FONT_SIZES := {
-	"heading":     10,   # "INCOMING CALL" label, section header bars
-	"caller_name": 12,   # caller name on the incoming card
-	"info":        11,   # caller name in the active-call header
-	"body":       10,   # transcription, extra details, task labels, checkboxes
-	"meta":        10,   # search box, anomaly list entries, section bar titles
-	"submit":      12,   # accept / decline / submit report buttons
-	"timer":       10,   # elapsed / remaining time label
+	"heading":     10,
+	"caller_name": 12,
+	"info":        11,
+	"body":       10,
+	"meta":        10,
+	"submit":      12,
+	"timer":       10,
 }
 
-# ── Colours ───────────────────────────────────────────────────────────────────
 const C_BG        := Color(0.04, 0.04, 0.04)
 const C_PANEL     := Color(0.08, 0.08, 0.08)
 const C_BORDER    := Color(0.22, 0.22, 0.22)
@@ -86,8 +63,6 @@ var _anomaly_vbox: VBoxContainer
 var _submit_btn: Button
 
 var _audio_player: AudioStreamPlayer
-
-# Cached font — loaded once, reused everywhere
 var _font: Font = null
 
 # ── Public API ────────────────────────────────────────────────────────────────
@@ -151,21 +126,18 @@ func _load_font() -> void:
 	if FONT_PATH != "" and ResourceLoader.exists(FONT_PATH):
 		_font = load(FONT_PATH)
 
-## Apply font + size + colour to a Label.
 func _style_label(lbl: Label, size: int, color: Color) -> void:
 	lbl.add_theme_color_override("font_color", color)
 	lbl.add_theme_font_size_override("font_size", size)
 	if _font:
 		lbl.add_theme_font_override("font", _font)
 
-## Apply font + size + colour to a RichTextLabel.
 func _style_rtl(rtl: RichTextLabel, size: int, color: Color) -> void:
 	rtl.add_theme_color_override("default_color", color)
 	rtl.add_theme_font_size_override("normal_font_size", size)
 	if _font:
 		rtl.add_theme_font_override("normal_font", _font)
 
-## Apply font to a Button.
 func _style_button_font(btn: Button, size: int) -> void:
 	btn.add_theme_font_size_override("font_size", size)
 	if _font:
@@ -173,15 +145,12 @@ func _style_button_font(btn: Button, size: int) -> void:
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
-## Safely set a photo texture into a TextureRect; falls back to the grey default.
 func _set_photo(tr: TextureRect, path: String) -> void:
 	if path != "" and ResourceLoader.exists(path):
 		tr.texture = load(path)
 	else:
 		tr.texture = _default_photo_texture()
 
-## Build a photo TextureRect inside a clipping Control of the given size.
-## Returns the outer container (add that to your parent).
 func _make_photo_slot(size_px: Vector2) -> Control:
 	var container := Control.new()
 	container.custom_minimum_size = size_px
@@ -189,10 +158,8 @@ func _make_photo_slot(size_px: Vector2) -> Control:
 	container.clip_contents = true
 
 	var tr := TextureRect.new()
-	# Fill the clipping container exactly.
 	tr.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	# EXPAND_FIT_WIDTH_PROPORTIONAL: scales the texture to fill while keeping ratio.
 	tr.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 	tr.texture = _default_photo_texture()
 	container.add_child(tr)
@@ -211,63 +178,95 @@ func _build_audio_player() -> void:
 	_audio_player = AudioStreamPlayer.new()
 	add_child(_audio_player)
 
-## Hide a ScrollContainer's bars while keeping scrolling functional.
 func _hide_scrollbars(sc: ScrollContainer) -> void:
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	sc.vertical_scroll_mode   = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 
 # ── Incoming layer ────────────────────────────────────────────────────────────
 
+var _inc_card: Control  # kept so we can recentre on resize
+
+func _recentre_card() -> void:
+	if _inc_card == null:
+		return
+	await get_tree().process_frame
+	_inc_card.position = ((_incoming_layer.size - _inc_card.size) * 0.5).floor()
+
 func _build_incoming_layer() -> void:
 	_incoming_layer = Control.new()
 	_incoming_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_incoming_layer)
 
+	# Dim overlay behind the card
 	var overlay := ColorRect.new()
 	overlay.color = Color(0.0, 0.0, 0.0, 0.75)
 	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_incoming_layer.add_child(overlay)
 
-	var card := _make_panel(Color(0.10, 0.10, 0.10), C_BORDER)
-	card.custom_minimum_size = Vector2(280, 220)
-	card.size = Vector2(280, 220)
-	card.position = Vector2((580 - 280) / 2.0, (500 - 220) / 2.0)
-	card.clip_contents = true
+	# Card — PanelContainer auto-sizes to fit its child, then gets centred via signal
+	var card := PanelContainer.new()
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color     = Color(0.10, 0.10, 0.10)
+	card_style.border_color = C_BORDER
+	card_style.set_border_width_all(1)
+	card_style.set_content_margin_all(16)  # inner padding
+	card.add_theme_stylebox_override("panel", card_style)
+	card.custom_minimum_size = Vector2(300, 0)
 	_incoming_layer.add_child(card)
+	_inc_card = card
 
+	# Re-centre whenever the layer or card changes size
+	_incoming_layer.resized.connect(_recentre_card)
+	card.resized.connect(_recentre_card)
+	_recentre_card()
+
+	# VBox — just a normal child; PanelContainer sizes itself around it
+	var vbox := VBoxContainer.new()
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	vbox.add_theme_constant_override("separation", 14)
+	card.add_child(vbox)
+
+	# "INCOMING CALL" heading
 	var inc_lbl := Label.new()
 	inc_lbl.text = "INCOMING CALL"
-	inc_lbl.position = Vector2(0, 10)
-	inc_lbl.size = Vector2(280, 20)
 	inc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	inc_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_style_label(inc_lbl, FONT_SIZES["heading"], C_AMBER)
-	card.add_child(inc_lbl)
+	vbox.add_child(inc_lbl)
 
-	# ── Photo slot: 72×72, centred horizontally ──────────────────────────────
+	# Photo — fixed 72×72, centred via its own CenterContainer row
+	var photo_center := CenterContainer.new()
+	photo_center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vbox.add_child(photo_center)
 	var photo_slot := _make_photo_slot(Vector2(72, 72))
-	photo_slot.position = Vector2((280 - 72) / 2.0, 36)
-	card.add_child(photo_slot)
-	# Keep a reference to the inner TextureRect for setup()
+	photo_center.add_child(photo_slot)
 	_inc_photo = photo_slot.get_child(0) as TextureRect
 
+	# Caller name — auto-wraps if long, min width 300 so short names look good
 	_inc_name = Label.new()
-	_inc_name.position = Vector2(0, 116)
-	_inc_name.size = Vector2(280, 24)
 	_inc_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_inc_name.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_inc_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_inc_name.custom_minimum_size = Vector2(300, 0)
 	_style_label(_inc_name, FONT_SIZES["caller_name"], C_TEXT)
-	card.add_child(_inc_name)
+	vbox.add_child(_inc_name)
+
+	# Accept / Decline row
+	var btn_row := HBoxContainer.new()
+	btn_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	btn_row.add_theme_constant_override("separation", 20)
+	btn_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vbox.add_child(btn_row)
 
 	_inc_accept = _make_button("ACCEPT", C_GREEN, Color(0.02, 0.10, 0.04))
-	_inc_accept.position = Vector2(20, 156)
-	_inc_accept.size = Vector2(110, 36)
+	_inc_accept.custom_minimum_size = Vector2(110, 36)
 	_inc_accept.pressed.connect(_on_accept)
-	card.add_child(_inc_accept)
+	btn_row.add_child(_inc_accept)
 
 	_inc_decline = _make_button("DECLINE", C_RED, Color(0.10, 0.02, 0.02))
-	_inc_decline.position = Vector2(150, 156)
-	_inc_decline.size = Vector2(110, 36)
+	_inc_decline.custom_minimum_size = Vector2(110, 36)
 	_inc_decline.pressed.connect(_on_decline)
-	card.add_child(_inc_decline)
+	btn_row.add_child(_inc_decline)
 
 # ── Active layer ──────────────────────────────────────────────────────────────
 
@@ -284,14 +283,12 @@ func _build_active_layer() -> void:
 	const COL_R := 242
 	const COL_R_X := COL_L + PAD * 2
 
-	# ── Header ───────────────────────────────────────────────────────────────
 	var hdr := _make_panel(C_PANEL, C_BORDER)
 	hdr.position = Vector2(PAD, PAD)
 	hdr.size = Vector2(W - PAD * 2, HDR_H)
 	hdr.clip_contents = true
 	_active_layer.add_child(hdr)
 
-	# Photo slot: 56×56, absolutely positioned inside header
 	var act_photo_slot := _make_photo_slot(Vector2(56, 56))
 	act_photo_slot.position = Vector2(4, 4)
 	hdr.add_child(act_photo_slot)
@@ -321,7 +318,6 @@ func _build_active_layer() -> void:
 	_style_label(_act_time_label, FONT_SIZES["timer"], C_DIM)
 	hdr.add_child(_act_time_label)
 
-	# ── Transcription panel ───────────────────────────────────────────────────
 	const LEFT_Y  := HDR_H + PAD * 2
 	const TRANS_H := 240
 	const EXTRA_H := H - LEFT_Y - TRANS_H - PAD * 3 - PAD
@@ -352,7 +348,6 @@ func _build_active_layer() -> void:
 	_style_rtl(_transcription_rtl, FONT_SIZES["body"], C_TEXT)
 	trans_scroll.add_child(_transcription_rtl)
 
-	# ── Additional details panel ──────────────────────────────────────────────
 	var extra_panel := _make_panel(C_PANEL, C_BORDER)
 	extra_panel.position = Vector2(PAD, LEFT_Y + TRANS_H + PAD)
 	extra_panel.size = Vector2(COL_L, EXTRA_H)
@@ -372,7 +367,6 @@ func _build_active_layer() -> void:
 	_style_rtl(_extra_rtl, FONT_SIZES["body"], C_DIM)
 	extra_panel.add_child(_extra_rtl)
 
-	# ── Tasks panel ───────────────────────────────────────────────────────────
 	const TASKS_H := 130
 	const ANOM_H  := H - LEFT_Y - TASKS_H - 48 - PAD * 4
 
@@ -397,7 +391,6 @@ func _build_active_layer() -> void:
 	_tasks_vbox.custom_minimum_size = Vector2(COL_R - 20, 0)
 	tasks_scroll.add_child(_tasks_vbox)
 
-	# ── Anomaly list panel ────────────────────────────────────────────────────
 	var anom_panel := _make_panel(C_PANEL, C_BORDER)
 	anom_panel.position = Vector2(COL_R_X, LEFT_Y + TASKS_H + PAD)
 	anom_panel.size = Vector2(COL_R, ANOM_H)
@@ -503,7 +496,7 @@ func _on_submit() -> void:
 				_selected_anomaly_id, _correct_anomaly_id
 			])
 	else:
-		print("[SUBMIT] No correct answer defined for this call. Filed as #%d" % _selected_anomaly_id)
+		print("[SUBMIT] No correct answer defined. Filed as #%d" % _selected_anomaly_id)
 
 	call_submitted.emit(_selected_anomaly_id)
 	_show_phase(Phase.DONE)
