@@ -118,4 +118,5 @@ func _on_day_ended(day_number: int, correct: int, total: int) -> void:
 
 func _on_next_day_pressed() -> void:
 	hide()
+	CallDatabase.reset_queue()  # ADD THIS
 	GameState.advance_day()

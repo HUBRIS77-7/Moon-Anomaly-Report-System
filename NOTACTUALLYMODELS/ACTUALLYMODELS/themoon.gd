@@ -70,6 +70,7 @@ func _process(delta: float) -> void:
 
 func _on_day_started(day_number: int) -> void:
 	_clear_all_icons()
+	await get_tree().process_frame  # let queue_free() flush before spawning new icons
 	_spawn_icons_for_day(day_number)
 	print("Moon icons refreshed for day %d: %d icons" % [day_number, _body_to_call_id.size()])
 
@@ -99,9 +100,11 @@ func add_icon(call_id: int, direction: Vector3) -> void:
 	add_child(root)
 	root.position = direction * (surface_radius + local_hover)
 
-	var up_hint := Vector3.UP if abs(direction.dot(Vector3.UP)) < 0.99 else Vector3.FORWARD
-	root.look_at(root.global_position + direction, up_hint)
+	var world_dir := (global_transform.basis * direction).normalized()
+	var up_hint := Vector3.UP if abs(world_dir.dot(Vector3.UP)) < 0.99 else Vector3.FORWARD
+	root.look_at(root.global_position + world_dir, up_hint)
 	root.rotate_object_local(Vector3.RIGHT, PI / 2.0)
+
 
 	var full_icon: Node3D = preload("res://MoonIcon.tscn").instantiate()
 	full_icon.scale = Vector3.ONE * icon_scale

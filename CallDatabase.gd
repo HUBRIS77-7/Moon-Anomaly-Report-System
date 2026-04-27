@@ -79,7 +79,7 @@ var entries: Array[Dictionary] = [
 		"tasks": [
 			"Submit as Complaint.",
 		],
-		"icon_direction": Vector3(0.94, 0.05, 0.32),
+		"icon_direction": Vector3(0.86, -0.49, -0.14),
 	},
 
 
