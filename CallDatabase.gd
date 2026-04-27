@@ -28,57 +28,62 @@ var entries: Array[Dictionary] = [
 	{
 		"id":                 1,
 		"day":                1,
-		"caller_name":        "Polar Station 07 — Cmdr. Reyes",
+		"caller_name":        "LUNA!!!!",
 		"caller_photo":       "res://ICONS/Maxwell.jpg",
 		"duration":           55.0,
 		"audio":              "",
 		"transcription":
-			"Yes, hello, this is Commander Reyes from Station Seven. "
-			+ "We've had repeating seismic readings since 04:00 Lunar Hours. "
-			+ "Small tremors, every three minutes. Two fuel lines are vibrating. "
-			+ "Our geologist says it feels different from a normal Luna Shake.",
+			"Hello! This is LUNA. Thanks for showcasing your ability to navigate the Lunar Communications Model! "
+			+ "This personal terminal is yours to customize and decorate, but we advise you not to store anything particularly personal on here. "
+			+ "In the corner, you should be able to see your tasks. Most of the tie, they will be empty. "
+			+ "Please designate this report as any anomaly you want.",
 		"additional_details":
-			"Station 7 sits 2 km from the Kepler Ridge fault zone. "
-			+ "Fixed-interval seismic activity may indicate an artificial source.",
-		"correct_anomaly_id": 13,
+			"P.S designate this as a Complaint for a reward!",
+		"correct_anomaly_id": 16,
 		"tasks": [
-			"Ask if Volatile Regolith warnings are active nearby",
-			"Check Satellite Database for recent orbital changes",
-			"Confirm drill shutdown has been logged with Industrial",
+			"Read the transcript.",
 		],
 		"icon_direction": Vector3(0.0, 1.0, 0.0),
 	},
 	{
 		"id":                 2,
 		"day":                1,
-		"caller_name":        "Medical Bay, Central Lunar Station — Nurse Okoro",
+		"caller_name":        "LUNA!!!!",
 		"caller_photo":       "",
 		"duration":           40.0,
 		"audio":              "",
 		"transcription":
-			"We have a crew member reporting chest pains after EVA. "
-			+ "Suit logs show a micro-tear repaired mid-walk. Duration was 90 minutes.",
-		"additional_details": "Possible regolith exposure. Check suit log ref #A-441.",
-		"correct_anomaly_id": 10,
+			"I see that you just returned from a vacation to the Venusian Paradise resort on... well, Venus."
+			+ "Since you've been gone though, manageent has implemented new technology (like me!!!) and rules."
+			+ "Sadly, one of those rules are the mandatory retraining of all personnel who have been gone over 4 months"
+			+ "Luckily, that means this will be a very chill week for you! Isn't that great!",
+		"additional_details": "How was the trip?",
+		"correct_anomaly_id": 16,
 		"tasks": [
-			"Confirm EVA suit was flagged in the equipment log",
-			"Ask how long symptoms have been present",
+			"Enjoy your time back.",
 		],
-		"icon_direction": Vector3(1.0, 0.2, 0.0),
+		"icon_direction": Vector3(0.86, -0.49, -0.14),
 	},
-{
-	"id":                 3,
-	"day":                2,
-	"caller_name":        "Mining Sector B — Foreman Vasquez",
-	"caller_photo":       "",
-	"duration":           50.0,
-	"audio":              "",
-	"transcription":      "...",
-	"additional_details": "...",
-	"correct_anomaly_id": 3,
-	"tasks":              ["Check sector evacuation log"],
-	"icon_direction":     Vector3(-0.6, 0.5, 0.4),
-},
+	{
+		"id":                 3,
+		"day":                2,
+		"caller_name":        "LUNA!!!!",
+		"caller_photo":       "",
+		"duration":           40.0,
+		"audio":              "",
+		"transcription":
+			"As a part of your retraining, I have to patch your terminal back into the Departmental call lines of the Central Lunar Station."
+			+ " We'll start with someone simple. The Assistent General!",
+		"additional_details": "He's a chill dude.",
+		"correct_anomaly_id": 13,
+		"tasks": [
+			"Submit as Complaint.",
+		],
+		"icon_direction": Vector3(0.94, 0.05, 0.32),
+	},
+
+
+
 	# ── Add new calls below. Give each a unique id and assign a day (1–5). ───
 	# Template:
 	# {
