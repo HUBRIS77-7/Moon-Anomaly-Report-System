@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://doxi8pfe33ofs" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/PrimaryRoom2.glb" id="9_nhxhy"]
 [ext_resource type="PackedScene" uid="uid://rkpnxjpdsf8y" path="res://bigterminal.tscn" id="11_dm3ob"]
 [ext_resource type="Script" uid="uid://qjdfhebko8hu" path="res://ScreenManager.gd" id="12_fl3ci"]
+[ext_resource type="Script" uid="uid://wvon02ptbj58" path="res://PlayerController.gd" id="13_5yptt"]
 [ext_resource type="PackedScene" uid="uid://csrnwa2dbor3q" path="res://Desktop.tscn" id="13_6073h"]
 [ext_resource type="PackedScene" uid="uid://bks7g0pqa1872" path="res://ScreenPanelUI.tscn" id="13_dm3ob"]
 [ext_resource type="PackedScene" uid="uid://duabjwhfrwpqf" path="res://ScreenInfoUI.tscn" id="14_6073h"]
@@ -19,8 +20,8 @@
 [ext_resource type="PackedScene" uid="uid://dqcsr7o68noaf" path="res://NEWLSHAPE.tscn" id="15_fl3ci"]
 
 [sub_resource type="Environment" id="Environment_nhxhy"]
-ambient_light_color = Color(0.338739, 0.338739, 0.338739, 1)
-ambient_light_energy = 9.0
+ambient_light_color = Color(0.4353445, 0.42358288, 0.46135613, 1)
+ambient_light_energy = 0.3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kjgfg"]
 render_priority = 0
@@ -29,6 +30,10 @@ shader = ExtResource("3_kjgfg")
 [sub_resource type="QuadMesh" id="QuadMesh_5kih8"]
 flip_faces = true
 size = Vector2(2, 2)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yepn8"]
+radius = 0.3
+height = 1.0
 
 [node name="Node3D" type="Node3D" unique_id=1296373374]
 
@@ -123,19 +128,35 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 7.6836
 
 [node name="Lights" type="Node" parent="SubViewportContainer/SubViewport" unique_id=470235784]
 
-[node name="SpotLight3D" type="SpotLight3D" parent="SubViewportContainer/SubViewport/Lights" unique_id=1505431898]
-transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 5.57587, 2.97664, -10.0242)
-light_color = Color(0.999587, 1, 0.930702, 1)
-spot_range = 5.734
-spot_angle = 70.0
+[node name="CharacterBody3D" type="CharacterBody3D" parent="SubViewportContainer/SubViewport" unique_id=1743543267 node_paths=PackedStringArray("camera", "terminal_manager")]
+script = ExtResource("13_5yptt")
+camera = NodePath("../Camera3D")
+terminal_manager = NodePath("../TerminalStuff/TerminalManager")
+eye_height = 0.9
 
-[node name="SpotLight3D2" type="SpotLight3D" parent="SubViewportContainer/SubViewport/Lights" unique_id=426985226]
-transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 5.98255, 2.66035, -8.32203)
-light_color = Color(0.999587, 1, 0.930702, 1)
-light_energy = 2.0
-light_indirect_energy = 2.0
-spot_range = 5.734
-spot_angle = 70.0
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/CharacterBody3D" unique_id=692842945]
+shape = SubResource("CapsuleShape3D_yepn8")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="SubViewportContainer/SubViewport" unique_id=142633828]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.490776, 2.6752815, -7.5822334)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 3.0
+shadow_enabled = true
+shadow_blur = 0.5
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="SubViewportContainer/SubViewport" unique_id=117783654]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6236079, 2.6752815, -11.413918)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 3.0
+shadow_enabled = true
+shadow_blur = 0.5
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="SubViewportContainer/SubViewport" unique_id=251016317]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9772587, 2.6752815, -12.65425)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 3.0
+shadow_enabled = true
+shadow_blur = 0.5
 
 [node name="ScreenViewports" type="Node" parent="SubViewportContainer" unique_id=714134518]
 script = ExtResource("12_fl3ci")
