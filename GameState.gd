@@ -4,6 +4,9 @@ extends Node
 # ── Signals ───────────────────────────────────────────────────────────────────
 signal day_ended(day_number: int, correct: int, total: int, credits_earned: int)
 signal day_started(day_number: int)
+## Emitted after any call is submitted or declined. themoon.gd listens to this
+## to know when to start the next-icon countdown.
+signal call_completed
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 const DAYS_PER_WEEK: int = 5
@@ -59,16 +62,21 @@ func _decrement_remaining() -> void:
 
 # ── Public API ────────────────────────────────────────────────────────────────
 
+## Called by desktop.gd after a call is submitted.
 func record_call(was_correct: bool) -> void:
 	if was_correct:
 		calls_correct += 1
 	else:
 		calls_incorrect += 1
+	call_completed.emit()
 	_decrement_remaining()
 
+## Called by desktop.gd when a call is declined (no score change, day still progresses).
 func record_decline() -> void:
+	call_completed.emit()
 	_decrement_remaining()
 
+## Advance to the next day. Called by DayEndScreen "Next Day" button.
 func advance_day() -> void:
 	current_day += 1
 	if current_day > DAYS_PER_WEEK:
