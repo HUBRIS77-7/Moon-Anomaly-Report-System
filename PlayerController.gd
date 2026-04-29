@@ -46,6 +46,8 @@ var _sit_tween: Tween = null
 
 # ── Ready ─────────────────────────────────────────────────────────────────────
 func _ready() -> void:
+	floor_snap_length = 0.1
+	wall_min_slide_angle = deg_to_rad(15)  # helps slide past thin edges
 	# Player starts seated; TerminalManager owns the camera.
 	_seated = true
 	GameState.is_seated = true

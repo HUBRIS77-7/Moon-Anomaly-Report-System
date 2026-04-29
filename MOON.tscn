@@ -33,7 +33,7 @@ size = Vector2(2, 2)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yepn8"]
 radius = 0.2
-height = 0.6
+height = 1.0
 
 [node name="Node3D" type="Node3D" unique_id=1296373374]
 
@@ -100,6 +100,10 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5.8224
 
 [node name="COMPUTER3D2" parent="SubViewportContainer/SubViewport/Props" unique_id=123903390 instance=ExtResource("1_kjgfg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00528, 1.12069, -10.2522)
+
+[node name="PrimaryRoom2" parent="SubViewportContainer/SubViewport/Props" unique_id=1955072381 instance=ExtResource("9_nhxhy")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.575, 0.071, -11.075)
+skeleton = NodePath("../../../..")
 
 [node name="THEMOON" parent="SubViewportContainer/SubViewport/Props" unique_id=1548048959 instance=ExtResource("6_dm3ob")]
 transform = Transform3D(0.006, 0, 0, 0, 0.006, 0, 0, 0, 0.006, 5.822, 1.445, -9.348)
@@ -193,6 +197,3 @@ render_target_update_mode = 4
 [node name="ScreenIconUI" parent="SubViewportContainer/ScreenViewports/IconViewport" unique_id=1476380082 instance=ExtResource("15_5yptt")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=419465261]
-
-[node name="PrimaryRoom2" parent="." unique_id=830978405 instance=ExtResource("9_nhxhy")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.575, 0.071, -11.075)
