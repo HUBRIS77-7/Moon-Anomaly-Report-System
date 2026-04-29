@@ -32,8 +32,8 @@ flip_faces = true
 size = Vector2(2, 2)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yepn8"]
-radius = 0.3
-height = 1.0
+radius = 0.2
+height = 0.6
 
 [node name="Node3D" type="Node3D" unique_id=1296373374]
 
@@ -109,12 +109,9 @@ icon_collision_radius = 2.5
 icon_spawn_delay = 25.0
 ding_sound = ExtResource("8_6073h")
 
-[node name="PrimaryRoom2" parent="SubViewportContainer/SubViewport/Props" unique_id=645427289 instance=ExtResource("9_nhxhy")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5.57497, 0.0707287, -11.0747)
-skeleton = NodePath("../..")
-
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Props" unique_id=1036492828]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0205951, 9.53674e-07, -0.0050354)
+visible = false
 material_override = SubResource("ShaderMaterial_kjgfg")
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_5kih8")
@@ -196,3 +193,6 @@ render_target_update_mode = 4
 [node name="ScreenIconUI" parent="SubViewportContainer/ScreenViewports/IconViewport" unique_id=1476380082 instance=ExtResource("15_5yptt")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=419465261]
+
+[node name="PrimaryRoom2" parent="." unique_id=830978405 instance=ExtResource("9_nhxhy")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.575, 0.071, -11.075)
