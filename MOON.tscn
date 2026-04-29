@@ -86,13 +86,13 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6.4892
 
 [node name="Tables" type="Node" parent="SubViewportContainer/SubViewport/Props" unique_id=793059814]
 
-[node name="PrimaryTable" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=1839048523 instance=ExtResource("4_ffdot")]
+[node name="PrimaryTable" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=834356233 instance=ExtResource("4_ffdot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.81342, 0.0944088, -9.35591)
 
-[node name="NUTABLE" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=1322368597 instance=ExtResource("3_5kih8")]
+[node name="NUTABLE" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=1972123309 instance=ExtResource("3_5kih8")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.64786, 0.579524, -10.5258)
 
-[node name="NUTABLE2" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=1994074819 instance=ExtResource("3_5kih8")]
+[node name="NUTABLE2" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=2039417866 instance=ExtResource("3_5kih8")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.91754, 0.579524, -10.5153)
 
 [node name="MOONPROJECTER" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=24718753 instance=ExtResource("5_5kih8")]
@@ -115,7 +115,6 @@ ding_sound = ExtResource("8_6073h")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Props" unique_id=1036492828]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0205951, 9.53674e-07, -0.0050354)
-visible = false
 material_override = SubResource("ShaderMaterial_kjgfg")
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_5kih8")
