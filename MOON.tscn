@@ -15,6 +15,8 @@
 [ext_resource type="Script" uid="uid://wvon02ptbj58" path="res://PlayerController.gd" id="13_5yptt"]
 [ext_resource type="PackedScene" uid="uid://csrnwa2dbor3q" path="res://Desktop.tscn" id="13_6073h"]
 [ext_resource type="PackedScene" uid="uid://bks7g0pqa1872" path="res://ScreenPanelUI.tscn" id="13_dm3ob"]
+[ext_resource type="PackedScene" uid="uid://rnytuhgri17v" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/OfficeMainMoonHallway.glb" id="13_kokif"]
+[ext_resource type="PackedScene" uid="uid://cc8ypn62f8d6m" path="res://moon_hallway.tscn" id="13_yepn8"]
 [ext_resource type="PackedScene" uid="uid://duabjwhfrwpqf" path="res://ScreenInfoUI.tscn" id="14_6073h"]
 [ext_resource type="PackedScene" uid="uid://n5p4y8mns38b" path="res://ScreenIconUI.tscn" id="15_5yptt"]
 [ext_resource type="PackedScene" uid="uid://dqcsr7o68noaf" path="res://NEWLSHAPE.tscn" id="15_fl3ci"]
@@ -101,7 +103,7 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5.8224
 [node name="COMPUTER3D2" parent="SubViewportContainer/SubViewport/Props" unique_id=123903390 instance=ExtResource("1_kjgfg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00528, 1.12069, -10.2522)
 
-[node name="PrimaryRoom2" parent="SubViewportContainer/SubViewport/Props" unique_id=1955072381 instance=ExtResource("9_nhxhy")]
+[node name="PrimaryRoom2" parent="SubViewportContainer/SubViewport/Props" unique_id=933609310 instance=ExtResource("9_nhxhy")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.575, 0.071, -11.075)
 skeleton = NodePath("../../../..")
 
@@ -126,6 +128,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00682, 1.12477, -10.2282)
 
 [node name="BIGTERMINAL" parent="SubViewportContainer/SubViewport/Props" unique_id=1240506280 instance=ExtResource("11_dm3ob")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 7.68369, 1.3388, -10.5212)
+
+[node name="Hallway" type="Node" parent="SubViewportContainer/SubViewport/Props" unique_id=799495659]
+
+[node name="MoonHallway" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=15220334 instance=ExtResource("13_yepn8")]
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.357, -14.437)
+
+[node name="MoonHallway2" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1111706457 instance=ExtResource("13_yepn8")]
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.357, -16.619179)
+
+[node name="MoonHallway3" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1326738635 instance=ExtResource("13_yepn8")]
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.357, -16.619179)
+
+[node name="MoonHallway4" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1924084069 instance=ExtResource("13_yepn8")]
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.357, -18.810064)
 
 [node name="Lights" type="Node" parent="SubViewportContainer/SubViewport" unique_id=470235784]
 
@@ -197,3 +213,6 @@ render_target_update_mode = 4
 [node name="ScreenIconUI" parent="SubViewportContainer/ScreenViewports/IconViewport" unique_id=1476380082 instance=ExtResource("15_5yptt")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=419465261]
+
+[node name="OfficeMainMoonHallway" parent="." unique_id=1940253881 instance=ExtResource("13_kokif")]
+transform = Transform3D(-1, 7.642742e-15, -8.742278e-08, 0, -1, -8.742278e-08, -8.742278e-08, -8.742278e-08, 1, 5.619198, 0.16547728, -17.479786)

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cc8ypn62f8d6m"]
+
+[ext_resource type="PackedScene" uid="uid://cttx71kjdxdso" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/MoonHallway.glb" id="1_h2p5p"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2p5p"]
+shading_mode = 0
+
+[node name="MoonHallway" unique_id=15220334 instance=ExtResource("1_h2p5p")]
+
+[node name="Cube" parent="." index="5" unique_id=1896404572]
+surface_material_override/0 = SubResource("StandardMaterial3D_h2p5p")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cube" index="0" unique_id=2122417202]
+transform = Transform3D(1.8528352, 0, 0, 0, 13.082717, 0, 0, 0, 1, 0, -2.9597645, 0)
+light_color = Color(0.8156863, 0.9098039, 1, 1)
+light_energy = 2.0
