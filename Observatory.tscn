@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bh0wesn37jmpl"]
+
+[ext_resource type="PackedScene" uid="uid://cujyflaleydin" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Observatory.glb" id="1_d7r82"]
+
+[node name="Observatory" unique_id=1291694653 instance=ExtResource("1_d7r82")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cube" parent_id_path=PackedInt32Array(569795238) index="0" unique_id=907646603]
+light_color = Color(0.8156863, 0.9098039, 1, 1)
+omni_range = 7.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cube_002" parent_id_path=PackedInt32Array(1095944689) index="0" unique_id=451804877]
+light_color = Color(0.8156863, 0.9098039, 1, 1)
+omni_range = 7.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cube_003" parent_id_path=PackedInt32Array(933615951) index="0" unique_id=1567073602]
+light_color = Color(0.8156863, 0.9098039, 1, 1)
+omni_range = 10.0

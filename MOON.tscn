@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://cvtigpfwoj35b"]
 
 [ext_resource type="PackedScene" uid="uid://b4y4mvhccf284" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/COMPUTER3D2.glb" id="1_kjgfg"]
+[ext_resource type="PackedScene" uid="uid://6jvpx06csd2e" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Testsurface.glb" id="2_7efjl"]
+[ext_resource type="PackedScene" uid="uid://b05njgix2oxk5" path="res://BreakRoom.tscn" id="2_m0vcd"]
 [ext_resource type="PackedScene" uid="uid://dslefmee0wyl6" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/NUTABLE.glb" id="3_5kih8"]
 [ext_resource type="Shader" uid="uid://beul868rkbqby" path="res://post_processing.gdshader" id="3_kjgfg"]
 [ext_resource type="PackedScene" uid="uid://ga8riqoebbby" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/PrimaryTable.glb" id="4_ffdot"]
@@ -10,19 +12,28 @@
 [ext_resource type="AudioStream" uid="uid://bmorglbjlqm0j" path="res://571513__legitcheese__soft-notifications-bell-ding-dong.mp3" id="8_6073h"]
 [ext_resource type="Script" uid="uid://14qfty1t4xpf" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/themoon.gd" id="8_umcxk"]
 [ext_resource type="PackedScene" uid="uid://doxi8pfe33ofs" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/PrimaryRoom2.glb" id="9_nhxhy"]
+[ext_resource type="PackedScene" uid="uid://b5fkrugdl6yll" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/VendingMachine.glb" id="10_iyo8o"]
 [ext_resource type="PackedScene" uid="uid://rkpnxjpdsf8y" path="res://bigterminal.tscn" id="11_dm3ob"]
+[ext_resource type="PackedScene" uid="uid://bbttgqod6jd38" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/BulletinBoard.glb" id="11_hw2fg"]
+[ext_resource type="PackedScene" uid="uid://bvhfw6vrrt15k" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Radio.glb" id="12_7efjl"]
 [ext_resource type="Script" uid="uid://qjdfhebko8hu" path="res://ScreenManager.gd" id="12_fl3ci"]
 [ext_resource type="Script" uid="uid://wvon02ptbj58" path="res://PlayerController.gd" id="13_5yptt"]
+[ext_resource type="PackedScene" uid="uid://dfqubr6vhfdjv" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/cup.glb" id="13_20wcy"]
 [ext_resource type="PackedScene" uid="uid://csrnwa2dbor3q" path="res://Desktop.tscn" id="13_6073h"]
 [ext_resource type="PackedScene" uid="uid://bks7g0pqa1872" path="res://ScreenPanelUI.tscn" id="13_dm3ob"]
 [ext_resource type="PackedScene" uid="uid://cc8ypn62f8d6m" path="res://moon_hallway.tscn" id="13_yepn8"]
 [ext_resource type="PackedScene" uid="uid://duabjwhfrwpqf" path="res://ScreenInfoUI.tscn" id="14_6073h"]
-[ext_resource type="PackedScene" uid="uid://d0sfx2vsd81dc" path="res://office_main_moon_hallway.tscn" id="14_kokif"]
+[ext_resource type="PackedScene" path="res://office_main_moon_hallway.tscn" id="14_kokif"]
 [ext_resource type="PackedScene" uid="uid://n5p4y8mns38b" path="res://ScreenIconUI.tscn" id="15_5yptt"]
 [ext_resource type="PackedScene" uid="uid://dqcsr7o68noaf" path="res://NEWLSHAPE.tscn" id="15_fl3ci"]
+[ext_resource type="PackedScene" uid="uid://dn2lesacsnura" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Fridge.glb" id="15_yfue1"]
+[ext_resource type="PackedScene" uid="uid://ca72rwivjwym8" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/BreakroomTable.glb" id="16_sxxcg"]
+[ext_resource type="PackedScene" uid="uid://bf6wm1l108tqn" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Couch.glb" id="17_hoxha"]
+[ext_resource type="PackedScene" uid="uid://pdxtb8oe0n0t" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/TV.glb" id="18_d7nsw"]
+[ext_resource type="PackedScene" uid="uid://bh0wesn37jmpl" path="res://Observatory.tscn" id="25_20wcy"]
 
 [sub_resource type="Environment" id="Environment_nhxhy"]
-ambient_light_color = Color(0.4353445, 0.42358288, 0.46135613, 1)
+ambient_light_source = 2
 ambient_light_energy = 0.3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kjgfg"]
@@ -86,19 +97,8 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6.4892
 
 [node name="Props" type="Node" parent="SubViewportContainer/SubViewport" unique_id=875008838]
 
-[node name="Tables" type="Node" parent="SubViewportContainer/SubViewport/Props" unique_id=793059814]
-
-[node name="PrimaryTable" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=834356233 instance=ExtResource("4_ffdot")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.81342, 0.0944088, -9.35591)
-
-[node name="NUTABLE" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=1972123309 instance=ExtResource("3_5kih8")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.64786, 0.579524, -10.5258)
-
-[node name="NUTABLE2" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=2039417866 instance=ExtResource("3_5kih8")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.91754, 0.579524, -10.5153)
-
-[node name="MOONPROJECTER" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=24718753 instance=ExtResource("5_5kih8")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5.82245, 1.11591, -9.36362)
+[node name="Testsurface" parent="SubViewportContainer/SubViewport/Props" unique_id=260700 instance=ExtResource("2_7efjl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200.45175, -0.6365752, -230.71976)
 
 [node name="COMPUTER3D2" parent="SubViewportContainer/SubViewport/Props" unique_id=123903390 instance=ExtResource("1_kjgfg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00528, 1.12069, -10.2522)
@@ -128,6 +128,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00682, 1.12477, -10.2282)
 [node name="BIGTERMINAL" parent="SubViewportContainer/SubViewport/Props" unique_id=1240506280 instance=ExtResource("11_dm3ob")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 7.68369, 1.3388, -10.5212)
 
+[node name="Tables" type="Node" parent="SubViewportContainer/SubViewport/Props" unique_id=793059814]
+
+[node name="PrimaryTable" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=834356233 instance=ExtResource("4_ffdot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.81342, 0.0944088, -9.35591)
+
+[node name="NUTABLE" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=1972123309 instance=ExtResource("3_5kih8")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.64786, 0.579524, -10.5258)
+
+[node name="NUTABLE2" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=2039417866 instance=ExtResource("3_5kih8")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.91754, 0.579524, -10.5153)
+
+[node name="MOONPROJECTER" parent="SubViewportContainer/SubViewport/Props/Tables" unique_id=24718753 instance=ExtResource("5_5kih8")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5.82245, 1.11591, -9.36362)
+
 [node name="Hallway" type="Node" parent="SubViewportContainer/SubViewport/Props" unique_id=799495659]
 
 [node name="MoonHallway" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=15220334 instance=ExtResource("13_yepn8")]
@@ -142,10 +156,78 @@ transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.60
 [node name="MoonHallway4" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1924084069 instance=ExtResource("13_yepn8")]
 transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.357, -18.810064)
 
-[node name="OfficeMainMoonHallway" parent="SubViewportContainer/SubViewport" unique_id=490763380 instance=ExtResource("14_kokif")]
+[node name="OfficeMainMoonHallway" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=490763380 instance=ExtResource("14_kokif")]
 transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 5.619, 0.165, -17.4)
 
+[node name="BreakRoom2" type="Node" parent="SubViewportContainer/SubViewport/Props" unique_id=999146065]
+
+[node name="Fridge" parent="SubViewportContainer/SubViewport/Props/BreakRoom2" unique_id=1763003229 instance=ExtResource("15_yfue1")]
+transform = Transform3D(-0.50003016, 0, -0.86600804, 0, 1, 0, 0.86600804, 0, -0.50003016, 17.398554, 0.8931165, -24.340382)
+
+[node name="BreakroomTable" parent="SubViewportContainer/SubViewport/Props/BreakRoom2" unique_id=1477236715 instance=ExtResource("16_sxxcg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.48063, 0.6414741, -23.459042)
+
+[node name="Couch" parent="SubViewportContainer/SubViewport/Props/BreakRoom2" unique_id=485226403 instance=ExtResource("17_hoxha")]
+transform = Transform3D(0.50686145, 0, -0.8620275, 0, 1, 0, 0.8620275, 0, 0.50686145, 16.316795, 0.35722607, -19.723877)
+
+[node name="TV" parent="SubViewportContainer/SubViewport/Props/BreakRoom2" unique_id=2141998973 instance=ExtResource("18_d7nsw")]
+transform = Transform3D(2.1901265e-08, -0.5010426, 0.8654228, -1, -4.3711395e-08, 0, 3.7828833e-08, -0.8654228, -0.5010426, 17.588594, 1.590298, -17.57429)
+
+[node name="VendingMachine" parent="SubViewportContainer/SubViewport/Props/BreakRoom2" unique_id=1737966195 instance=ExtResource("10_iyo8o")]
+transform = Transform3D(0.5320933, 0, -0.8466857, 0, 1, 0, 0.8466857, 0, 0.5320933, 13.156401, 0.9684688, -23.478415)
+
+[node name="BulletinBoard" parent="SubViewportContainer/SubViewport/Props/BreakRoom2" unique_id=460671927 instance=ExtResource("11_hw2fg")]
+transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 1, 0, 8.742277e-08, 0, -0.99999994, 19.670786, 1.3084329, -21.781672)
+
+[node name="Radio" parent="SubViewportContainer/SubViewport/Props/BreakRoom2" unique_id=357085494 instance=ExtResource("12_7efjl")]
+transform = Transform3D(-0.3983969, 0, -0.91721314, 0, 1, 0, 0.91721314, 0, -0.3983969, 15.746893, 0.7508825, -23.536058)
+
+[node name="cup" parent="SubViewportContainer/SubViewport/Props/BreakRoom2" unique_id=45264121 instance=ExtResource("13_20wcy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.324447, 0.75676453, -23.348724)
+
+[node name="cup2" parent="SubViewportContainer/SubViewport/Props/BreakRoom2" unique_id=1611080481 instance=ExtResource("13_20wcy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.212534, 0.75676453, -23.23219)
+
+[node name="cup3" parent="SubViewportContainer/SubViewport/Props/BreakRoom2" unique_id=1542514414 instance=ExtResource("13_20wcy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.745508, 0.75676453, -23.23219)
+
+[node name="BreakRoom" parent="SubViewportContainer/SubViewport/Props/BreakRoom2" unique_id=1578989216 instance=ExtResource("2_m0vcd")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 8.89, 2.389, -21.675)
+
+[node name="Observatory" type="Node" parent="SubViewportContainer/SubViewport/Props" unique_id=934875744]
+
+[node name="Observatory" parent="SubViewportContainer/SubViewport/Props/Observatory" unique_id=1291694653 instance=ExtResource("25_20wcy")]
+transform = Transform3D(1, -8.742278e-08, 8.742278e-08, -8.742278e-08, -1, 0, 8.742278e-08, -7.642742e-15, -1, -17.18, 0.076, -24.636303)
+
 [node name="Lights" type="Node" parent="SubViewportContainer/SubViewport" unique_id=470235784]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights" unique_id=142633828]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.490776, 2.6752815, -7.5822334)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 3.0
+shadow_enabled = true
+shadow_blur = 0.5
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights" unique_id=117783654]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6236079, 2.6752815, -11.413918)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 3.0
+shadow_enabled = true
+shadow_blur = 0.5
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights" unique_id=251016317]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9772587, 2.6752815, -12.65425)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 3.0
+shadow_enabled = true
+shadow_blur = 0.5
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/Lights" unique_id=1505821181]
+transform = Transform3D(1, 0, 0, 0, 0.8597988, 0.51063293, 0, -0.51063293, 0.8597988, -276.5558, 141.41414, -209.38472)
+light_energy = 2.5
+shadow_enabled = true
+shadow_blur = 0.0
+sky_mode = 1
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="SubViewportContainer/SubViewport" unique_id=1743543267 node_paths=PackedStringArray("camera", "terminal_manager")]
 script = ExtResource("13_5yptt")
@@ -155,27 +237,6 @@ eye_height = 0.9
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/CharacterBody3D" unique_id=692842945]
 shape = SubResource("CapsuleShape3D_yepn8")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="SubViewportContainer/SubViewport" unique_id=142633828]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.490776, 2.6752815, -7.5822334)
-light_color = Color(0.9452769, 0.9776916, 1, 1)
-light_energy = 3.0
-shadow_enabled = true
-shadow_blur = 0.5
-
-[node name="OmniLight3D2" type="OmniLight3D" parent="SubViewportContainer/SubViewport" unique_id=117783654]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6236079, 2.6752815, -11.413918)
-light_color = Color(0.9452769, 0.9776916, 1, 1)
-light_energy = 3.0
-shadow_enabled = true
-shadow_blur = 0.5
-
-[node name="OmniLight3D3" type="OmniLight3D" parent="SubViewportContainer/SubViewport" unique_id=251016317]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9772587, 2.6752815, -12.65425)
-light_color = Color(0.9452769, 0.9776916, 1, 1)
-light_energy = 3.0
-shadow_enabled = true
-shadow_blur = 0.5
 
 [node name="ScreenViewports" type="Node" parent="SubViewportContainer" unique_id=714134518]
 script = ExtResource("12_fl3ci")

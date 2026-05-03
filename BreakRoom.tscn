@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://b05njgix2oxk5"]
+
+[ext_resource type="PackedScene" uid="uid://bl7tloosfydep" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/BreakRoom.glb" id="1_r3ygg"]
+
+[node name="BreakRoom" unique_id=1578989216 instance=ExtResource("1_r3ygg")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Light" parent_id_path=PackedInt32Array(133110222) index="1" unique_id=542100267]
+transform = Transform3D(1, 0, 0, 0, 0.5148287, 0, 0, 0, 1, 0, 0.82822526, 0)
+light_color = Color(0.9098039, 0.91764706, 0.84705883, 1)
+light_energy = 3.0
+omni_range = 6.0
