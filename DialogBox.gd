@@ -78,6 +78,8 @@ func _build_ui() -> void:
 	bg_style.border_width_top = 2
 	bg.add_theme_stylebox_override("panel", bg_style)
 	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	bg.mouse_filter = Control.MOUSE_FILTER_STOP  # catches clicks that miss buttons
+	bg.gui_input.connect(_on_bg_gui_input)       # ← add this line
 	add_child(bg)
 
 	# Outer HBox: [portrait] [content vbox]
@@ -241,25 +243,24 @@ func _on_choice(choice_id: String) -> void:
 	_show_step()
 
 # ── Input ─────────────────────────────────────────────────────────────────────
-# Using _input (not _unhandled_input) so we can consume mouse events before
-# ScreenManager.gd sees them and tries to raycast into the 3D scene.
+
+func _on_bg_gui_input(event: InputEvent) -> void:
+	# The background Panel catches clicks that land on the dialog box but
+	# miss any choice buttons. We use this for click-to-advance.
+	# Because this is _gui_input on a child Control, Godot processes it
+	# AFTER checking children (i.e. choice buttons), so buttons always win.
+	if not visible:
+		return
+	if event is InputEventMouseButton and event.pressed \
+			and event.button_index == MOUSE_BUTTON_LEFT \
+			and not _choice_box.visible:
+		_handle_advance()
+		get_viewport().set_input_as_handled()
 
 func _input(event: InputEvent) -> void:
 	if not visible:
 		return
-
-	# Always swallow mouse events while the dialog is open so nothing behind
-	# the box gets accidentally clicked.  Choice buttons handle their own
-	# clicks via the GUI system before _input fires, so they still work.
-	if event is InputEventMouseButton:
-		get_viewport().set_input_as_handled()
-		# Advance on left-click only when not waiting on a choice.
-		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT \
-				and not _choice_box.visible:
-			_handle_advance()
-		return
-
-	# Space / Enter to advance when no choices are showing.
+	# Keyboard-only advance — mouse is handled by _on_bg_gui_input
 	if event is InputEventKey and event.pressed and not event.echo \
 			and not _choice_box.visible:
 		if event.keycode in [KEY_SPACE, KEY_ENTER, KEY_KP_ENTER]:
@@ -268,7 +269,6 @@ func _input(event: InputEvent) -> void:
 
 func _handle_advance() -> void:
 	if _typing:
-		# Instant-complete the current line.
 		_shown_chars   = float(_full_text.length())
 		_text_rtl.text = _full_text
 		_typing        = false

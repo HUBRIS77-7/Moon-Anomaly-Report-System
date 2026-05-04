@@ -86,6 +86,9 @@ func _register_screen(mesh: MeshInstance3D, viewport: SubViewport, size: Vector2
 func _input(event: InputEvent) -> void:
 	if DayEndScreen.visible:
 		return
+	# Don't raycast into the 3D scene while a dialog is playing
+	if DialogManager.is_active():
+		return
 	# ── DEBUG: F1 opens the next queued call on the BIGTERMINAL desktop ─────
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_F1:

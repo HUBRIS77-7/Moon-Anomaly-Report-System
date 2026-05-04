@@ -60,7 +60,7 @@ var sequences: Array[Dictionary] = [
 			{
 				"speaker":  "LUNA",
 				"portrait": "",
-				"text":     "Today, we're going to start you off with some simple calls and entries. Nothing to big. Do",
+				"text":     "Today, we're going to start you off with some simple calls and entries. Nothing to big. Don't sweat it",
 				"choices":  []
 			},
 		]
