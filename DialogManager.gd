@@ -95,7 +95,7 @@ func _start(seq: Dictionary) -> void:
 	dialog_started.emit(_current_id)
 
 func _play_day_start(day: int) -> void:
-	var matches := DialogDatabase.get_by_trigger("day_start", day)
+	var matches: Array[Dictionary] = DialogDatabase.get_by_trigger("day_start", day)
 	for seq in matches:
 		# Play the first matching sequence. If you want multiple back-to-back,
 		# chain them via the dialog_finished signal externally.

@@ -26,7 +26,7 @@ AnomalyDatabase="*res://AnomalyDatabase.gd"
 CallDatabase="*res://CallDatabase.gd"
 DayEndScreen="*uid://iigee6tx1jp"
 DialogBox="*uid://df2ihi1nih5e"
-DialogDatabase="*uid://c60ee78a5bwpg"
+DialogDatabase="*uid://upfnho8gnguj"
 DialogManager="*uid://de3yhitskyq6a"
 
 [display]

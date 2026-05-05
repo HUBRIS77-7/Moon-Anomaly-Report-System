@@ -142,6 +142,18 @@ func _style_button_font(btn: Button, size: int) -> void:
 	btn.add_theme_font_size_override("font_size", size)
 	if _font:
 		btn.add_theme_font_override("font", _font)
+		
+
+func _style_restricted_btn(btn: Button) -> void:
+	btn.add_theme_color_override("font_color", Color(0.45, 0.10, 0.10))
+	btn.add_theme_color_override("font_disabled_color", Color(0.45, 0.10, 0.10))
+	var s := StyleBoxFlat.new()
+	s.bg_color = Color(0.06, 0.04, 0.04)
+	s.border_color = Color(0.25, 0.08, 0.08)
+	s.set_border_width_all(0)
+	btn.add_theme_stylebox_override("normal", s)
+	btn.add_theme_stylebox_override("disabled", s)
+
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -441,20 +453,40 @@ func _populate_anomaly_list(filter: String) -> void:
 	for entry in AnomalyDatabase.entries:
 		if not entry.get("accessible", true):
 			continue
-		var name_str: String = entry.get("name", "")
-		if lower != "" and name_str.to_lower().find(lower) == -1:
-			continue
+
 		var entry_id: int = entry.get("id", -1)
+		var name_str: String = entry.get("name", "")
+		var unlock_day: int = entry.get("unlocked_on_day", 1)
+		var is_locked: bool = GameState.current_day < unlock_day
+
+		# Apply search filter — locked entries still show unless filtered out
+		if lower != "" and name_str.to_lower().find(lower) == -1:
+			if not "restricted".find(lower) != -1:
+				continue
+
 		var btn := Button.new()
-		btn.text = "#%d  %s" % [entry_id, name_str]
-		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		btn.custom_minimum_size = Vector2(0, 20)
-		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		btn.add_theme_font_size_override("font_size", FONT_SIZES["meta"])
-		if _font:
-			btn.add_theme_font_override("font", _font)
-		_style_anomaly_btn(btn, entry_id == _selected_anomaly_id)
-		btn.pressed.connect(func(): _on_anomaly_selected(entry_id))
+
+		if is_locked:
+			btn.text = "#%d  [RESTRICTED]" % entry_id
+			btn.disabled = true
+			btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			btn.custom_minimum_size = Vector2(0, 20)
+			btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+			btn.add_theme_font_size_override("font_size", FONT_SIZES["meta"])
+			if _font:
+				btn.add_theme_font_override("font", _font)
+			_style_restricted_btn(btn)
+		else:
+			btn.text = "#%d  %s" % [entry_id, name_str]
+			btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			btn.custom_minimum_size = Vector2(0, 20)
+			btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+			btn.add_theme_font_size_override("font_size", FONT_SIZES["meta"])
+			if _font:
+				btn.add_theme_font_override("font", _font)
+			_style_anomaly_btn(btn, entry_id == _selected_anomaly_id)
+			btn.pressed.connect(func(): _on_anomaly_selected(entry_id))
+
 		_anomaly_vbox.add_child(btn)
 
 func _on_anomaly_search(text: String) -> void:

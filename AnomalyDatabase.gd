@@ -19,6 +19,7 @@ var entries: Array[Dictionary] = [
 		"type": Category.SECURITY,
 		"description": "All avenues of access into restricted or otherwise locked areas of the complexes that make up the Primary Lunar Construction (PLC) are controlled by Access Cards. Every individual upon the lunar surface possesses a clearence code. This individual is attempting to access a area that their code does not permit. \n\n Upon use of a incorrect clearence code, a access terminal will beep loudly and display the words 'incorrect clearence'.  \n \n  If you suspect that the individual attempting to access a locked area is doing so unlawfully, please report this as a Attempted Break-In.",
 		"icon_path": "res://wp12013121.jpg",
+		 "unlocked_on_day": 1,
 		"accessible": true
 	},
 	{
@@ -315,7 +316,10 @@ var entries: Array[Dictionary] = [
 func get_entry(id: int) -> Dictionary:
 	for entry in entries:
 		if entry["id"] == id:
-			if not entry["accessible"]:
+			if not entry.get("accessible", true):
+				return {"status": NOT_ACCESSIBLE}
+			var unlock_day: int = entry.get("unlocked_on_day", 1)
+			if GameState.current_day < unlock_day:
 				return {"status": NOT_ACCESSIBLE}
 			return entry
 	return {"status": NOT_FOUND}
