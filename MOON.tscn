@@ -23,7 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://bks7g0pqa1872" path="res://ScreenPanelUI.tscn" id="13_dm3ob"]
 [ext_resource type="PackedScene" uid="uid://cc8ypn62f8d6m" path="res://moon_hallway.tscn" id="13_yepn8"]
 [ext_resource type="PackedScene" uid="uid://duabjwhfrwpqf" path="res://ScreenInfoUI.tscn" id="14_6073h"]
-[ext_resource type="PackedScene" path="res://office_main_moon_hallway.tscn" id="14_kokif"]
+[ext_resource type="PackedScene" uid="uid://d0sfx2vsd81dc" path="res://office_main_moon_hallway.tscn" id="14_kokif"]
 [ext_resource type="PackedScene" uid="uid://n5p4y8mns38b" path="res://ScreenIconUI.tscn" id="15_5yptt"]
 [ext_resource type="PackedScene" uid="uid://dqcsr7o68noaf" path="res://NEWLSHAPE.tscn" id="15_fl3ci"]
 [ext_resource type="PackedScene" uid="uid://dn2lesacsnura" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Fridge.glb" id="15_yfue1"]

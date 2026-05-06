@@ -14,6 +14,7 @@ const DAYS_PER_WEEK: int = 5
 # ── Day / Week state ──────────────────────────────────────────────────────────
 var current_day: int = 1
 var current_week: int = 1
+var current_week_id: String = "training"
 
 # ── Call tracking (reset each day) ───────────────────────────────────────────
 var calls_correct:   int = 0
