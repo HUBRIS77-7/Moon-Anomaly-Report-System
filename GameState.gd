@@ -51,7 +51,8 @@ func _ready() -> void:
 
 # ── Internal helpers ──────────────────────────────────────────────────────────
 func _setup_day(day: int) -> void:
-	var day_calls := CallDatabase.get_calls_for_day(day)
+	# Route through WeekDatabase so required + random-draw calls are counted.
+	var day_calls := WeekDatabase.draw_calls_for_day(current_week_id, day)
 	_calls_remaining_today = day_calls.size()
 
 func _decrement_remaining() -> void:

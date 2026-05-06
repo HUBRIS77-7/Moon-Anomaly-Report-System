@@ -91,8 +91,6 @@ func _process(delta: float) -> void:
 # ── Day-1 logo billboard ──────────────────────────────────────────────────────
 
 func _setup_logo_billboard() -> void:
-	# Size in local (pre-scale) units. THEMOON scale is 0.006, so
-	# local 60 × 60 ≈ 0.36 × 0.36 m world — adjust if needed.
 	const LOGO_SIZE := 60.0
 
 	var quad      := QuadMesh.new()
@@ -114,12 +112,11 @@ func _setup_logo_billboard() -> void:
 	if day_one_logo != null:
 		mat.albedo_texture = day_one_logo
 	else:
-		mat.albedo_color = Color(0.95, 0.70, 0.10, 1.0)  # amber placeholder
+		mat.albedo_color = Color(0.95, 0.70, 0.10, 1.0)
 
 	_logo_billboard.set_surface_override_material(0, mat)
 
 func _update_day_display(day: int) -> void:
-	# The GLB-imported moon sphere is a child named "Moon"
 	var moon_mesh := get_node_or_null("Moon") as MeshInstance3D
 	if moon_mesh:
 		moon_mesh.visible = (day != 1)
@@ -146,17 +143,16 @@ func _clear_all_icons() -> void:
 
 func _spawn_icons_for_day(day: int) -> void:
 	_pending_calls.clear()
-	for entry in CallDatabase.get_calls_for_day(day):
+
+	# Route through WeekDatabase so the full required + random-draw list is used.
+	var day_calls := WeekDatabase.draw_calls_for_day(GameState.current_week_id, day)
+	for entry in day_calls:
 		var dir: Vector3 = entry.get("icon_direction", Vector3.ZERO)
 		if dir != Vector3.ZERO:
 			_pending_calls.append(entry)
 
-	# Day 1 shows the LUNA logo — hold off spawning call icons until LUNA's
-	# intro dialog finishes, then the first icon spawns naturally via
-	# _schedule_next_spawn when the first call completes.
-	# For day 2+, spawn the first icon immediately as before.
+	# Day 1: hold icons until LUNA's intro dialog finishes.
 	if day == 1:
-		# Listen for the intro dialog to finish, then show the first icon.
 		if not DialogManager.dialog_finished.is_connected(_on_day1_dialog_done):
 			DialogManager.dialog_finished.connect(_on_day1_dialog_done, CONNECT_ONE_SHOT)
 		return
@@ -166,9 +162,8 @@ func _spawn_icons_for_day(day: int) -> void:
 		add_icon(first["id"], first["icon_direction"])
 
 func _on_day1_dialog_done(_sequence_id: String) -> void:
-	# Swap the logo out for the moon and spawn the first call icon.
-	_update_day_display(2)   # pass any non-1 value to show the moon
-	_logo_billboard.visible = false   # redundant safety
+	_update_day_display(2)
+	_logo_billboard.visible = false
 
 	if _pending_calls.size() > 0:
 		var first = _pending_calls.pop_front()

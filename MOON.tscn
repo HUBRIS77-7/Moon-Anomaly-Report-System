@@ -110,13 +110,9 @@ skeleton = NodePath("../../../..")
 [node name="THEMOON" parent="SubViewportContainer/SubViewport/Props" unique_id=1548048959 instance=ExtResource("6_dm3ob")]
 transform = Transform3D(0.006, 0, 0, 0, 0.006, 0, 0, 0, 0.006, 5.822, 1.445, -9.348)
 script = ExtResource("8_umcxk")
-spin_speed = null
 surface_radius = 28.0
-icon_scale = null
 icon_collision_radius = 2.5
-icon_hover = null
-look_dot_threshold = null
-icon_spawn_delay = 25.0
+icon_spawn_delay = 1.0
 ding_sound = ExtResource("8_6073h")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Props" unique_id=1036492828]

@@ -51,15 +51,15 @@ var entries: Array[Dictionary] = [
 		"duration":           55.0,
 		"audio":              "",
 		"transcription":
-			"Hello! This is LUNA. Thanks for showcasing your ability to navigate the Lunar Communications Model! "
-			+ "This personal terminal is yours to customize and decorate, but we advise you not to store anything particularly personal on here. "
-			+ "In the corner, you should be able to see your tasks. Most of the time, they will be empty. "
-			+ "Please designate this report as any anomaly you want.",
+			"Welcome to the updated Call Resolution Application or CRA, and by extenstion your Terminal for Education or Recreation (TER for short)! "
+			+ "This terminal is yours to use, customize, and decorate. We advise that you don't keep anything too personal on these computers though, as they are scanned weekly."
+			+ "For most calls, you will listen to the call that you selected, diagnose the anomaly at hand, and submit the report back to the caller and required authorities. "
+			+ "To make sure your install of CRA is working, please report this call as a complaint!",
 		"additional_details":
-			"P.S designate this as a Complaint for a reward!",
+			"This section will contain additional details about the caller's location, station, status, and such! ",
 		"correct_anomaly_id": 16,
 		"tasks": [
-			"Read the transcript.",
+			"Occasionally, a call will require you to use a different application, but none of those are installed right now.",
 		],
 		"icon_direction":     Vector3(0.0, 1.0, 0.0),
 		"theme_tags":         [],
@@ -73,14 +73,13 @@ var entries: Array[Dictionary] = [
 		"duration":           40.0,
 		"audio":              "",
 		"transcription":
-			"I see that you just returned from a vacation to the Venusian Paradise resort on... well, Venus."
-			+ "Since you've been gone though, management has implemented new technology (like me!!!) and rules."
-			+ "Sadly, one of those rules are the mandatory retraining of all personnel who have been gone over 4 months."
-			+ "Luckily, that means this will be a very chill week for you! Isn't that great!",
-		"additional_details": "How was the trip?",
+			"Today, I'm going to treat you to some testing calls. Just to see where you stand on your memory."
+			+ "You might've noticed that you do not have access to all the known anomalies right now. This is because another side-effect of being gone for so long is that your accrediation was paused,"
+			+ "Don't worry, once your re-training is complete, your accredation will be restored. Mark this call as a Complaint,",
+		"additional_details": "(ツ)",
 		"correct_anomaly_id": 16,
 		"tasks": [
-			"Enjoy your time back.",
+			"Additionally, calls cannot be submitted until you mark tasks as complete",
 		],
 		"icon_direction":     Vector3(0.86, -0.49, -0.14),
 		"theme_tags":         [],
@@ -88,6 +87,21 @@ var entries: Array[Dictionary] = [
 	},
 	{
 		"id":                 3,
+		"day":                1,
+		"caller_name":        "LUNA?",
+		"caller_photo":       "",
+		"duration":           60.0,
+		"audio":              "",
+		"transcription":      "Hello, It is Me, Human-1. I am attempting to open the door to my workplace, but the keycard isn't working... *beep* It's not an issue with the keycard, it's perfectly flat. Is something wrong with the card? I really got to get to work.",
+		"additional_details": "Human-1 has been fired from their place of employment, and their card terminated.",
+		"correct_anomaly_id": 1,
+		"tasks":              [],
+		"icon_direction": Vector3(0.398, 0.012, 0.917),
+		"theme_tags":         ["geological"],
+		"exclusive_to_week":  "",
+	},
+	{
+		"id":                 4,
 		"day":                2,
 		"caller_name":        "LUNA!!!!",
 		"caller_photo":       "",
@@ -105,6 +119,7 @@ var entries: Array[Dictionary] = [
 		"theme_tags":         [],
 		"exclusive_to_week":  "training",
 	},
+
 
 	# ── Add new calls below ───────────────────────────────────────────────────
 	# Training week calls: exclusive_to_week = "training", theme_tags = []
@@ -184,7 +199,7 @@ func get_pool_for_week_day(week_id: String, day: int,
 			continue
 		# Eligible if tags overlap OR the call is exclusive to this week
 		# (exclusive calls can have empty theme_tags and still be drawn).
-		var is_exclusive := entry.get("exclusive_to_week", "") == week_id
+		var is_exclusive: bool = entry.get("exclusive_to_week", "") == week_id
 		if is_exclusive or _matches_tags(entry, theme_tags):
 			pool.append(entry)
 	return pool

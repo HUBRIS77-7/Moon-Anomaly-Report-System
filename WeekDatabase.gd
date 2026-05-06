@@ -7,7 +7,7 @@
 #   "id":                  String,         # Unique week identifier.
 #                                          # Matches "exclusive_to_week" in
 #                                          # AnomalyDatabase and CallDatabase.
-#                                          # Use "" for the training week.
+#                                          # Use "training" for the training week.
 #
 #   "name":                String,         # Display name on the selection screen.
 #
@@ -17,8 +17,6 @@
 #   "theme_tags":          Array[String],  # Tags used to draw random calls from
 #                                          # CallDatabase. A call is eligible if
 #                                          # it shares at least one tag.
-#                                          # (Tags will be added to CallDatabase
-#                                          # in a later pass.)
 #
 #   "calls_per_day":       int,            # How many calls to schedule per day.
 #
@@ -35,10 +33,15 @@
 #
 # ── CALL DRAWING ──────────────────────────────────────────────────────────────
 # draw_calls_for_day() builds each day's call list.
-# It always includes required_call_ids first, then fills remaining slots
-# randomly from the eligible pool.
-#
-# NOTE: draw_calls_for_day() is stubbed until CallDatabase gains theme_tags.
+# Priority order:
+#   1. Required calls (required_call_ids) that match the requested day.
+#   2. Random draw from the eligible pool to fill remaining slots up to
+#      calls_per_day. A call is eligible when:
+#        - Its day field matches.
+#        - It is not already in the required list.
+#        - exclusive_to_week is "" or matches this week's id.
+#        - It shares at least one tag with the week's theme_tags, OR
+#          exclusive_to_week matches (exclusive calls skip the tag check).
 
 extends Node
 
@@ -60,20 +63,6 @@ var weeks: Array[Dictionary] = [
 	},
 
 	# ── REAL WEEKS ────────────────────────────────────────────────────────────
-	# Each needs a unique id and exactly 3 leads_to entries.
-	# Pool size should be at least double (calls_per_day * 5) for good variation.
-
-	# Template:
-	# {
-	# 	"id":                    "your_week_id",
-	# 	"name":                  "Week Name",
-	# 	"flavour":               "One or two sentences. Eerie is good.",
-	# 	"theme_tags":            ["tag_a", "tag_b"],
-	# 	"calls_per_day":         3,
-	# 	"required_call_ids":     [],
-	# 	"leads_to":              ["week_id_1", "week_id_2", "week_id_3"],
-	# 	"has_exclusive_content": false,
-	# },
 
 	{
 		"id":                    "geological_unrest",
@@ -108,7 +97,6 @@ var weeks: Array[Dictionary] = [
 		"has_exclusive_content": false,
 	},
 
-	# Deeper / rarer weeks — only reachable from specific predecessors.
 	{
 		"id":                    "deep_excavation",
 		"name":                  "Deep Excavation",
@@ -155,7 +143,6 @@ func get_week(id: String) -> Dictionary:
 
 
 ## Returns the three week dictionaries offered after the given week ends.
-## Pushes a warning for any leads_to ID not found in the database.
 func get_options_after(week_id: String) -> Array[Dictionary]:
 	var current := get_week(week_id)
 	if current.is_empty():
@@ -174,45 +161,44 @@ func get_options_after(week_id: String) -> Array[Dictionary]:
 
 
 ## Builds the call list for a given week and day.
-## Required calls are always included. Remaining slots are filled randomly
-## from the eligible pool.
 ##
-## TODO: fully implement once CallDatabase gains "theme_tags" and
-##       "exclusive_to_week" fields. The stub below returns only required
-##       calls so existing behaviour is not broken in the meantime.
+## Priority:
+##   1. required_call_ids entries whose "day" field matches this day.
+##   2. Random pool draw to fill remaining slots up to calls_per_day.
+##      A call is pool-eligible when:
+##        - Its day field matches.
+##        - It is not already included via required_call_ids.
+##        - exclusive_to_week is "" or matches week_id.
+##        - It shares at least one tag with the week's theme_tags, OR
+##          it is exclusive to this week (tag check is skipped for exclusives).
 func draw_calls_for_day(week_id: String, day: int) -> Array[Dictionary]:
 	var week := get_week(week_id)
 	if week.is_empty():
 		push_error("WeekDatabase: cannot draw calls — week '%s' not found." % week_id)
 		return []
 
-	var result: Array[Dictionary] = []
+	var result:     Array[Dictionary] = []
+	var result_ids: Array[int]        = []
 
-	# ── Required calls ────────────────────────────────────────────────────────
+	# ── 1. Required calls ─────────────────────────────────────────────────────
 	for call_id: int in week.get("required_call_ids", []):
 		var call := CallDatabase.get_call(call_id)
-		if not call.has("status"):
-			result.append(call)
+		if call.has("status"):
+			push_warning("WeekDatabase: required call #%d not found in CallDatabase." % call_id)
+			continue
+		if call.get("day", 1) != day:
+			continue  # This required call belongs to a different day.
+		result.append(call)
+		result_ids.append(call_id)
 
-	# ── TODO: random pool draw ────────────────────────────────────────────────
-	# Once CallDatabase entries have "theme_tags" and "exclusive_to_week":
-	#
-	# 1. Build the eligible pool:
-	#    - entry shares at least one tag with week["theme_tags"]  OR
-	#      entry["exclusive_to_week"] == week_id
-	#    - entry["exclusive_to_week"] is "" or matches week_id
-	#    - entry["day"] == day
-	#    - entry id is NOT already in result
-	#
-	# 2. Shuffle the pool.
-	#
-	# 3. Fill up to calls_per_day total slots from the shuffled pool.
-	#
-	# var calls_needed := week.get("calls_per_day", 3) - result.size()
-	# var pool := _build_pool(week_id, week["theme_tags"], day, result)
-	# pool.shuffle()
-	# for i in range(mini(calls_needed, pool.size())):
-	#     result.append(pool[i])
+	# ── 2. Random pool draw ───────────────────────────────────────────────────
+	var calls_needed: int = week.get("calls_per_day", 3) - result.size()
+	if calls_needed > 0:
+		var theme_tags: Array = week.get("theme_tags", [])
+		var pool := CallDatabase.get_pool_for_week_day(week_id, day, theme_tags, result_ids)
+		pool.shuffle()
+		for i in range(mini(calls_needed, pool.size())):
+			result.append(pool[i])
 
 	return result
 
