@@ -145,7 +145,7 @@ func _spawn_icons_for_day(day: int) -> void:
 	_pending_calls.clear()
 
 	# Route through WeekDatabase so the full required + random-draw list is used.
-	var day_calls := WeekDatabase.draw_calls_for_day(GameState.current_week_id, day)
+	var day_calls: Array[Dictionary] = WeekDatabase.draw_calls_for_day(GameState.current_week_id, day)
 	for entry in day_calls:
 		var dir: Vector3 = entry.get("icon_direction", Vector3.ZERO)
 		if dir != Vector3.ZERO:
