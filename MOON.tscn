@@ -23,7 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://bks7g0pqa1872" path="res://ScreenPanelUI.tscn" id="13_dm3ob"]
 [ext_resource type="PackedScene" uid="uid://cc8ypn62f8d6m" path="res://moon_hallway.tscn" id="13_yepn8"]
 [ext_resource type="PackedScene" uid="uid://duabjwhfrwpqf" path="res://ScreenInfoUI.tscn" id="14_6073h"]
-[ext_resource type="PackedScene" path="res://office_main_moon_hallway.tscn" id="14_kokif"]
+[ext_resource type="PackedScene" uid="uid://d0sfx2vsd81dc" path="res://office_main_moon_hallway.tscn" id="14_kokif"]
 [ext_resource type="PackedScene" uid="uid://n5p4y8mns38b" path="res://ScreenIconUI.tscn" id="15_5yptt"]
 [ext_resource type="PackedScene" uid="uid://dqcsr7o68noaf" path="res://NEWLSHAPE.tscn" id="15_fl3ci"]
 [ext_resource type="PackedScene" uid="uid://dn2lesacsnura" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Fridge.glb" id="15_yfue1"]
@@ -112,7 +112,7 @@ transform = Transform3D(0.006, 0, 0, 0, 0.006, 0, 0, 0, 0.006, 5.822, 1.445, -9.
 script = ExtResource("8_umcxk")
 surface_radius = 28.0
 icon_collision_radius = 2.5
-icon_spawn_delay = 25.0
+icon_spawn_delay = 1.0
 ding_sound = ExtResource("8_6073h")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Props" unique_id=1036492828]
@@ -233,6 +233,7 @@ sky_mode = 1
 script = ExtResource("13_5yptt")
 camera = NodePath("../Camera3D")
 terminal_manager = NodePath("../TerminalStuff/TerminalManager")
+mouse_sensitivity = 0.004
 eye_height = 0.9
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/CharacterBody3D" unique_id=692842945]

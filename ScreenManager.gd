@@ -229,5 +229,5 @@ func _apply_viewport_texture(mesh: MeshInstance3D,
 	mat.shading_mode               = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.emission_enabled           = true
 	mat.emission_texture           = viewport.get_texture()
-	mat.emission_energy_multiplier = 0.8
+	mat.emission_energy_multiplier = 1.5
 	mesh.set_surface_override_material(surface_index, mat)

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bks7g0pqa1872"]
+[gd_scene format=3 uid="uid://bks7g0pqa1872"]
 
 [ext_resource type="Script" uid="uid://dotav83vemse2" path="res://ScreenPanelUI.gd" id="1_qs53h"]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" unique_id=690158070]
 custom_minimum_size = Vector2(240, 640)
 layout_mode = 3
 anchors_preset = 15
@@ -12,26 +12,26 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qs53h")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=436443490]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+color = Color(0.22091639, 0.24780053, 0.22091639, 1)
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=181747376]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="HSeparator" type="HSeparator" parent="."]
+[node name="HSeparator" type="HSeparator" parent="." unique_id=1071306924]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 4.0
 
-[node name="Controls" type="VBoxContainer" parent="."]
+[node name="Controls" type="VBoxContainer" parent="." unique_id=1588293507]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,41 +43,41 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 16
 
-[node name="CategoryRow" type="HBoxContainer" parent="Controls"]
+[node name="CategoryRow" type="HBoxContainer" parent="Controls" unique_id=238057857]
 layout_mode = 2
 
-[node name="CatLeft" type="Button" parent="Controls/CategoryRow"]
+[node name="CatLeft" type="Button" parent="Controls/CategoryRow" unique_id=638366789]
 layout_mode = 2
 text = "<"
 
-[node name="CategoryLabel" type="Label" parent="Controls/CategoryRow"]
+[node name="CategoryLabel" type="Label" parent="Controls/CategoryRow" unique_id=1439997584]
 layout_mode = 2
 
-[node name="CatRight" type="Button" parent="Controls/CategoryRow"]
+[node name="CatRight" type="Button" parent="Controls/CategoryRow" unique_id=1609366514]
 layout_mode = 2
 text = ">"
 
-[node name="NumberRow" type="HBoxContainer" parent="Controls"]
+[node name="NumberRow" type="HBoxContainer" parent="Controls" unique_id=1641368561]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Controls/NumberRow"]
+[node name="Label" type="Label" parent="Controls/NumberRow" unique_id=2002718395]
 layout_mode = 2
 text = "ENTRY #"
 
-[node name="NumberField" type="LineEdit" parent="Controls/NumberRow"]
+[node name="NumberField" type="LineEdit" parent="Controls/NumberRow" unique_id=653714060]
 layout_mode = 2
 placeholder_text = "#"
 
-[node name="NavRow" type="HBoxContainer" parent="Controls"]
+[node name="NavRow" type="HBoxContainer" parent="Controls" unique_id=579631142]
 layout_mode = 2
 
-[node name="NavLeft" type="Button" parent="Controls/NavRow"]
+[node name="NavLeft" type="Button" parent="Controls/NavRow" unique_id=689831385]
 layout_mode = 2
 text = "<"
 
-[node name="CurrentID" type="Label" parent="Controls/NavRow"]
+[node name="CurrentID" type="Label" parent="Controls/NavRow" unique_id=1680424635]
 layout_mode = 2
 
-[node name="NavRight" type="Button" parent="Controls/NavRow"]
+[node name="NavRight" type="Button" parent="Controls/NavRow" unique_id=726600049]
 layout_mode = 2
 text = ">"

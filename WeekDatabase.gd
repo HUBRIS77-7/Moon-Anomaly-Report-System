@@ -56,8 +56,8 @@ var weeks: Array[Dictionary] = [
 		"name":                  "Retraining Week",
 		"flavour":               "LUNA guides you back through the basics. Nothing too serious.",
 		"theme_tags":            ["general", "complaint"],
-		"calls_per_day":         3,
-		"required_call_ids":     [1, 2, 3],
+		"calls_per_day":         {1: 6, 2: 2, 3: 4, 4: 3, 5: 5},
+		"required_call_ids":     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 		"leads_to":              ["geological_unrest", "biological_bloom", "security_lockdown"],
 		"has_exclusive_content": false,
 	},
@@ -187,12 +187,19 @@ func draw_calls_for_day(week_id: String, day: int) -> Array[Dictionary]:
 			push_warning("WeekDatabase: required call #%d not found in CallDatabase." % call_id)
 			continue
 		if call.get("day", 1) != day:
-			continue  # This required call belongs to a different day.
+			continue
 		result.append(call)
 		result_ids.append(call_id)
 
 	# ── 2. Random pool draw ───────────────────────────────────────────────────
-	var calls_needed: int = week.get("calls_per_day", 3) - result.size()
+	var calls_per_day = week.get("calls_per_day", 3)
+	var day_limit: int
+	if calls_per_day is Dictionary:
+		day_limit = calls_per_day.get(day, 3)  # fallback to 3 if day not specified
+	else:
+		day_limit = int(calls_per_day)          # backwards compatible with plain int
+
+	var calls_needed: int = day_limit - result.size()
 	if calls_needed > 0:
 		var theme_tags: Array = week.get("theme_tags", [])
 		var pool := CallDatabase.get_pool_for_week_day(week_id, day, theme_tags, result_ids)

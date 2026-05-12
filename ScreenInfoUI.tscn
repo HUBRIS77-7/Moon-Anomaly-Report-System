@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://duabjwhfrwpqf"]
+[gd_scene format=3 uid="uid://duabjwhfrwpqf"]
 
 [ext_resource type="Script" uid="uid://w4aimxsj87gm" path="res://ScreenInfoUI.gd" id="1_aat41"]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" unique_id=261197808]
 custom_minimum_size = Vector2(480, 308)
 layout_mode = 3
 anchors_preset = 15
@@ -12,16 +12,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_aat41")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1505920937]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+color = Color(0.22091639, 0.24780053, 0.22091639, 1)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=483497306]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,124 +29,124 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LeftColumn" type="VBoxContainer" parent="HBoxContainer"]
+[node name="LeftColumn" type="VBoxContainer" parent="HBoxContainer" unique_id=1583676765]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="NameLabel" type="Label" parent="HBoxContainer/LeftColumn"]
+[node name="NameLabel" type="Label" parent="HBoxContainer/LeftColumn" unique_id=238974177]
 layout_mode = 2
 text = "---"
 
-[node name="NumberLabel" type="Label" parent="HBoxContainer/LeftColumn"]
+[node name="NumberLabel" type="Label" parent="HBoxContainer/LeftColumn" unique_id=1609953961]
 layout_mode = 2
 
-[node name="Ratings" type="VBoxContainer" parent="HBoxContainer/LeftColumn"]
+[node name="Ratings" type="VBoxContainer" parent="HBoxContainer/LeftColumn" unique_id=561461148]
 layout_mode = 2
 
-[node name="SeverityRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings"]
+[node name="SeverityRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings" unique_id=708682623]
 layout_mode = 2
 
-[node name="SeverityLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow"]
+[node name="SeverityLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow" unique_id=961367288]
 layout_mode = 2
 text = "SEV "
 
-[node name="SeverityBar" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow"]
+[node name="SeverityBar" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow" unique_id=1619819062]
 layout_mode = 2
 
-[node name="Seg1" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
+[node name="Seg1" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar" unique_id=2027833145]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg2" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
+[node name="Seg2" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar" unique_id=125276475]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg3" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
+[node name="Seg3" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar" unique_id=1765100401]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg4" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
+[node name="Seg4" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar" unique_id=926032740]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg5" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar"]
+[node name="Seg5" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar" unique_id=916199320]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="DangerRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings"]
+[node name="DangerRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings" unique_id=1989420654]
 layout_mode = 2
 
-[node name="DangerLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/DangerRow"]
+[node name="DangerLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/DangerRow" unique_id=1014769673]
 layout_mode = 2
 text = "DNG "
 
-[node name="DangerBar" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings/DangerRow"]
+[node name="DangerBar" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings/DangerRow" unique_id=800588055]
 layout_mode = 2
 
-[node name="Seg1" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
+[node name="Seg1" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar" unique_id=1962630066]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg2" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
+[node name="Seg2" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar" unique_id=833247246]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg3" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
+[node name="Seg3" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar" unique_id=1223268024]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg4" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
+[node name="Seg4" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar" unique_id=976279296]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg5" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar"]
+[node name="Seg5" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/DangerRow/DangerBar" unique_id=436953644]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="ScaleRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings"]
+[node name="ScaleRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings" unique_id=1426924601]
 layout_mode = 2
 
-[node name="ScaleLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow"]
+[node name="ScaleLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow" unique_id=1181058660]
 layout_mode = 2
 text = "SCL "
 
-[node name="ScaleBar" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow"]
+[node name="ScaleBar" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow" unique_id=893765317]
 layout_mode = 2
 
-[node name="Seg1" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
+[node name="Seg1" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar" unique_id=617029906]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg2" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
+[node name="Seg2" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar" unique_id=117061219]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg3" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
+[node name="Seg3" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar" unique_id=1784514169]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg4" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
+[node name="Seg4" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar" unique_id=1984052008]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="Seg5" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar"]
+[node name="Seg5" type="ColorRect" parent="HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar" unique_id=87995171]
 custom_minimum_size = Vector2(20, 12)
 layout_mode = 2
 
-[node name="TypeRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings"]
+[node name="TypeRow" type="HBoxContainer" parent="HBoxContainer/LeftColumn/Ratings" unique_id=40566143]
 layout_mode = 2
 
-[node name="TypeLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/TypeRow"]
+[node name="TypeLabel" type="Label" parent="HBoxContainer/LeftColumn/Ratings/TypeRow" unique_id=2073117443]
 layout_mode = 2
 text = "TYPE: ---"
 
-[node name="RightColumn" type="Control" parent="HBoxContainer"]
+[node name="RightColumn" type="Control" parent="HBoxContainer" unique_id=828119326]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="DescriptionLabel" type="RichTextLabel" parent="HBoxContainer/RightColumn"]
-layout_mode = 2
+[node name="DescriptionLabel" type="RichTextLabel" parent="HBoxContainer/RightColumn" unique_id=590895952]
+layout_mode = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
