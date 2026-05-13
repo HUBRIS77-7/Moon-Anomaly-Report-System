@@ -279,7 +279,16 @@ var entries: Array[Dictionary] = [
 		"theme_tags":         [],
 		"exclusive_to_week":  "training",
 	},
-
+	
+	
+	# --------DAY 3; MEDICAL AND SECURITY-------
+	
+	
+	
+	
+	
+	
+	
 	# ── Add new calls below ───────────────────────────────────────────────────
 	# Training week calls: exclusive_to_week = "training", theme_tags = []
 	#

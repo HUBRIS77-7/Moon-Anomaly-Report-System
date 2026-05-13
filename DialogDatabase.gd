@@ -67,19 +67,55 @@ var sequences: Array[Dictionary] = [
 	},
 
 	# ── DAY 2 ─────────────────────────────────────────────────────────────────
-	# {
-	# 	"id":      "day_2_intro",
-	# 	"trigger": "day_start",
-	# 	"day":     2,
-	# 	"steps": [
-	# 		{
-	# 			"speaker":  "LUNA",
-	# 			"portrait": "",
-	# 			"text":     "Day two. The calls today will be a little more varied.",
-	# 			"choices":  []
-	# 		},
-	# 	]
-	# },
+{
+		"id":      "DAY2CHAT",
+		"trigger": "day_start",
+		"day":     2,
+		"steps": [
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Hello again! How was your sleep?",
+				"choices":  [
+					{ "text": "It was fine.", "id": "choice_1778658437994" },
+				],
+			},
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "You say that alot y'know?",
+				"choices":  [
+					{ "text": "Yes.", "id": "choice_1778658457253" },
+				],
+			},
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Anyhow, Today, our lovely Assistent General has made time out of his very busy schedule to come and have a call with you while he splices you into the General Call Network. He's a bit... much.",
+				"choices":  [
+					{ "text": "You do remember that I know him, right?", "id": "choice_1778658529808" },
+				],
+			},
+			{
+				"speaker":  "LUNA.",
+				"portrait": "",
+				"text":     "Yeah! Yeah, of course. I was just... reminding you.",
+				"choices":  [],
+			},
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Oh! And also, since you passed your first day with flying colors, you now have access to the station's break room. Just [TAB] out of your computer, and walk on over to enjoy a nice relaxing break room.",
+				"choices":  [],
+			},
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Have a wonderful day.",
+				"choices":  [],
+			}
+		]
+	},
 
 	# ── MANUAL SEQUENCES ──────────────────────────────────────────────────────
 	# Triggered by calling DialogManager.play("id") directly from any script.

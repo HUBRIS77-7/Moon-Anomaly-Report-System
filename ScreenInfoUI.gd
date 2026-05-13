@@ -6,6 +6,10 @@ const SEG_OFF_COLOR = Color(0.1, 0.1, 0.1)  # dark unlit segment
 const NOT_FOUND_COLOR = Color(0.9, 0.1, 0.1)
 const FONT_PATH := "res://Ac437_IBM_BIOS.ttf"
 
+const FONT_SIZE_LABEL := 16
+const FONT_SIZE_RTL   := 20
+const FONT_SIZE_NAME  := 16
+
 var _font: Font = null
 
 @onready var name_label: Label = $HBoxContainer/LeftColumn/NameLabel
@@ -36,7 +40,6 @@ var _font: Font = null
 	$HBoxContainer/LeftColumn/Ratings/ScaleRow/ScaleBar/Seg5,
 ]
 
-# Reference to ScreenPanelUI to push overflow text
 var panel_ui: Control = null
 
 func _ready() -> void:
@@ -46,42 +49,42 @@ func _ready() -> void:
 	clear_display()
 	await get_tree().process_frame
 
-	$HBoxContainer.position = Vector2.ZERO
+	$HBoxContainer.position = Vector2(12, 4)
 	$HBoxContainer.size = Vector2(480, 308)
 
 	$HBoxContainer/LeftColumn.position = Vector2.ZERO
-	$HBoxContainer/LeftColumn.size = Vector2(160, 308)
+	$HBoxContainer/LeftColumn.size = Vector2(130, 308)   # was 160
 	$HBoxContainer/LeftColumn/NameLabel.autowrap_mode = TextServer.AUTOWRAP_WORD
 	$HBoxContainer/LeftColumn/NameLabel.custom_minimum_size = Vector2(160, 0)
 
-	$HBoxContainer/LeftColumn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	$HBoxContainer/LeftColumn.size_flags_stretch_ratio = 1.0
+	$HBoxContainer/LeftColumn.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	$HBoxContainer/LeftColumn.custom_minimum_size = Vector2(140, 0)
+	
 	$HBoxContainer/RightColumn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	$HBoxContainer/RightColumn.size_flags_stretch_ratio = 1.0
 
-	# Right column as plain Control — no automatic layout
-	$HBoxContainer/RightColumn.position = Vector2(160, 0)
-	$HBoxContainer/RightColumn.size = Vector2(320, 308)
+	# Right column — clipped so text cannot escape the viewport into ScreenPanel
+	$HBoxContainer/RightColumn.position = Vector2(20, 0) # was 160
+	$HBoxContainer/RightColumn.size = Vector2(345, 308)   # was 320
 	$HBoxContainer/RightColumn.clip_contents = true
 
-	# Description fills right column exactly — hard capped
 	$HBoxContainer/RightColumn/DescriptionLabel.position = Vector2(4, 4)
-	$HBoxContainer/RightColumn/DescriptionLabel.size = Vector2(316, 292)
+	$HBoxContainer/RightColumn/DescriptionLabel.size = Vector2(310, 300)
 	$HBoxContainer/RightColumn/DescriptionLabel.scroll_active = false
-	$HBoxContainer/RightColumn/DescriptionLabel.clip_contents = false
+	$HBoxContainer/RightColumn/DescriptionLabel.clip_contents = true
 	$HBoxContainer/RightColumn/DescriptionLabel.autowrap_mode = TextServer.AUTOWRAP_WORD
 
 	_style_labels(self)
 
 func _style_labels(node: Node) -> void:
 	if node is Label:
+		var sz := FONT_SIZE_NAME if node == name_label else FONT_SIZE_LABEL
 		node.add_theme_color_override("font_color", Color.WHITE)
-		node.add_theme_font_size_override("font_size", 20)
+		node.add_theme_font_size_override("font_size", sz)
 		if _font:
 			node.add_theme_font_override("font", _font)
 	elif node is RichTextLabel:
 		node.add_theme_color_override("default_color", Color.WHITE)
-		node.add_theme_font_size_override("normal_font_size", 20)
+		node.add_theme_font_size_override("normal_font_size", FONT_SIZE_RTL)
 		if _font:
 			node.add_theme_font_override("normal_font", _font)
 	for child in node.get_children():
@@ -98,11 +101,12 @@ func _on_entry_changed(entry: Dictionary) -> void:
 	_populate(entry)
 
 func _populate(entry: Dictionary) -> void:
+	name_label.modulate = Color.WHITE
 	print("Populating with: ", entry["name"])
 	name_label.text = entry["name"]
 	number_label.text = "ENTRY #" + str(entry["id"])
-	type_label.text = "TYPE: " + AnomalyDatabase.get_category_name(entry["category"])
-	subtype_label.text = "SUB-TYPE: " + AnomalyDatabase.get_category_name(entry["type"])
+	type_label.text = "TYPE:\n" + AnomalyDatabase.get_category_name(entry["category"])
+	subtype_label.text = "SUB-TYPE:\n" + AnomalyDatabase.get_category_name(entry["type"])
 	_set_bar(severity_segs, entry["severity"])
 	_set_bar(danger_segs, entry["danger"])
 	_set_bar(scale_segs, entry["scale"])
