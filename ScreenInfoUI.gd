@@ -66,7 +66,7 @@ func _ready() -> void:
 
 	# Description fills right column exactly — hard capped
 	$HBoxContainer/RightColumn/DescriptionLabel.position = Vector2(4, 4)
-	$HBoxContainer/RightColumn/DescriptionLabel.size = Vector2(316, 300)
+	$HBoxContainer/RightColumn/DescriptionLabel.size = Vector2(316, 292)
 	$HBoxContainer/RightColumn/DescriptionLabel.scroll_active = false
 	$HBoxContainer/RightColumn/DescriptionLabel.clip_contents = false
 	$HBoxContainer/RightColumn/DescriptionLabel.autowrap_mode = TextServer.AUTOWRAP_WORD

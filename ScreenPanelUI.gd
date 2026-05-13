@@ -120,7 +120,7 @@ func _on_number_submitted(text: String) -> void:
 
 # Called by ScreenInfoUI to pass description overflow text
 func set_overflow(text: String) -> void:
-	description_overflow.text = text
+	description_overflow.text = "\n" + text if text.length() > 0 else ""
 	description_overflow.add_theme_color_override("default_color", Color.WHITE)
 	description_overflow.add_theme_font_size_override("normal_font_size", 16)
 	if _font:

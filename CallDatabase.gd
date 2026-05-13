@@ -159,7 +159,7 @@ var entries: Array[Dictionary] = [
 		"transcription":
 			"Hello… What is your name? Eh, doesn’t matter. You’re the new recruit for M.A.R.S I hear? Well, as you probably know from the training video I made, I’m James, the Assistant General. I run the Assistants' Union, and manage all non-specialized workers on the Lunar Surface. Because of this, we tend to run into a lot of problems, and due to the fact we aren’t specialized, we probably can’t solve them on our own. This is why the GENERAL category exists. You have access to some more anomalies now, and I’ve now patched you into the General Call Network. Have fun.",
 		"additional_details": "",
-		"correct_anomaly_id": 13,
+		"correct_anomaly_id": 16,
 		"tasks": ["Mark as #16/Complaint"],
 		"icon_direction":     Vector3(0.86, -0.49, -0.14),
 		"theme_tags":         [],
@@ -175,7 +175,7 @@ var entries: Array[Dictionary] = [
 		"transcription":
 			"Hi! I have a bit of a problem here. I was called out to this pipeline a bit north of Central, and while I was driving, my wheel froze up and the rover came to a stop. I don’t know what the problem is, but all my wheel wells are filled with tons of Regolith that seems to be frozen in place. If I can’t get there in the next two hours, they are going to demote me! Please help.",
 		"additional_details": "Access to Pipeline Icarus, a major fuel pipeline between Central Station and Aristoteles Station has been restricted to a Ice Meteor shower that was reported last night. ",
-		"correct_anomaly_id": 13,
+		"correct_anomaly_id": 34,
 		"tasks": [],
 		"icon_direction":     Vector3(0.86, -0.49, -0.14),
 		"theme_tags":         [],
@@ -191,7 +191,7 @@ var entries: Array[Dictionary] = [
 		"transcription":
 			"There’s this BUG! It’s EVERYWHERE. I can’t get rid of it, but I have to get rid of it. It’s in the walls, the floors, the ceiling, everywhere! And the ticking! It ticks. All it does is tick. Tick, Tick, Tick, Tick, Tick, Tick. That’s all it does!",
 		"additional_details": "",
-		"correct_anomaly_id": 13,
+		"correct_anomaly_id": 18,
 		"tasks": [],
 		"icon_direction":     Vector3(0.86, -0.49, -0.14),
 		"theme_tags":         [],
@@ -207,13 +207,78 @@ var entries: Array[Dictionary] = [
 		"transcription":
 			"I wish I didn’t have to do this, but my neighbors just keep… Well, not literally, but, y’know, banging. Like, the noise! Not the action! I just want to make that clear. The noise just doesn’t stop though. It’s night over here and… Let me show you. *Footsteps* Listen *Bang* *Bang* *Bang* *Bang* *Bang* *Bang* *Bang* *Bang* It’s been like that for the last 4 days. I don’t know what the hell they are doing up there, but it’s enough.",
 		"additional_details": "Yeah, that’s a real name - LUNA",
-		"correct_anomaly_id": 13,
+		"correct_anomaly_id": "42",
 		"tasks": [],
 		"icon_direction":     Vector3(0.86, -0.49, -0.14),
 		"theme_tags":         [],
 		"exclusive_to_week":  "training",
 	},
-
+	{
+		"id":                 12,
+		"day":                2,
+		"caller_name":        "Freezer Technician Holloway",
+		"caller_photo":       "",
+		"duration":           60.0,
+		"audio":              "",
+		"transcription": "Hey, this is Holloway of Ice-O's Freezer Division. I'm calling to report a issue with... tch. Station... 22's freezer. Damn thing fried a fuze a couple of days ago and nobody noticed until the smell starting leaking from inside the unit. I'd go in, but I can't handle the stench even with a mask on. Send some sort of... disposal team? Just send somebody.",
+		"additional_details": "",
+		"correct_anomaly_id": 6,
+		"tasks":              [],
+		"icon_direction":     Vector3(-0.61, 0.141, 0.78),
+		"theme_tags":         [],
+		"exclusive_to_week":  "training",
+	},
+	{
+		"id":                 13,
+		"day":                2,
+		"caller_name":        "Rig Assistant Michael",
+		"caller_photo":       "",
+		"duration":           60.0,
+		"audio":              "",
+		"transcription": "*Siren* Hello?! Is someone on the line? Do you guys even have mics at those stations? Doesn't matter. We just had a major incident happen, but I'm not sure what the hell it was. I was working at my station when I hear this loud, I don't know how to describe it, whirring noise, followed by the refinement tanks suddenly exploding. A propeller lodged itself into my window!",
+		"additional_details": "Drone V-09 of Capitol Mining Corporation has reported itself offline.",
+		"correct_anomaly_id": 20,
+		"tasks":              [],
+		"icon_direction":     Vector3(-0.61, 0.141, 0.78),
+		"theme_tags":         [],
+		"exclusive_to_week":  "training",
+	},
+	{
+		"id":                 14,
+		"day":                2,
+		"caller_name":        "Electrical Maintenance Unit DOE-77",
+		"caller_photo":       "",
+		"duration":           60.0,
+		"audio":              "",
+		"transcription":
+			"[CONNECTION ESTABLISHED]\n"
+			+ "[UNSTABLE VOLTAGE DETECTED]\n"
+			+ "[MINOR SYSTEM POWER DEDICATION: LOW]\n"
+			+ "[POWER GENERATION AT DAWN: LOW]\n"
+			+ "[EXPECTED GENERATION: HIGH]\n"
+			+ "[CONNECTION SEVERED]",
+		"additional_details": "",
+		"correct_anomaly_id": 37,
+		"tasks":              [],
+		"icon_direction":     Vector3(0.463, -0.706, 0.536),
+		"theme_tags":         [],
+		"exclusive_to_week":  "training",
+	},
+	{
+		"id":                 15,
+		"day":                2,
+		"caller_name":        "Assistent General James",
+		"caller_photo":       "",
+		"duration":           60.0,
+		"audio":              "",
+		"transcription": "Hello-. Oh. It's you. I was wondering if this would happen. Anyway, I'd like to lodge a complaint, but don't file it as one. This satelite station, the one they gave me as part of my contract to create the General Division is absolutely disgusting. I saw some rats the other day picking through a pile of garbage! Can you get someone down here to come clean all this, it's just... Ew.",
+		"additional_details": "",
+		"correct_anomaly_id": 7,
+		"tasks":              [],
+		"icon_direction":     Vector3(0.145, 0.628, 0.765),
+		"theme_tags":         [],
+		"exclusive_to_week":  "training",
+	},
 
 	# ── Add new calls below ───────────────────────────────────────────────────
 	# Training week calls: exclusive_to_week = "training", theme_tags = []
