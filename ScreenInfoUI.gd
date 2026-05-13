@@ -5,12 +5,14 @@ const SEG_ON_COLOR = Color(0.0, 0.9, 0.2)   # green lit segment
 const SEG_OFF_COLOR = Color(0.1, 0.1, 0.1)  # dark unlit segment
 const NOT_FOUND_COLOR = Color(0.9, 0.1, 0.1)
 const FONT_PATH := "res://Ac437_IBM_BIOS.ttf"
+
 var _font: Font = null
 
 @onready var name_label: Label = $HBoxContainer/LeftColumn/NameLabel
 @onready var number_label: Label = $HBoxContainer/LeftColumn/NumberLabel
 @onready var description_label: RichTextLabel = $HBoxContainer/RightColumn/DescriptionLabel
 @onready var type_label: Label = $HBoxContainer/LeftColumn/Ratings/TypeRow/TypeLabel
+@onready var subtype_label: Label = $HBoxContainer/LeftColumn/Ratings/SubTypeRow/SubTypeLabel
 
 @onready var severity_segs: Array = [
 	$HBoxContainer/LeftColumn/Ratings/SeverityRow/SeverityBar/Seg1,
@@ -40,6 +42,7 @@ var panel_ui: Control = null
 func _ready() -> void:
 	if ResourceLoader.exists(FONT_PATH):
 		_font = load(FONT_PATH)
+
 	clear_display()
 	await get_tree().process_frame
 
@@ -47,38 +50,28 @@ func _ready() -> void:
 	$HBoxContainer.size = Vector2(480, 308)
 
 	$HBoxContainer/LeftColumn.position = Vector2.ZERO
-	$HBoxContainer/LeftColumn.size = Vector2(240, 308)
+	$HBoxContainer/LeftColumn.size = Vector2(160, 308)
 	$HBoxContainer/LeftColumn/NameLabel.autowrap_mode = TextServer.AUTOWRAP_WORD
-	$HBoxContainer/LeftColumn/NameLabel.custom_minimum_size = Vector2(240, 0)
+	$HBoxContainer/LeftColumn/NameLabel.custom_minimum_size = Vector2(160, 0)
 
 	$HBoxContainer/LeftColumn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	$HBoxContainer/LeftColumn.size_flags_stretch_ratio = 1.0
 	$HBoxContainer/RightColumn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	$HBoxContainer/RightColumn.size_flags_stretch_ratio = 1.0
 
-	var spacer := Control.new()
-	spacer.custom_minimum_size = Vector2(0, 16)
-	$HBoxContainer/LeftColumn.add_child(spacer)
-	$HBoxContainer/LeftColumn.move_child(spacer, 1)
-
 	# Right column as plain Control — no automatic layout
-	$HBoxContainer/RightColumn.position = Vector2(240, 0)
-	$HBoxContainer/RightColumn.size = Vector2(240, 308)
+	$HBoxContainer/RightColumn.position = Vector2(160, 0)
+	$HBoxContainer/RightColumn.size = Vector2(320, 308)
 	$HBoxContainer/RightColumn.clip_contents = true
 
-	# Description fills right column — no scrolling, overflow goes to panel
-	$HBoxContainer/RightColumn/DescriptionLabel.position = Vector2(4, 32)
-	$HBoxContainer/RightColumn/DescriptionLabel.size = Vector2(236, 270)
+	# Description fills right column exactly — hard capped
+	$HBoxContainer/RightColumn/DescriptionLabel.position = Vector2(4, 4)
+	$HBoxContainer/RightColumn/DescriptionLabel.size = Vector2(316, 300)
 	$HBoxContainer/RightColumn/DescriptionLabel.scroll_active = false
-	$HBoxContainer/RightColumn/DescriptionLabel.clip_contents = true
+	$HBoxContainer/RightColumn/DescriptionLabel.clip_contents = false
 	$HBoxContainer/RightColumn/DescriptionLabel.autowrap_mode = TextServer.AUTOWRAP_WORD
 
 	_style_labels(self)
-
-	await get_tree().process_frame
-	await get_tree().process_frame
-	panel_ui._load_entry(1)
-
 
 func _style_labels(node: Node) -> void:
 	if node is Label:
@@ -94,7 +87,6 @@ func _style_labels(node: Node) -> void:
 	for child in node.get_children():
 		_style_labels(child)
 
-
 func connect_to_panel(panel: Control) -> void:
 	panel_ui = panel
 	panel.entry_changed.connect(_on_entry_changed)
@@ -109,7 +101,8 @@ func _populate(entry: Dictionary) -> void:
 	print("Populating with: ", entry["name"])
 	name_label.text = entry["name"]
 	number_label.text = "ENTRY #" + str(entry["id"])
-	type_label.text = "TYPE: " + AnomalyDatabase.get_category_name(entry["type"])
+	type_label.text = "TYPE: " + AnomalyDatabase.get_category_name(entry["category"])
+	subtype_label.text = "SUB-TYPE: " + AnomalyDatabase.get_category_name(entry["type"])
 	_set_bar(severity_segs, entry["severity"])
 	_set_bar(danger_segs, entry["danger"])
 	_set_bar(scale_segs, entry["scale"])
@@ -120,18 +113,16 @@ func _set_bar(segs: Array, value: int) -> void:
 		segs[i].color = SEG_ON_COLOR if i < value else SEG_OFF_COLOR
 
 func _set_description(full_text: String) -> void:
-	# Binary search: find how many words fit in the small top description box.
-	# Everything that doesn't fit is sent to the larger panel below.
 	description_label.scroll_active = false
 	description_label.clip_contents = true
 
-	var words := full_text.split(" ")
-	var lo := 0
-	var hi := words.size()
-	var best_fit := 0
+	var words = full_text.split(" ")
+	var lo = 0
+	var hi = words.size()
+	var best_fit = 0
 
 	while lo <= hi:
-		var mid := (lo + hi) / 2
+		var mid = (lo + hi) / 2
 		description_label.text = " ".join(words.slice(0, mid))
 		await get_tree().process_frame
 		await get_tree().process_frame
@@ -141,8 +132,8 @@ func _set_description(full_text: String) -> void:
 		else:
 			hi = mid - 1
 
-	var top_text      := " ".join(words.slice(0, best_fit)).strip_edges()
-	var overflow_text := " ".join(words.slice(best_fit)).strip_edges()
+	var top_text = " ".join(words.slice(0, best_fit)).strip_edges()
+	var overflow_text = " ".join(words.slice(best_fit)).strip_edges()
 
 	description_label.text = top_text
 	if panel_ui:
@@ -163,6 +154,7 @@ func clear_display() -> void:
 	name_label.modulate = Color.WHITE
 	number_label.text = ""
 	type_label.text = ""
+	subtype_label.text = ""
 	description_label.text = ""
 	_set_bar(severity_segs, 0)
 	_set_bar(danger_segs, 0)

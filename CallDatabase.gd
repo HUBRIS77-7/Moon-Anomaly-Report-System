@@ -147,6 +147,8 @@ var entries: Array[Dictionary] = [
 		"theme_tags":         [],
 		"exclusive_to_week":  "training",
 	},
+	
+	#---------------DAY 2-----------------
 {
 		"id":                 8,
 		"day":                2,

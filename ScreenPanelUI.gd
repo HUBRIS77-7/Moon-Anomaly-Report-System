@@ -61,7 +61,7 @@ func _style_labels(node: Node) -> void:
 
 func _style_scrollbar(rtl: RichTextLabel) -> void:
 	var scrollbar: VScrollBar = null
-	for child in rtl.get_children(true):  # true = include internal nodes
+	for child in rtl.get_children(true):
 		if child is VScrollBar:
 			scrollbar = child
 			break
@@ -87,6 +87,7 @@ func _style_scrollbar(rtl: RichTextLabel) -> void:
 	scrollbar.add_theme_stylebox_override("grabber_highlight", grabber_hover)
 	scrollbar.add_theme_stylebox_override("grabber_pressed", grabber_hover)
 	scrollbar.add_theme_constant_override("scroll_speed", 120)
+	scrollbar.value = 0  # ← reset to top directly on the VScrollBar node
 
 
 func _load_entry(id: int) -> void:
@@ -124,6 +125,7 @@ func set_overflow(text: String) -> void:
 	description_overflow.add_theme_font_size_override("normal_font_size", 16)
 	if _font:
 		description_overflow.add_theme_font_override("normal_font", _font)
-	# Style the scrollbar now that content exists to scroll
+	await get_tree().process_frame
+	await get_tree().process_frame
 	await get_tree().process_frame
 	_style_scrollbar(description_overflow)

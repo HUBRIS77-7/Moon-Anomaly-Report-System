@@ -432,7 +432,7 @@ var entries: Array[Dictionary] = [
 		"exclusive_to_week": "",
 	},
 	{
-		"Id": 30,
+		"id": 30,
 		"name": "Minor System Malfunctions",
 		"category": Category.GENERAL,
 		"severity": 1,
@@ -473,6 +473,113 @@ var entries: Array[Dictionary] = [
 		"accessible": true,
 		"exclusive_to_week": "",
 	},
+	{
+		"id": 34,
+		"name": "Regolith Freeze-Up",
+		"category": Category.GENERAL,
+		"severity": 2,
+		"danger": 3,
+		"scale": 1,
+		"type": Category.GENERAL,
+		"description": "Regolith Freeze-Up is a type of thermal occurance that often manifests itself after a shower of ice-packed meteors. When exposed to large amounts of pressure, such as heavy loads or cars, the frozen regolith can burst into thousands of shards, then quickly resolidify, often trapping people and vehicles in it's wake. \\n It is advised to not tamper with the regolith post burst, as  \\n Due to the record high occurances of this anomaly as of late, no employers are allowed to demerit employees for lateness caused by Freeze-Ups. ",
+		"icon_path": "",
+		"unlocked_on_day": 2,
+		"accessible": true,
+		"exclusive_to_week": "",
+	},
+	{
+		"id": 35,
+		"name": "Lunar Psychosis",
+		"category": Category.MEDICAL,
+		"severity": 3,
+		"danger": 3,
+		"scale": 2,
+		"type": Category.MEDICAL,
+		"description": "Lunar Psychosis is a common psychological side-effect of long-term habitation on the moon. Since humanity has only recently attained the ability for mass settlement of the moon, those who do stay on the moon aren't prepared for the psychological stressors that lunar life comes with. \\n Those who especially cannot cope can suffer Lunar Psychosis, which, as the name implies, is a psychotic break in relation to the moon. Unlike Lunar Magnificance, Lunar Psychosis is often noted by the sufferer's disire to leave the Moon and return to where they came, Earth or not.",
+		"icon_path": "",
+		"unlocked_on_day": 3,
+		"accessible": true,
+		"exclusive_to_week": "",
+	},
+	{
+		"id": 36,
+		"name": "Omitted Signs",
+		"category": Category.ANOMALOUS,
+		"severity": 3,
+		"danger": 4,
+		"scale": 3,
+		"type": Category.ANOMALOUS,
+		"description": "Omitted Signs refers to any and all signs not present in the Lunar Signage Database. Those reporting Omitted Signs typically describe said signs as containing illogical information, omnious information, or personal information. \\n Individuals are advised to not travel on any path that a Omitted Sign is on. If a individual has already begun to travel on a path with an Omitted Sign, submit instead as #56.",
+		"icon_path": "",
+		"unlocked_on_day": 5,
+		"accessible": true,
+		"exclusive_to_week": "",
+	},
+	{
+		"id": 37,
+		"name": "Solar Panel Misalignment",
+		"category": Category.GENERAL,
+		"severity": 3,
+		"danger": 1,
+		"scale": 2,
+		"type": Category.GENERAL,
+		"description": "Solar Panel Misalignment is a common mechanical aliment of many automatically alligned solar panels. Due to the constant exposure to radiation, electronic systems have a tendency to malfunction slightly, which can cause the solar panels to misalign. While this isn't a major issue in the beginning, over time, this can cause major flucuations in power. \\n The most common symptom of Solar Panel Misalignment, besides the obvious visual misalignment of the solar panels, are power fluclations at both dusk and dawn, decreased available power dedicated towards minor systems, and even short-term blackouts due to improper battery charging. \\n To fix misalignment, please swap out the old motor control board within the solar panel to a replacement one.",
+		"icon_path": "",
+		"unlocked_on_day": 2,
+		"accessible": true,
+		"exclusive_to_week": "",
+	},
+	{
+		"id": 38,
+		"name": "Ice Geyser",
+		"category": Category.GEOLOGICAL,
+		"severity": 2,
+		"danger": 2,
+		"scale": 1,
+		"type": Category.GEOLOGICAL,
+		"description": "Ice Geysers are an uncommon Geological anomaly that can occur across the lunar surface, though more commonly in Mare Frigoris, Oceanus Procellarum, and Mare Imbrium. Ice Geysers are caused due to the sudden formation of liquid water pockets, often due to above-average exposure to sunlight, that suddenly burst out into space due to the pressure difference. \\n This is different from Regolith Freeze-Ups, as these geysers often explode much more violently, and spread large amounts of sharp ice shards around the area of detonation.",
+		"icon_path": "",
+		"unlocked_on_day": 1,
+		"accessible": true,
+		"exclusive_to_week": "",
+	},
+		{
+		"id": 39,
+		"name": "Cargo Accident",
+		"category": Category.INDUSTRIAL,
+		"severity": 2,
+		"danger": 1,
+		"scale": 3,
+		"type": Category.INDUSTRIAL,
+		"description": "Cargo Accidents are a type of industrial accident that can occasionally occur on the Lunar Surface. However, due to the large scale automation of transportation, there is little chance for any harm to befall a individual. Cargo Accidents are quite obvious to diagnose, but in order to qualify as a Cargo Accident, no human party must be at fault. \\n If a human party caused the accident, accidently, please file as a #40. \\n If a human party caused the accident intentionally, please file as a #51. \\n If a non-human party caused the accident, please file as a #61.",
+		"icon_path": "",
+		"unlocked_on_day": 1,
+		"accessible": true,
+		"exclusive_to_week": "",
+	},
+	{
+		"id": 40,
+		"name": "Accidental EMP Blast",
+		"category": Category.SCIENTIFIC,
+		"severity": 2,
+		"danger": 3,
+		"scale": 5,
+		"type": Category.SCIENTIFIC,
+		"description": "Accidental EMP Blasts are a major type of accident, and should be treated as such. In most cases, you will receive the report of a Accidental EMP Blast after the fact, this does not make the situation any less urgent. The calls you receive after a Accidental EMP Blast are much more important than the blast itself. The caller will usually indicate that one has happened. \\n If the caller manages to make contact before or during the blast, but does not indicate, the sudden disconnect should indicate it as well. You can also check the Lunar Power Grid Network to cross-reference if a power outage has occured.",
+		"icon_path": "",
+		"unlocked_on_day": 1,
+		"accessible": true,
+		"exclusive_to_week": "",
+	},
+	
+
+
+
+
+
+
+
+
 
 
 ]
@@ -507,10 +614,18 @@ func get_entry(id: int) -> Dictionary:
 			return entry
 	return {"status": NOT_FOUND}
 
+func _is_entry_navigable(entry: Dictionary) -> bool:
+	if not entry.get("accessible", true):
+		return false
+	var exclusive_week: String = entry.get("exclusive_to_week", "")
+	if exclusive_week != "" and exclusive_week != GameState.current_week_id:
+		return false
+	return true
+
 func get_next_id(current_id: int, direction: int, category: Category) -> int:
 	var valid_ids: Array[int] = []
 	for entry in entries:
-		if not _is_entry_visible(entry):
+		if not _is_entry_navigable(entry):  # <-- changed from _is_entry_visible
 			continue
 		if category == Category.ALL or entry["category"] == category:
 			valid_ids.append(entry["id"])
