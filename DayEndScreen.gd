@@ -115,6 +115,7 @@ func _recentre_vbox() -> void:
 	_vbox.position = ((_bg.size - _vbox.size) * 0.5).floor()
 
 func _on_day_ended(day_number: int, correct: int, total: int, credits_earned: int) -> void:
+	# Stash the data so we can display it after dialog finishes
 	var pct := 0.0
 	if total > 0:
 		pct = (float(correct) / float(total)) * 100.0
@@ -126,9 +127,25 @@ func _on_day_ended(day_number: int, correct: int, total: int, credits_earned: in
 	_total_label.text  = "LC  %d" % GameState.lunar_credits
 	_next_btn.text     = "END WEEK  >" if day_number >= GameState.DAYS_PER_WEEK else "NEXT DAY  >"
 
-	show()
-	_recentre_vbox.call_deferred()
-	_tick_up_credits(credits_earned)
+	# Check for a day_end dialog before showing the screen
+	var day_end_sequences := DialogDatabase.get_by_trigger("day_end", day_number)
+	if not day_end_sequences.is_empty():
+		# Play the first match and wait for it to finish
+		var seq_id: String = day_end_sequences[0].get("id", "")
+		DialogManager.play(seq_id)
+		# One-shot connection: show day end screen only after dialog completes
+		DialogManager.dialog_finished.connect(
+			func(_finished_id: String) -> void:
+				show()
+				_recentre_vbox.call_deferred()
+				_tick_up_credits(credits_earned),
+			CONNECT_ONE_SHOT
+		)
+	else:
+		# No dialog for this day — show immediately as before
+		show()
+		_recentre_vbox.call_deferred()
+		_tick_up_credits(credits_earned)
 
 
 func _tick_up_credits(target: int) -> void:

@@ -116,6 +116,91 @@ var sequences: Array[Dictionary] = [
 			}
 		]
 	},
+	
+	#END DIALOG
+	
+	{
+		"id":      "Day2End",
+		"trigger": "day_end",
+		"day":     2,
+		"steps": [
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Congrats, you finished your first day! Your credits will be deposited into your account after you log out from your CRATER.",
+				"choices":  [
+					{ "text": "Cool.", "id": "1cool" },
+				],
+			},
+			{
+				"speaker":  "LUNA.",
+				"portrait": "",
+				"text":     "Are you okay?",
+				"choices":  [
+					{ "text": "What?", "id": "1what" },
+				],
+			},
+			{
+				"speaker":  "LUNA.",
+				"portrait": "",
+				"text":     "I swear you used to be more... joyous... Y'know. Is something wrong? Are your accommodations not pleasing to you? I know the bed isn't the greatest, but our budget hasn't exactly gotten bigger. ",
+				"choices":  [
+					{ "text": "It's fine, LUNA.", "id": "1its_fine" },
+				],
+			},
+			{
+				"speaker":  "LUNA.",
+				"portrait": "",
+				"text":     "Okay. Uh, once again, the credits will be deposited after you log out. \n \nGoodnight.",
+				"choices":  [],
+			},
+		]
+	},
+	
+	
+	
+	# --------------DAY 3 MEDICAL AND SECURITY--------------
+		{
+		"id":      "LUNA-MEDICAL-SECURITY INTRO",
+		"trigger": "day_start",
+		"day":     3,
+		"steps": [
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Good morning! Today, as procedure states, you are to meet the head of both the Security and Medical Department. While you were gone, they consolidated the position into one person. They decided to meet you over our communication link instead of a call. I've put them on hold for you.",
+				"choices":  [
+					{ "text": "Thanks.", "id": "1thanks" },
+				],
+			},
+			{
+				"speaker":  "MEDSEC Head; Patrica Anderson",
+				"portrait": "",
+				"text":     "I see you've returned from your vacation, Mr No Name. You finally decide to get one while you were down on Venus?",
+				"choices":  [
+					{ "text": "Good morning, Patrica", "id": "1morningpatrica" },
+				],
+			},
+			{
+				"speaker":  "MEDSEC Head; Patrica Anderson",
+				"portrait": "",
+				"text":     "That was just cold. How was your vacation anyway? I've heard good things about that little resort, but I've never had the chance to go because I'm actually important to daily life on the Moon. You relax at the pools? Went on a slide? Whatever you do on that god-forsaken planet?",
+				"choices":  [
+					{ "text": "It was fine, Patrica", "id": "1_it_was_fine_pat" },
+					{ "text": "Terrible, actually.", "id": "1_terrible" },
+					{ "text": "They don't have pools.", "id": "no pools" },
+				],
+			},
+			{
+				"speaker":  "MEDSEC Head; Patrica Anderson",
+				"portrait": "",
+				"text":     "I don't care! *laughter* \n \n Anyhow, I've patched you into the security and medical network, and gave you permission to access our more important files. Toodles, little man.",
+				"choices":  [],
+			},
+		]
+	},
+	
+	
 
 	# ── MANUAL SEQUENCES ──────────────────────────────────────────────────────
 	# Triggered by calling DialogManager.play("id") directly from any script.
