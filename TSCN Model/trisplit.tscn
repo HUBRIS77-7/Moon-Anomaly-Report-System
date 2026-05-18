@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bhs4eq345erh2"]
+
+[ext_resource type="PackedScene" uid="uid://ctgwkg4rrpehf" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Trisplit.glb" id="1_nsso0"]
+
+[node name="Trisplit" unique_id=1594440203 instance=ExtResource("1_nsso0")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cube_001" parent_id_path=PackedInt32Array(198420614) index="0" unique_id=879034931]
+transform = Transform3D(1.8528352, 0, 0, 0, 13.082717, 0, 0, 0, 1, 0, -2.9597645, 0)
+light_color = Color(0.8156863, 0.9098039, 1, 1)
+light_energy = 2.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cube_002" parent_id_path=PackedInt32Array(141666284) index="0" unique_id=103162470]
+transform = Transform3D(1.8528352, 0, 0, 0, 13.082717, 0, 0, 0, 1, 0, -2.9597645, 0)
+light_color = Color(0.8156863, 0.9098039, 1, 1)
+light_energy = 2.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cube_003" parent_id_path=PackedInt32Array(136744196) index="0" unique_id=878235376]
+transform = Transform3D(1.8528352, 0, 0, 0, 13.082717, 0, 0, 0, 1, 0, -2.9597645, 0)
+light_color = Color(0.8156863, 0.9098039, 1, 1)
+light_energy = 2.0

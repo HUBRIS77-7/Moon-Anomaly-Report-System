@@ -27,11 +27,11 @@
 [ext_resource type="PackedScene" uid="uid://n5p4y8mns38b" path="res://ScreenIconUI.tscn" id="15_5yptt"]
 [ext_resource type="PackedScene" uid="uid://dqcsr7o68noaf" path="res://NEWLSHAPE.tscn" id="15_fl3ci"]
 [ext_resource type="PackedScene" uid="uid://dn2lesacsnura" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Fridge.glb" id="15_yfue1"]
-[ext_resource type="PackedScene" uid="uid://ctgwkg4rrpehf" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Trisplit.glb" id="16_20wcy"]
 [ext_resource type="PackedScene" uid="uid://ca72rwivjwym8" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/BreakroomTable.glb" id="16_sxxcg"]
 [ext_resource type="PackedScene" uid="uid://bf6wm1l108tqn" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Couch.glb" id="17_hoxha"]
 [ext_resource type="PackedScene" uid="uid://pdxtb8oe0n0t" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/TV.glb" id="18_d7nsw"]
 [ext_resource type="PackedScene" uid="uid://bh0wesn37jmpl" path="res://Observatory.tscn" id="25_20wcy"]
+[ext_resource type="PackedScene" uid="uid://bhs4eq345erh2" path="res://TSCN Model/trisplit.tscn" id="32_20wcy"]
 
 [sub_resource type="Environment" id="Environment_nhxhy"]
 ambient_light_source = 2
@@ -118,7 +118,6 @@ ding_sound = ExtResource("8_6073h")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Props" unique_id=1036492828]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0205951, 9.53674e-07, -0.0050354)
-visible = false
 material_override = SubResource("ShaderMaterial_kjgfg")
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_5kih8")
@@ -178,9 +177,6 @@ transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.60
 
 [node name="OfficeMainMoonHallway" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=490763380 instance=ExtResource("14_kokif")]
 transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 5.619, 0.165, -17.4)
-
-[node name="Trisplit" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1757542427 instance=ExtResource("16_20wcy")]
-transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, -26.29353, 0.36838436, -39.021595)
 
 [node name="BreakRoom2" type="Node" parent="SubViewportContainer/SubViewport/Props" unique_id=999146065]
 
@@ -300,3 +296,6 @@ render_target_update_mode = 4
 [node name="ScreenIconUI" parent="SubViewportContainer/ScreenViewports/IconViewport" unique_id=1476380082 instance=ExtResource("15_5yptt")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=419465261]
+
+[node name="Trisplit" parent="." unique_id=1594440203 instance=ExtResource("32_20wcy")]
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.291, 0.356, -39.03)
