@@ -32,6 +32,7 @@
 [ext_resource type="PackedScene" uid="uid://pdxtb8oe0n0t" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/TV.glb" id="18_d7nsw"]
 [ext_resource type="PackedScene" uid="uid://bh0wesn37jmpl" path="res://Observatory.tscn" id="25_20wcy"]
 [ext_resource type="PackedScene" uid="uid://bhs4eq345erh2" path="res://TSCN Model/trisplit.tscn" id="32_20wcy"]
+[ext_resource type="PackedScene" uid="uid://ci3w6oc27ipxm" path="res://TSCN Model/bedroom.tscn" id="33_tqn76"]
 
 [sub_resource type="Environment" id="Environment_nhxhy"]
 ambient_light_source = 2
@@ -99,7 +100,7 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6.4892
 [node name="Props" type="Node" parent="SubViewportContainer/SubViewport" unique_id=875008838]
 
 [node name="Testsurface" parent="SubViewportContainer/SubViewport/Props" unique_id=260700 instance=ExtResource("2_7efjl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200.452, -0.8, -230.72)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200.452, -0.94, -230.72)
 
 [node name="COMPUTER3D2" parent="SubViewportContainer/SubViewport/Props" unique_id=123903390 instance=ExtResource("1_kjgfg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00528, 1.12069, -10.2522)
@@ -299,3 +300,12 @@ render_target_update_mode = 4
 
 [node name="Trisplit" parent="." unique_id=1594440203 instance=ExtResource("32_20wcy")]
 transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.291, 0.356, -39.03)
+
+[node name="MoonHallway" parent="." unique_id=1973627926 instance=ExtResource("13_yepn8")]
+transform = Transform3D(4.371139e-08, -3.821371e-15, 1, -8.742278e-08, -1, 0, 1, -8.742278e-08, -4.371139e-08, -28.356543, 0.2862531, -42.072697)
+
+[node name="MoonHallway2" parent="." unique_id=1889485238 instance=ExtResource("13_yepn8")]
+transform = Transform3D(4.371139e-08, -3.821371e-15, 1, -8.742278e-08, -1, 0, 1, -8.742278e-08, -4.371139e-08, -30.546558, 0.2862531, -42.072697)
+
+[node name="Bedroom" parent="." unique_id=1586709765 instance=ExtResource("33_tqn76")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -35.157, 1.639, -44.334)

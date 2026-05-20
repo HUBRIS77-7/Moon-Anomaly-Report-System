@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://ci3w6oc27ipxm"]
+
+[ext_resource type="PackedScene" uid="uid://bb5gv1hvp6vhr" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Bedroom.glb" id="1_iw0c1"]
+
+[node name="Bedroom" unique_id=1627274525 instance=ExtResource("1_iw0c1")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cube" parent_id_path=PackedInt32Array(822941960) index="0" unique_id=1144205369]
+omni_range = 10.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cube_001" parent_id_path=PackedInt32Array(1876166487) index="0" unique_id=370835552]
+omni_range = 10.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cube_002" parent_id_path=PackedInt32Array(1088731966) index="0" unique_id=1658520740]
+omni_range = 10.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cube_003" parent_id_path=PackedInt32Array(751516413) index="0" unique_id=172097352]
+omni_range = 10.0
