@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://b0igj4h1h2rw7"]
+
+[ext_resource type="PackedScene" uid="uid://bj8v8px6wp862" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Lamp.glb" id="1_bekw5"]
+[ext_resource type="Script" uid="uid://d1ouf1kkmqtn4" path="res://lamp.gd" id="2_uno5e"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vxcd3"]
+size = Vector3(1.6946106, 1, 1)
+
+[node name="Lamp" unique_id=443373394 node_paths=PackedStringArray("light", "interact_area") instance=ExtResource("1_bekw5")]
+script = ExtResource("2_uno5e")
+light = NodePath("Light/OmniLight3D")
+interact_area = NodePath("Area3D")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Light" parent_id_path=PackedInt32Array(755149544) index="1" unique_id=1901193557]
+
+[node name="Area3D" type="Area3D" parent="." index="2" unique_id=1934710370]
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0" unique_id=513799977]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3473053, 0, 0)
+shape = SubResource("BoxShape3D_vxcd3")

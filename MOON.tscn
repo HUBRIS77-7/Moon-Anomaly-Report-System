@@ -31,8 +31,17 @@
 [ext_resource type="PackedScene" uid="uid://bf6wm1l108tqn" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Couch.glb" id="17_hoxha"]
 [ext_resource type="PackedScene" uid="uid://pdxtb8oe0n0t" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/TV.glb" id="18_d7nsw"]
 [ext_resource type="PackedScene" uid="uid://bh0wesn37jmpl" path="res://Observatory.tscn" id="25_20wcy"]
+[ext_resource type="PackedScene" uid="uid://t7ucgkhchnu1" path="res://industrial_lights.tscn" id="27_4y5ld"]
+[ext_resource type="PackedScene" uid="uid://duvwv56w7soro" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Nightstand.glb" id="28_m7dmo"]
+[ext_resource type="PackedScene" uid="uid://b0igj4h1h2rw7" path="res://lamp.tscn" id="29_6isnt"]
+[ext_resource type="PackedScene" uid="uid://c2tepttwasueo" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Dresser.glb" id="31_oximj"]
+[ext_resource type="PackedScene" uid="uid://cavohwi30315w" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Adaptor.glb" id="32_6vlk6"]
 [ext_resource type="PackedScene" uid="uid://bhs4eq345erh2" path="res://TSCN Model/trisplit.tscn" id="32_20wcy"]
 [ext_resource type="PackedScene" uid="uid://ci3w6oc27ipxm" path="res://TSCN Model/bedroom.tscn" id="33_tqn76"]
+[ext_resource type="PackedScene" uid="uid://bpp0dgsuo3o3s" path="res://garage_workshop.tscn" id="34_4y5ld"]
+[ext_resource type="PackedScene" uid="uid://uprmdfyn1yj3" path="res://floating_lantern_garage.tscn" id="34_e1g1q"]
+[ext_resource type="PackedScene" uid="uid://cor2t5woftg6p" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/BED.glb" id="34_kyosh"]
+[ext_resource type="PackedScene" uid="uid://bfcgdp40a0xwq" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Waredrobe.glb" id="42_kpa70"]
 
 [sub_resource type="Environment" id="Environment_nhxhy"]
 ambient_light_source = 2
@@ -100,7 +109,7 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6.4892
 [node name="Props" type="Node" parent="SubViewportContainer/SubViewport" unique_id=875008838]
 
 [node name="Testsurface" parent="SubViewportContainer/SubViewport/Props" unique_id=260700 instance=ExtResource("2_7efjl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200.452, -0.94, -230.72)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200.452, -1.3, -230.72)
 
 [node name="COMPUTER3D2" parent="SubViewportContainer/SubViewport/Props" unique_id=123903390 instance=ExtResource("1_kjgfg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.00528, 1.12069, -10.2522)
@@ -153,22 +162,22 @@ transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.60
 transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.357, -16.619179)
 
 [node name="MoonHallway5" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1491804426 instance=ExtResource("13_yepn8")]
-transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.290228, 0.357, -26.141632)
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.290228, 0.22791195, -26.141632)
 
 [node name="MoonHallway6" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1479258772 instance=ExtResource("13_yepn8")]
-transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.290228, 0.357, -28.333292)
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.29, 0.228, -28.333)
 
 [node name="MoonHallway7" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=629127804 instance=ExtResource("13_yepn8")]
-transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.290228, 0.357, -30.267076)
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.29, 0.228, -30.267)
 
 [node name="MoonHallway8" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=599069898 instance=ExtResource("13_yepn8")]
-transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.290228, 0.357, -32.443947)
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.29, 0.228, -32.444)
 
 [node name="MoonHallway9" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=8412172 instance=ExtResource("13_yepn8")]
-transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.290228, 0.357, -34.641384)
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.29, 0.228, -34.641)
 
 [node name="MoonHallway10" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=232572224 instance=ExtResource("13_yepn8")]
-transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.290228, 0.357, -36.846672)
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.290228, 0.228, -36.846672)
 
 [node name="MoonHallway3" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1326738635 instance=ExtResource("13_yepn8")]
 transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.357, -16.619179)
@@ -178,6 +187,27 @@ transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.60
 
 [node name="OfficeMainMoonHallway" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=490763380 instance=ExtResource("14_kokif")]
 transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 5.619, 0.165, -17.4)
+
+[node name="Trisplit" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1594440203 instance=ExtResource("32_20wcy")]
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.291, 0.228, -39.03)
+
+[node name="MoonHallway11" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1973627926 instance=ExtResource("13_yepn8")]
+transform = Transform3D(4.371139e-08, -3.821371e-15, 1, -8.742278e-08, -1, 0, 1, -8.742278e-08, -4.371139e-08, -28.356543, 0.228, -42.072697)
+
+[node name="MoonHallway12" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1889485238 instance=ExtResource("13_yepn8")]
+transform = Transform3D(4.371139e-08, -3.821371e-15, 1, -8.742278e-08, -1, 0, 1, -8.742278e-08, -4.371139e-08, -30.546558, 0.228, -42.072697)
+
+[node name="MoonHallway13" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=669058960 instance=ExtResource("13_yepn8")]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, -26.29, 0.224, -45.542)
+
+[node name="MoonHallway14" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=694963266 instance=ExtResource("13_yepn8")]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, -26.29, 0.224, -47.71684)
+
+[node name="MoonHallway15" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1021681554 instance=ExtResource("13_yepn8")]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, -26.29, 0.224, -49.88488)
+
+[node name="MoonHallway16" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=239617751 instance=ExtResource("13_yepn8")]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, -26.29, 0.224, -52.091793)
 
 [node name="BreakRoom2" type="Node" parent="SubViewportContainer/SubViewport/Props" unique_id=999146065]
 
@@ -243,11 +273,39 @@ shadow_enabled = true
 shadow_blur = 0.5
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/Lights" unique_id=1505821181]
-transform = Transform3D(1, 0, 0, 0, 0.8597988, 0.51063293, 0, -0.51063293, 0.8597988, -276.5558, 141.41414, -209.38472)
+transform = Transform3D(1, 0, 0, 0, -0.62971365, 0.7768273, 0, -0.7768273, -0.62971365, 51.455673, 141.41414, -209.38472)
 light_energy = 2.5
 shadow_enabled = true
-shadow_blur = 0.0
+shadow_bias = 0.375
+shadow_normal_bias = 0.0
+shadow_blur = 0.176
 sky_mode = 1
+
+[node name="Bedroom" type="Node" parent="SubViewportContainer/SubViewport" unique_id=400170277]
+
+[node name="BED" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=1397685515 instance=ExtResource("34_kyosh")]
+transform = Transform3D(-6.556708e-08, 0, 1.5, 0, 1.5, 0, -1.5, 0, -6.556708e-08, -34.755352, 0.64737934, -47.15847)
+
+[node name="Bedroom" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=1586709765 instance=ExtResource("33_tqn76")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -35.157, 1.6725136, -44.334)
+
+[node name="Nightstand2" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=1941492507 instance=ExtResource("28_m7dmo")]
+transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, -33.101326, 0.022, -48.331207)
+
+[node name="Nightstand" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=1826753340 instance=ExtResource("28_m7dmo")]
+transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, -36.441895, 0.02162602, -48.27079)
+
+[node name="Lamp2" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=443373394 instance=ExtResource("29_6isnt")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -32.981552, 0.69240135, -48.315773)
+
+[node name="Lamp" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=1141163476 instance=ExtResource("29_6isnt")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -36.524113, 0.69137585, -48.234665)
+
+[node name="Dresser" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=1011310956 instance=ExtResource("31_oximj")]
+transform = Transform3D(0.014328661, 0, 0.99989736, 0, 1, 0, -0.99989736, 0, 0.014328661, -34.44488, 0.5073751, -40.45258)
+
+[node name="TV" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=448624154 instance=ExtResource("18_d7nsw")]
+transform = Transform3D(1.9106855e-15, -4.3711392e-08, 1.0000001, -1, -4.3711392e-08, 0, 4.371139e-08, -1.0000001, -4.3711392e-08, -34.807014, 2.1415837, -40.597427)
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="SubViewportContainer/SubViewport" unique_id=1743543267 node_paths=PackedStringArray("camera", "terminal_manager")]
 script = ExtResource("13_5yptt")
@@ -258,6 +316,20 @@ eye_height = 0.9
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/CharacterBody3D" unique_id=692842945]
 shape = SubResource("CapsuleShape3D_yepn8")
+
+[node name="GarageWorkshop" type="Node" parent="SubViewportContainer/SubViewport" unique_id=1612927745]
+
+[node name="Adaptor" parent="SubViewportContainer/SubViewport/GarageWorkshop" unique_id=2096015101 instance=ExtResource("32_6vlk6")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -26.304668, 0.8942586, -52.577854)
+
+[node name="GarageWorkshop" parent="SubViewportContainer/SubViewport/GarageWorkshop" unique_id=600910874 instance=ExtResource("34_4y5ld")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -26.177, -0.77, -52.26)
+
+[node name="Floating Lantern Garage" parent="SubViewportContainer/SubViewport/GarageWorkshop" unique_id=5192719 instance=ExtResource("34_e1g1q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.368916, 5.025205, -61.977474)
+
+[node name="Floating Lantern Garage2" parent="SubViewportContainer/SubViewport/GarageWorkshop" unique_id=2071541852 instance=ExtResource("34_e1g1q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.883433, 5.025205, -61.977474)
 
 [node name="ScreenViewports" type="Node" parent="SubViewportContainer" unique_id=714134518]
 script = ExtResource("12_fl3ci")
@@ -298,14 +370,14 @@ render_target_update_mode = 4
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=419465261]
 
-[node name="Trisplit" parent="." unique_id=1594440203 instance=ExtResource("32_20wcy")]
-transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.291, 0.356, -39.03)
+[node name="IndustrialLights" parent="." unique_id=421634905 instance=ExtResource("27_4y5ld")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -16.577663, 1.7593775, -57.019703)
 
-[node name="MoonHallway" parent="." unique_id=1973627926 instance=ExtResource("13_yepn8")]
-transform = Transform3D(4.371139e-08, -3.821371e-15, 1, -8.742278e-08, -1, 0, 1, -8.742278e-08, -4.371139e-08, -28.356543, 0.2862531, -42.072697)
+[node name="IndustrialLights2" parent="." unique_id=1873854582 instance=ExtResource("27_4y5ld")]
+transform = Transform3D(-1, 8.742278e-08, -3.821371e-15, 0, -4.371139e-08, -1, -8.742278e-08, -1, 4.371139e-08, -9.946106, 3.6786819, -53.878643)
 
-[node name="MoonHallway2" parent="." unique_id=1889485238 instance=ExtResource("13_yepn8")]
-transform = Transform3D(4.371139e-08, -3.821371e-15, 1, -8.742278e-08, -1, 0, 1, -8.742278e-08, -4.371139e-08, -30.546558, 0.2862531, -42.072697)
+[node name="IndustrialLights3" parent="." unique_id=1825343583 instance=ExtResource("27_4y5ld")]
+transform = Transform3D(-1, 8.742278e-08, -3.821371e-15, 0, -4.371139e-08, -1, -8.742278e-08, -1, 4.371139e-08, -15.610889, 3.6786819, -53.878643)
 
-[node name="Bedroom" parent="." unique_id=1586709765 instance=ExtResource("33_tqn76")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -35.157, 1.639, -44.334)
+[node name="Waredrobe" parent="." unique_id=453693293 instance=ExtResource("42_kpa70")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -37.00072, 1.1566948, -40.616245)

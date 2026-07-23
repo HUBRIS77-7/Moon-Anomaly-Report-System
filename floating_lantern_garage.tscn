@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://uprmdfyn1yj3"]
+
+[ext_resource type="PackedScene" uid="uid://bni5gdrv0plk3" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Floating Lantern Garage.glb" id="1_jdmdd"]
+
+[node name="Floating Lantern Garage" unique_id=5192719 instance=ExtResource("1_jdmdd")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cube" parent_id_path=PackedInt32Array(1618430912) index="0" unique_id=560498151]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0172796, 0, 0)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Cube" parent_id_path=PackedInt32Array(1618430912) index="1" unique_id=720135786]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0171351, 0, 0)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="Cube" parent_id_path=PackedInt32Array(1618430912) index="2" unique_id=1859790320]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002928853, 0, 1.056389)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="Cube" parent_id_path=PackedInt32Array(1618430912) index="3" unique_id=1278539425]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002928853, 0, -1.1101363)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 10.0

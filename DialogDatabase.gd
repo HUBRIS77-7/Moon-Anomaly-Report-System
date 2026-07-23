@@ -200,7 +200,148 @@ var sequences: Array[Dictionary] = [
 		]
 	},
 	
+	{
+		"id":      "day_3_end",
+		"trigger": "day_end",
+		"day":     3,
+		"steps": [
+			{
+				"speaker":  "Patrica Anderson",
+				"portrait": "",
+				"text":     "Hey. Look, I don't do this often, but I'm sorry.",
+				"choices":  [
+					{ "text": "For what?", "id": "choice_1784438931907" },
+				],
+			},
+			{
+				"speaker":  "Patrica Anderson",
+				"portrait": "",
+				"text":     "For being an ass earlier. I know, after... well. I imagine you don't really want to talk about it. I... I'm sorry, okay?",
+				"choices":  [
+					{ "text": "It's fine.", "id": "choice_1784439101598" },
+				],
+			},
+			{
+				"speaker":  "Patrica Anderson",
+				"portrait": "",
+				"text":     "Good. Anyhow, I'm free this weekend, and that one bar downtown is still open. You want to go?",
+				"choices":  [
+					{ "text": "I'll see if I can make it.", "id": "choice_1784439161562" },
+				],
+			},
+			{
+				"speaker":  "Patrica Anderson",
+				"portrait": "",
+				"text":     "Wonderful! ... Be safe buddy.",
+				"choices":  [],
+			}
+		]
+	},
 	
+	# --------------DAY 4 SCIENCE--------------#
+		{
+		"id":      "Day_4_SCI_INTRO",
+		"trigger": "day_start",
+		"day":     4,
+		"steps": [
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Good Morning! Did you sleep good? We had some tremors last night. The moon has been a bit active lately.",
+				"choices":  [
+					{ "text": "Good enough.", "id": "choice_1784439412032" },
+				],
+			},
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Excellent! Anyhow, today is your Science rotation! ",
+				"choices":  [
+					{ "text": "Wait, Science?", "id": "choice_1784439472950" },
+				],
+			},
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Yes. Is there a problem?",
+				"choices":  [
+					{ "text": "Is Issac still the Head over there?", "id": "choice_1784439489030" },
+				],
+			},
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Indeed. Do you have a history?",
+				"choices":  [
+					{ "text": "...", "id": "choice_1784439528333" },
+				],
+			},
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Sir?",
+				"choices":  [
+					{ "text": "Just patch him in.", "id": "choice_1784439540901" },
+				],
+			},
+			{
+				"speaker":  "Science Head: Issac Alderman",
+				"portrait": "",
+				"text":     "Ah! Mr-.",
+				"choices":  [
+					{ "text": "Don't.", "id": "choice_1784439746994" },
+				],
+			},
+			{
+				"speaker":  "Science Head: Issac Alderman",
+				"portrait": "",
+				"text":     "What?",
+				"choices":  [
+					{ "text": "Do not remind me.", "id": "choice_1784439764524" },
+				],
+			},
+			{
+				"speaker":  "Science Head: Issac Alderman",
+				"portrait": "",
+				"text":     "It's your last name. Just because you got-",
+				"choices":  [
+					{ "text": "END CALL", "id": "choice_1784439789790" },
+				],
+			}
+		]
+	},
+	
+	{
+		"id":      "Day_4_SCI_OUTRO",
+		"trigger": "day_start",
+		"day":     4,
+		"steps": [
+			{
+				"speaker":  "Issac Alderman",
+				"portrait": "",
+				"text":     "What gives you the right?",
+				"choices":  [
+					{ "text": "To what?", "id": "choice_1784439412032" },
+				],
+			},
+			{
+				"speaker":  "Issac Alderman",
+				"portrait": "",
+				"text":     "Talk to me that way? Who the fuck do you think you are?",
+				"choices":  [
+					{ "text": "What does it matter? Just move on.", "id": "choice_1784452302163" },
+				],
+			},
+			{
+				"speaker":  "Issac Alderman",
+				"portrait": "",
+				"text":     "Move on? *Laughter* You want me to move on? Me? You move on! I still get SAT image of junk on the outside of the compromised office! Go pick it up! Move on!",
+				"choices":  [
+					{ "text": "Fine", "id": "choice_1784452447353" },
+				],
+			}
+		]
+	},
 
 	# ── MANUAL SEQUENCES ──────────────────────────────────────────────────────
 	# Triggered by calling DialogManager.play("id") directly from any script.

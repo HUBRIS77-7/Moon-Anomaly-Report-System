@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://lvgjcv0y2h5c"]
+
+[ext_resource type="Shader" uid="uid://bll6pjgjuqwkh" path="res://hologate.gdshader" id="1_wkmkp"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_wkmkp")
+shader_parameter/tint = Color(0, 0.82634246, 0.9501317, 1)
+shader_parameter/scroll_speed = 2.0
+shader_parameter/fresnel_power = 4.0

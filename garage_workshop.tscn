@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bpp0dgsuo3o3s"]
+
+[ext_resource type="PackedScene" uid="uid://bmkxrn0ytlgq4" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/GarageWorkshop.glb" id="1_fmflg"]
+[ext_resource type="Material" uid="uid://lvgjcv0y2h5c" path="res://Hologate.tres" id="2_fmflg"]
+
+[node name="GarageWorkshop" unique_id=600910874 instance=ExtResource("1_fmflg")]
+
+[node name="Cube_001" parent="." index="1" unique_id=799351321]
+surface_material_override/0 = ExtResource("2_fmflg")

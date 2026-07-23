@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://t7ucgkhchnu1"]
+
+[ext_resource type="PackedScene" uid="uid://d3bb7hgxwyxcs" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/IndustrialLights.glb" id="1_gb37m"]
+
+[node name="IndustrialLights" unique_id=421634905 instance=ExtResource("1_gb37m")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cylinder" parent_id_path=PackedInt32Array(180716115) index="0" unique_id=1689115895]
+transform = Transform3D(1, 0, 0, 0, 0.3343416, 0, 0, 0, 1, 0, 0, 0.06262128)
+light_energy = 2.0
+shadow_enabled = true
+distance_fade_enabled = true
+omni_range = 44.33
