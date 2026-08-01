@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://p6gjjbvanlrg"]
+
+[ext_resource type="PackedScene" uid="uid://csr5vomtgxxbe" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/DatabaseComputer.glb" id="1_81til"]
+
+[node name="DatabaseComputer" unique_id=1279251595 instance=ExtResource("1_81til")]

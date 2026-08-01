@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dn6tpngjlv808"]
+
+[ext_resource type="PackedScene" uid="uid://3luip65gyac4" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/MainComputer.glb" id="1_kav54"]
+
+[node name="MainComputer" unique_id=554481979 instance=ExtResource("1_kav54")]

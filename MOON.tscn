@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://6jvpx06csd2e" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Testsurface.glb" id="2_7efjl"]
 [ext_resource type="PackedScene" uid="uid://b05njgix2oxk5" path="res://BreakRoom.tscn" id="2_m0vcd"]
+[ext_resource type="PackedScene" uid="uid://dn6tpngjlv808" path="res://main_computer.tscn" id="3_e1g1q"]
 [ext_resource type="Shader" uid="uid://beul868rkbqby" path="res://post_processing.gdshader" id="3_kjgfg"]
 [ext_resource type="PackedScene" uid="uid://oki8ftkdu85q" path="res://TSCN Model/themoon.tscn" id="6_dm3ob"]
 [ext_resource type="Script" uid="uid://c37mr3amtstah" path="res://TerminalManager.gd" id="8_76u4v"]
@@ -28,11 +29,10 @@
 [ext_resource type="PackedScene" uid="uid://t7ucgkhchnu1" path="res://industrial_lights.tscn" id="27_4y5ld"]
 [ext_resource type="PackedScene" uid="uid://duvwv56w7soro" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Nightstand.glb" id="28_m7dmo"]
 [ext_resource type="PackedScene" uid="uid://b0igj4h1h2rw7" path="res://lamp.tscn" id="29_6isnt"]
-[ext_resource type="PackedScene" uid="uid://3luip65gyac4" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/MainComputer.glb" id="30_e1g1q"]
-[ext_resource type="PackedScene" uid="uid://csr5vomtgxxbe" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/DatabaseComputer.glb" id="31_ofs8x"]
 [ext_resource type="PackedScene" uid="uid://c2tepttwasueo" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Dresser.glb" id="31_oximj"]
 [ext_resource type="PackedScene" uid="uid://cavohwi30315w" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Adaptor.glb" id="32_6vlk6"]
 [ext_resource type="PackedScene" uid="uid://bhs4eq345erh2" path="res://TSCN Model/trisplit.tscn" id="32_20wcy"]
+[ext_resource type="PackedScene" uid="uid://p6gjjbvanlrg" path="res://database_computer.tscn" id="33_ofs8x"]
 [ext_resource type="PackedScene" uid="uid://ci3w6oc27ipxm" path="res://TSCN Model/bedroom.tscn" id="33_tqn76"]
 [ext_resource type="PackedScene" uid="uid://bpp0dgsuo3o3s" path="res://garage_workshop.tscn" id="34_4y5ld"]
 [ext_resource type="PackedScene" uid="uid://uprmdfyn1yj3" path="res://floating_lantern_garage.tscn" id="34_e1g1q"]
@@ -82,11 +82,36 @@ fov = 53.5
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=1503020689]
 environment = SubResource("Environment_nhxhy")
 
+[node name="PrimaryRoom3" parent="SubViewportContainer/SubViewport" unique_id=951945182 instance=ExtResource("37_kgk2l")]
+transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 5.60449, -0.36190617, -7.9835596)
+
+[node name="HoloProjector" parent="SubViewportContainer/SubViewport" unique_id=1240239144 instance=ExtResource("40_oximj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.860507, 0.5407454, 6.2983217)
+
 [node name="TerminalStuff" type="Node" parent="SubViewportContainer/SubViewport" unique_id=1810663263]
 
-[node name="TerminalManager" type="Node" parent="SubViewportContainer/SubViewport/TerminalStuff" unique_id=936105443 node_paths=PackedStringArray("camera")]
+[node name="TerminalManager" type="Node" parent="SubViewportContainer/SubViewport/TerminalStuff" unique_id=2025567222 node_paths=PackedStringArray("camera", "anchors")]
 script = ExtResource("8_76u4v")
 camera = NodePath("../../Camera3D")
+anchors = [NodePath("../Terminal1/CameraAnchor1"), NodePath("../Terminal1/Terminal2/CameraAnchor2"), NodePath("../Terminal3/CameraAnchor3")]
+
+[node name="Terminal1" type="Node3D" parent="SubViewportContainer/SubViewport/TerminalStuff" unique_id=864483593]
+
+[node name="CameraAnchor1" type="Marker3D" parent="SubViewportContainer/SubViewport/TerminalStuff/Terminal1" unique_id=1798474081]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 5.70149, 1.1382724, 6.3549943)
+
+[node name="Terminal2" type="Node3D" parent="SubViewportContainer/SubViewport/TerminalStuff/Terminal1" unique_id=959098608]
+
+[node name="CameraAnchor2" type="Marker3D" parent="SubViewportContainer/SubViewport/TerminalStuff/Terminal1/Terminal2" unique_id=1355958360]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.5633044, 1.1757963, 6.8043404)
+
+[node name="MainComputer" parent="SubViewportContainer/SubViewport/TerminalStuff/Terminal1/Terminal2" unique_id=554481979 instance=ExtResource("3_e1g1q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.765, 0.527, 6.321)
+
+[node name="Terminal3" type="Node3D" parent="SubViewportContainer/SubViewport/TerminalStuff" unique_id=456167107]
+
+[node name="CameraAnchor3" type="Marker3D" parent="SubViewportContainer/SubViewport/TerminalStuff/Terminal3" unique_id=244491403]
+transform = Transform3D(-3.8013603e-08, -0.49366856, 0.86964995, -2.1578934e-08, 0.86964995, 0.49366862, -0.99999976, 3.2247916e-15, -4.371138e-08, 4.850069, 1.659242, 6.274049)
 
 [node name="Props" type="Node" parent="SubViewportContainer/SubViewport" unique_id=875008838]
 
@@ -292,11 +317,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.368916, 5.025205, -61.977
 [node name="Floating Lantern Garage2" parent="SubViewportContainer/SubViewport/GarageWorkshop" unique_id=2071541852 instance=ExtResource("34_e1g1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.883433, 5.025205, -61.977474)
 
-[node name="MainComputer" parent="SubViewportContainer/SubViewport" unique_id=1420430683 instance=ExtResource("30_e1g1q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.765167, 0.52743196, 6.3207808)
-
-[node name="DatabaseComputer" parent="SubViewportContainer/SubViewport" unique_id=1279251595 instance=ExtResource("31_ofs8x")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 3.9906034, 0.52402663, 6.321553)
+[node name="DatabaseComputer" parent="SubViewportContainer/SubViewport" unique_id=1279251595 instance=ExtResource("33_ofs8x")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 3.991, 0.524, 6.322)
 
 [node name="ScreenViewports" type="Node" parent="SubViewportContainer" unique_id=714134518]
 script = ExtResource("12_fl3ci")
@@ -348,9 +370,3 @@ transform = Transform3D(-1, 8.742278e-08, -3.821371e-15, 0, -4.371139e-08, -1, -
 
 [node name="Waredrobe" parent="." unique_id=453693293 instance=ExtResource("42_kpa70")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -37.00072, 1.1566948, -40.616245)
-
-[node name="PrimaryRoom3" parent="." unique_id=951945182 instance=ExtResource("37_kgk2l")]
-transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 5.60449, -0.36190617, -7.9835596)
-
-[node name="HoloProjector" parent="." unique_id=1240239144 instance=ExtResource("40_oximj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.860507, 0.5407454, 6.2983217)

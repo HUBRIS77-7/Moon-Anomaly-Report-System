@@ -2,7 +2,7 @@
 extends Node
 
 @onready var desktop_ui: Control = $DesktopViewport/DesktopUI
-@onready var screen_desktop_mesh: MeshInstance3D = get_node("../SubViewport/Props/BIGTERMINAL/ScreenPC")
+@onready var screen_desktop_mesh: MeshInstance3D = get_node("../SubViewport/MainComputer/MainComputerScreen")
 @onready var panel_ui: Control       = $PanelViewport/ScreenPanelUI
 @onready var info_ui: Control        = $InfoViewport/ScreenInfoUI
 @onready var icon_ui: Control        = $IconViewport/ScreenIconUI
