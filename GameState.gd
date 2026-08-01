@@ -7,7 +7,7 @@ signal day_started(day_number: int)
 ## Emitted after any call is submitted or declined. themoon.gd listens to this
 ## to know when to start the next-icon countdown.
 signal call_completed
-
+signal app_unlocked(app_id: String)
 # ── Constants ─────────────────────────────────────────────────────────────────
 const DAYS_PER_WEEK: int = 5
 
@@ -45,9 +45,29 @@ func calculate_credits(correct: int, total: int) -> int:
 # ── Seating ───────────────────────────────────────────────────────────────────
 var is_seated: bool = true
 
+#---APPs----------------------------------------------------------------------------
+var unlocked_apps: Array[String] = []
+
+func is_app_unlocked(app_id: String) -> bool:
+	return unlocked_apps.has(app_id)
+
+func _refresh_unlocked_apps() -> void:
+	var past_training: bool = current_week_id != WeekDatabase.TRAINING_WEEK_ID
+	for app_id: String in AppRegistry.get_all_ids():
+		if unlocked_apps.has(app_id):
+			continue
+		var unlock_day: int = AppRegistry.get_unlock_day(app_id)
+		if past_training or current_day >= unlock_day:
+			unlocked_apps.append(app_id)
+			app_unlocked.emit(app_id)
+
+
+
+
 # ── Lifecycle ─────────────────────────────────────────────────────────────────
 func _ready() -> void:
 	_setup_day(current_day)
+	_refresh_unlocked_apps()  
 
 # ── Internal helpers ──────────────────────────────────────────────────────────
 func _setup_day(day: int) -> void:
@@ -88,6 +108,7 @@ func advance_day() -> void:
 	calls_correct   = 0
 	calls_incorrect = 0
 	_setup_day(current_day)
+	_refresh_unlocked_apps()
 
 	day_started.emit(current_day)
 

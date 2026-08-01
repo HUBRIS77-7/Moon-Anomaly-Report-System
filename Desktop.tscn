@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://csws2ywr4k50a" path="res://desktop.gd" id="1_desk"]
 
 [node name="DesktopUI" type="Control" unique_id=548783667]
-custom_minimum_size = Vector2(640, 640)
+custom_minimum_size = Vector2(1024, 338)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,15 +21,24 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.502, 0.502, 1)
 
-[node name="WindowLayer" type="Control" parent="." unique_id=2928103]
+[node name="IconLayer" type="Control" parent="." unique_id=1094973820]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -384.0
-offset_top = 336.0
-offset_right = -127.0
-offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WindowLayer" type="Control" parent="." unique_id=2928103]
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 10.0
+offset_right = -1.0
+offset_bottom = -26.0
 grow_horizontal = 2
 grow_vertical = 2
 

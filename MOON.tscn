@@ -105,7 +105,7 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 5.70
 [node name="CameraAnchor2" type="Marker3D" parent="SubViewportContainer/SubViewport/TerminalStuff/Terminal1/Terminal2" unique_id=1355958360]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.5633044, 1.1757963, 6.8043404)
 
-[node name="MainComputer" parent="SubViewportContainer/SubViewport/TerminalStuff/Terminal1/Terminal2" unique_id=554481979 instance=ExtResource("3_e1g1q")]
+[node name="MainComputer" parent="SubViewportContainer/SubViewport/TerminalStuff/Terminal1/Terminal2" unique_id=174713310 instance=ExtResource("3_e1g1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.765, 0.527, 6.321)
 
 [node name="Terminal3" type="Node3D" parent="SubViewportContainer/SubViewport/TerminalStuff" unique_id=456167107]
@@ -119,7 +119,7 @@ transform = Transform3D(-3.8013603e-08, -0.49366856, 0.86964995, -2.1578934e-08,
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200.452, -1.3, -230.72)
 
 [node name="THEMOON" parent="SubViewportContainer/SubViewport/Props" unique_id=1548048959 instance=ExtResource("6_dm3ob")]
-transform = Transform3D(0.006, 0, 0, 0, 0.006, 0, 0, 0, 0.006, 5.822, 1.445, -9.348)
+transform = Transform3D(0.006, 0, 0, 0, 0.006, 0, 0, 0, 0.006, 5.54077, 1.2743886, 7.783961)
 script = ExtResource("8_umcxk")
 surface_radius = 28.0
 icon_collision_radius = 2.5
@@ -325,8 +325,8 @@ script = ExtResource("12_fl3ci")
 
 [node name="DesktopViewport" type="SubViewport" parent="SubViewportContainer/ScreenViewports" unique_id=284819925]
 handle_input_locally = false
-size = Vector2i(640, 640)
-size_2d_override = Vector2i(640, 640)
+size = Vector2i(1024, 338)
+size_2d_override = Vector2i(1024, 338)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 

@@ -28,6 +28,14 @@ const C_AMBER     := Color(0.95, 0.70, 0.10)
 const C_SELECTED  := Color(0.10, 0.35, 0.18)
 const C_BAR_BG    := Color(0.12, 0.12, 0.12)
 
+# ── Layout design size ────────────────────────────────────────────────────────
+# NOTE: This must match (spawn_size.y - title bar height) / spawn_size.x used
+# when this scene is instantiated via desktop.gd's spawn_window(). See the
+# call to spawn_window("INCOMING CALL", call_ui, Vector2(620, 580)) — 24px
+# title bar leaves 556px of usable content height.
+const DESIGN_W := 620
+const DESIGN_H := 556
+
 enum Phase { INCOMING, ACTIVE, DONE }
 var _phase: Phase = Phase.INCOMING
 
@@ -112,7 +120,7 @@ func setup(data: Dictionary) -> void:
 # ── Lifecycle ─────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
-	custom_minimum_size = Vector2(580, 500)
+	custom_minimum_size = Vector2(DESIGN_W, DESIGN_H)
 	_load_font()
 	_build_background()
 	_build_incoming_layer()
@@ -268,21 +276,30 @@ func _build_incoming_layer() -> void:
 	_inc_decline.pressed.connect(_on_decline)
 	btn_row.add_child(_inc_decline)
 
-# ── Active layer ──────────────────────────────────────────────────────────────
+# ── Active layer (3-column layout) ────────────────────────────────────────────
+#
+#  ┌────────────────────────────────────────────────────────────────────┐
+#  │ HEADER (photo, name, progress bar, timer)                          │
+#  ├───────────────────┬───────────────────┬────────────────────────────┤
+#  │ COLUMN 1           │ COLUMN 2          │ COLUMN 3                   │
+#  │ Transcription       │ Tasks Before      │ Anomaly List (search +     │
+#  │ (top ~62%)          │ Submit            │ scrollable list)            │
+#  │ Additional Details  │ (full height)     │ Submit button pinned to    │
+#  │ (bottom ~38%)        │                   │ bottom of this column       │
+#  └───────────────────┴───────────────────┴────────────────────────────┘
 
 func _build_active_layer() -> void:
 	_active_layer = Control.new()
 	_active_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_active_layer)
 
-	const PAD   := 8
-	const W     := 580
-	const H     := 500
-	const HDR_H := 64
-	const COL_L := 320
-	const COL_R := 242
-	const COL_R_X := COL_L + PAD * 2
+	const PAD     := 10
+	const W       := DESIGN_W
+	const H       := DESIGN_H
+	const HDR_H   := 64
+	const COL_GAP := 10
 
+	# ── Header ────────────────────────────────────────────────────────────────
 	var hdr := _make_panel(C_PANEL, C_BORDER)
 	hdr.position = Vector2(PAD, PAD)
 	hdr.size = Vector2(W - PAD * 2, HDR_H)
@@ -296,7 +313,7 @@ func _build_active_layer() -> void:
 
 	_act_name = Label.new()
 	_act_name.position = Vector2(66, 4)
-	_act_name.size = Vector2(220, 22)
+	_act_name.size = Vector2(W - PAD * 2 - 70, 22)
 	_style_label(_act_name, FONT_SIZES["info"], C_TEXT)
 	hdr.add_child(_act_name)
 
@@ -318,23 +335,36 @@ func _build_active_layer() -> void:
 	_style_label(_act_time_label, FONT_SIZES["timer"], C_DIM)
 	hdr.add_child(_act_time_label)
 
-	const LEFT_Y  := HDR_H + PAD * 2
-	const TRANS_H := 240
-	const EXTRA_H := H - LEFT_Y - TRANS_H - PAD * 3 - PAD
+	# ── Column geometry ───────────────────────────────────────────────────────
+	var left_y: float    = HDR_H + PAD * 2
+	var avail_h: float   = H - left_y - PAD
+	var avail_w: float   = W - PAD * 2 - COL_GAP * 2
+
+	var col1_w: float = round(avail_w * 0.42)   # Transcript column
+	var col2_w: float = round(avail_w * 0.24)   # Tasks column
+	var col3_w: float = avail_w - col1_w - col2_w  # Anomaly list column (remainder)
+
+	var col1_x: float = PAD
+	var col2_x: float = col1_x + col1_w + COL_GAP
+	var col3_x: float = col2_x + col2_w + COL_GAP
+
+	# ── COLUMN 1: Transcription + Additional Details ────────────────────────
+	var trans_h: float = round(avail_h * 0.62)
+	var extra_h: float = avail_h - trans_h - PAD
 
 	var trans_panel := _make_panel(C_PANEL, C_BORDER)
-	trans_panel.position = Vector2(PAD, LEFT_Y)
-	trans_panel.size = Vector2(COL_L, TRANS_H)
+	trans_panel.position = Vector2(col1_x, left_y)
+	trans_panel.size = Vector2(col1_w, trans_h)
 	_active_layer.add_child(trans_panel)
 
 	var trans_hdr := _make_section_header("TRANSCRIPTION")
 	trans_hdr.position = Vector2(0, 0)
-	trans_hdr.size = Vector2(COL_L, 18)
+	trans_hdr.size = Vector2(col1_w, 18)
 	trans_panel.add_child(trans_hdr)
 
 	var trans_scroll := ScrollContainer.new()
 	trans_scroll.position = Vector2(4, 20)
-	trans_scroll.size = Vector2(COL_L - 8, TRANS_H - 24)
+	trans_scroll.size = Vector2(col1_w - 8, trans_h - 24)
 	_hide_scrollbars(trans_scroll)
 	trans_panel.add_child(trans_scroll)
 
@@ -343,67 +373,69 @@ func _build_active_layer() -> void:
 	_transcription_rtl.scroll_active = false
 	_transcription_rtl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_transcription_rtl.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_transcription_rtl.custom_minimum_size = Vector2(COL_L - 20, 0)
+	_transcription_rtl.custom_minimum_size = Vector2(col1_w - 20, 0)
 	_transcription_rtl.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_style_rtl(_transcription_rtl, FONT_SIZES["body"], C_TEXT)
 	trans_scroll.add_child(_transcription_rtl)
 
 	var extra_panel := _make_panel(C_PANEL, C_BORDER)
-	extra_panel.position = Vector2(PAD, LEFT_Y + TRANS_H + PAD)
-	extra_panel.size = Vector2(COL_L, EXTRA_H)
+	extra_panel.position = Vector2(col1_x, left_y + trans_h + PAD)
+	extra_panel.size = Vector2(col1_w, extra_h)
 	_active_layer.add_child(extra_panel)
 
 	var extra_hdr := _make_section_header("ADDITIONAL DETAILS (NOT IN CALL)")
 	extra_hdr.position = Vector2(0, 0)
-	extra_hdr.size = Vector2(COL_L, 18)
+	extra_hdr.size = Vector2(col1_w, 18)
 	extra_panel.add_child(extra_hdr)
 
 	_extra_rtl = RichTextLabel.new()
 	_extra_rtl.position = Vector2(4, 20)
-	_extra_rtl.size = Vector2(COL_L - 8, EXTRA_H - 24)
+	_extra_rtl.size = Vector2(col1_w - 8, extra_h - 24)
 	_extra_rtl.bbcode_enabled = false
 	_extra_rtl.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_extra_rtl.scroll_active = false
 	_style_rtl(_extra_rtl, FONT_SIZES["body"], C_DIM)
 	extra_panel.add_child(_extra_rtl)
 
-	const TASKS_H := 130
-	const ANOM_H  := H - LEFT_Y - TASKS_H - 48 - PAD * 4
-
+	# ── COLUMN 2: Tasks (full height) ────────────────────────────────────────
 	var tasks_panel := _make_panel(C_PANEL, C_BORDER)
-	tasks_panel.position = Vector2(COL_R_X, LEFT_Y)
-	tasks_panel.size = Vector2(COL_R, TASKS_H)
+	tasks_panel.position = Vector2(col2_x, left_y)
+	tasks_panel.size = Vector2(col2_w, avail_h)
 	_active_layer.add_child(tasks_panel)
 
 	var tasks_hdr := _make_section_header("TASKS BEFORE SUBMIT")
 	tasks_hdr.position = Vector2(0, 0)
-	tasks_hdr.size = Vector2(COL_R, 18)
+	tasks_hdr.size = Vector2(col2_w, 18)
 	tasks_panel.add_child(tasks_hdr)
 
 	var tasks_scroll := ScrollContainer.new()
 	tasks_scroll.position = Vector2(4, 20)
-	tasks_scroll.size = Vector2(COL_R - 8, TASKS_H - 24)
+	tasks_scroll.size = Vector2(col2_w - 8, avail_h - 24)
 	_hide_scrollbars(tasks_scroll)
 	tasks_panel.add_child(tasks_scroll)
 
 	_tasks_vbox = VBoxContainer.new()
 	_tasks_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_tasks_vbox.custom_minimum_size = Vector2(COL_R - 20, 0)
+	_tasks_vbox.custom_minimum_size = Vector2(col2_w - 20, 0)
 	tasks_scroll.add_child(_tasks_vbox)
 
+	# ── COLUMN 3: Anomaly List + Submit button ──────────────────────────────
+	var submit_h: float = 40.0
+	var anom_h: float = avail_h - submit_h - PAD
+
 	var anom_panel := _make_panel(C_PANEL, C_BORDER)
-	anom_panel.position = Vector2(COL_R_X, LEFT_Y + TASKS_H + PAD)
-	anom_panel.size = Vector2(COL_R, ANOM_H)
+	anom_panel.position = Vector2(col3_x, left_y)
+	anom_panel.size = Vector2(col3_w, anom_h)
 	_active_layer.add_child(anom_panel)
 
 	var anom_hdr := _make_section_header("ANOMALY LIST")
 	anom_hdr.position = Vector2(0, 0)
-	anom_hdr.size = Vector2(COL_R, 18)
+	anom_hdr.size = Vector2(col3_w, 18)
 	anom_panel.add_child(anom_hdr)
 
 	var search := LineEdit.new()
 	search.position = Vector2(4, 20)
-	search.size = Vector2(COL_R - 8, 18)
+	search.size = Vector2(col3_w - 8, 18)
 	search.placeholder_text = "search..."
 	search.add_theme_font_size_override("font_size", FONT_SIZES["meta"])
 	if _font:
@@ -413,21 +445,21 @@ func _build_active_layer() -> void:
 
 	_anomaly_scroll = ScrollContainer.new()
 	_anomaly_scroll.position = Vector2(4, 40)
-	_anomaly_scroll.size = Vector2(COL_R - 8, ANOM_H - 44)
+	_anomaly_scroll.size = Vector2(col3_w - 8, anom_h - 44)
 	_hide_scrollbars(_anomaly_scroll)
 	anom_panel.add_child(_anomaly_scroll)
 
 	_anomaly_vbox = VBoxContainer.new()
 	_anomaly_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_anomaly_vbox.custom_minimum_size = Vector2(COL_R - 20, 0)
+	_anomaly_vbox.custom_minimum_size = Vector2(col3_w - 20, 0)
 	_anomaly_vbox.add_theme_constant_override("separation", 1)
 	_anomaly_scroll.add_child(_anomaly_vbox)
 
 	_populate_anomaly_list("")
 
 	_submit_btn = _make_button("SUBMIT REPORT", C_GREEN, Color(0.02, 0.10, 0.04))
-	_submit_btn.position = Vector2(COL_R_X, H - PAD - 40)
-	_submit_btn.size = Vector2(COL_R, 40)
+	_submit_btn.position = Vector2(col3_x, left_y + anom_h + PAD)
+	_submit_btn.size = Vector2(col3_w, submit_h)
 	_submit_btn.pressed.connect(_on_submit)
 	_active_layer.add_child(_submit_btn)
 

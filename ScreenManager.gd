@@ -21,7 +21,7 @@ var _focused_screen: InteractiveScreen = null
 var _last_vp_pos: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
-	$DesktopViewport.size = Vector2i(960, 315)
+	$DesktopViewport.size = Vector2i(640, 640)
 	$DesktopViewport.handle_input_locally = false
 	$InfoViewport.size  = Vector2i(480, 308)
 	$PanelViewport.size = Vector2i(240, 640)
@@ -59,7 +59,7 @@ func _apply_icon_texture() -> void:
 	var mat := StandardMaterial3D.new()
 	mat.transparency               = BaseMaterial3D.TRANSPARENCY_ALPHA
 	mat.render_priority             = 1
-	mat.texture_filter              = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR
 	mat.albedo_texture               = $IconViewport.get_texture()
 	mat.shading_mode                = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.emission_enabled             = true
