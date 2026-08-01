@@ -1,5 +1,24 @@
 [gd_scene format=3 uid="uid://dn6tpngjlv808"]
 
 [ext_resource type="PackedScene" uid="uid://3luip65gyac4" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/MainComputer.glb" id="1_kav54"]
+[ext_resource type="Script" uid="uid://dfqelhg17akmp" path="res://interactive_screen.gd" id="2_04nx4"]
 
-[node name="MainComputer" unique_id=554481979 instance=ExtResource("1_kav54")]
+[sub_resource type="BoxShape3D" id="BoxShape3D_04nx4"]
+size = Vector3(0.01171875, 0.34173584, 0.36756897)
+
+[node name="MainComputer" unique_id=165457941 instance=ExtResource("1_kav54")]
+
+[node name="StaticBody3D" parent="MainComputerScreen" parent_id_path=PackedInt32Array(1671716409) index="0" unique_id=1414388711 node_paths=PackedStringArray("mesh_instance")]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("2_04nx4")
+screen_id = "desktop"
+mesh_instance = NodePath("..")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MainComputerScreen/StaticBody3D" index="0" unique_id=149122591]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17822635, 0.0018615723, -0.0024032677)
+shape = SubResource("BoxShape3D_04nx4")
+
+[node name="CollisionShape3D" parent="MainComputerScreen/StaticBody3D" index="1" unique_id=2025044346]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.47349995)
+disabled = true
