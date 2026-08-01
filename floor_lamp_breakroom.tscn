@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dgrw0u77dy40d"]
+
+[ext_resource type="PackedScene" uid="uid://ctyjwk8j8kh5u" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/FloorLampBreakroom.glb" id="1_2p48o"]
+
+[node name="FloorLampBreakroom" unique_id=523774549 instance=ExtResource("1_2p48o")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." index="1" unique_id=1909301597]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39313683, 3.3100293, 0.03574735)
+light_energy = 2.02
+shadow_enabled = true
+omni_range = 20.289
