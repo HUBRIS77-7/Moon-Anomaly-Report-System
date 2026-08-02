@@ -35,7 +35,7 @@ const C_BAR_BG    := Color(0.12, 0.12, 0.12)
 # leaving 1920x960 for this content. Keeping these values in sync prevents
 # clipping and keeps the UI readable in the larger DesktopViewport.
 const DESIGN_W := 1940
-const DESIGN_H := 640
+const DESIGN_H := 635 - 72   # = 563, matching CALL_WINDOW_SIZE
 
 enum Phase { INCOMING, ACTIVE, DONE }
 var _phase: Phase = Phase.INCOMING

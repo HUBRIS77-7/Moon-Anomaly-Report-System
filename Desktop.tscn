@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://csrnwa2dbor3q"]
 
-[ext_resource type="Script" uid="uid://csws2ywr4k50a" path="res://desktop.gd" id="1_desk"]
+[ext_resource type="Script" uid="uid://csws2ywr4k50a" path="res://desktop.gd" id="1_erx6p"]
 
 [node name="DesktopUI" type="Control" unique_id=548783667]
-custom_minimum_size = Vector2(1940, 640)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 660.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_desk")
+script = ExtResource("1_erx6p")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=2004937635]
 layout_mode = 1
@@ -49,6 +49,7 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -36.0
 grow_horizontal = 2
 grow_vertical = 0
 

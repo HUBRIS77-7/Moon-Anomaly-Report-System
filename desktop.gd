@@ -4,8 +4,8 @@ extends Control
 const CallWindowScene := preload("res://CallWindowUI.tscn")
 const StubAppWindowScript := preload("res://StubAppWindow.gd")
 
-const DESKTOP_SIZE := Vector2(1940, 640)
-const TASKBAR_HEIGHT := 72.0
+const DESKTOP_SIZE := Vector2(1940, 635)
+const TASKBAR_HEIGHT := 72.0   # or scale this down too — 72/635 is a bigger proportion than 72/1080 was
 const CALL_WINDOW_SIZE := Vector2(DESKTOP_SIZE.x, DESKTOP_SIZE.y - TASKBAR_HEIGHT)
 const ICON_SIZE    := Vector2(64, 64)
 const ICON_SPACING := 16.0

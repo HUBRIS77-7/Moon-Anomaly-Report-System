@@ -21,7 +21,7 @@ var _focused_screen: InteractiveScreen = null
 var _last_vp_pos: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
-	$DesktopViewport.size = Vector2i(640, 640)
+	$DesktopViewport.size = Vector2i(1940, 635)
 	$DesktopViewport.handle_input_locally = false
 	$InfoViewport.size  = Vector2i(480, 308)
 	$PanelViewport.size = Vector2i(240, 640)

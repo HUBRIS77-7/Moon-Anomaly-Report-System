@@ -16,6 +16,12 @@ func _ready() -> void:
 	add_to_group("interactive_screens")
 	# Don't apply texture yet — viewport isn't assigned until ScreenManager
 	# wires it up after the whole scene tree is instanced.
+	print("Mesh instance path: ", mesh_instance.get_path())
+	print("Local AABB size: ", mesh_instance.get_aabb().size)
+	print("Local scale: ", mesh_instance.scale)
+	print("Global scale: ", mesh_instance.global_transform.basis.get_scale())
+	print("Global AABB (world units): ",
+		mesh_instance.global_transform.basis.get_scale() * mesh_instance.get_aabb().size)
 
 ## Called by ScreenManager once the SubViewport exists and is reachable.
 func assign_viewport(vp: SubViewport) -> void:
