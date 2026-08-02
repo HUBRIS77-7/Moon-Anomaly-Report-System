@@ -73,7 +73,7 @@ func _apply_win95_style() -> void:
 
 	# Title text
 	title_label.add_theme_color_override("font_color", Color.WHITE)
-	title_label.add_theme_font_size_override("font_size", 14)
+	title_label.add_theme_font_size_override("font_size", 28)
 
 	# Buttons
 	for btn in [close_btn, minimize_btn]:
@@ -85,4 +85,4 @@ func _apply_win95_style() -> void:
 		btn_style.border_width_bottom = 2
 		btn_style.border_color = Color("#808080")
 		btn.add_theme_stylebox_override("normal", btn_style)
-		btn.add_theme_font_size_override("font_size", 11)
+		btn.add_theme_font_size_override("font_size", 22)

@@ -4,17 +4,17 @@ extends Control
 signal call_submitted(anomaly_id: int)
 signal call_declined
 
-const FONT_PATH := "res://Ac437_IBM_BIOS.ttf"
+const FONT_PATH := "res://Coolvetica Rg.otf"
 @export var transcription_speed: float = 3.0
 
 const FONT_SIZES := {
-	"heading":     10,
-	"caller_name": 12,
-	"info":        11,
-	"body":       10,
-	"meta":        10,
-	"submit":      12,
-	"timer":       10,
+	"heading":     20,
+	"caller_name": 24,
+	"info":        22,
+	"body":        20,
+	"meta":        20,
+	"submit":      24,
+	"timer":       20,
 }
 
 const C_BG        := Color(0.04, 0.04, 0.04)
@@ -29,12 +29,13 @@ const C_SELECTED  := Color(0.10, 0.35, 0.18)
 const C_BAR_BG    := Color(0.12, 0.12, 0.12)
 
 # ── Layout design size ────────────────────────────────────────────────────────
-# NOTE: This must match (spawn_size.y - title bar height) / spawn_size.x used
-# when this scene is instantiated via desktop.gd's spawn_window(). See the
-# call to spawn_window("INCOMING CALL", call_ui, Vector2(620, 580)) — 24px
-# title bar leaves 556px of usable content height.
-const DESIGN_W := 620
-const DESIGN_H := 556
+# NOTE: This must match the usable content area of the fullscreen call window
+# spawned in desktop.gd. The call window covers the 1920x1008 desktop area
+# above the 72px taskbar, and DraggableWindow reserves a 48px title bar,
+# leaving 1920x960 for this content. Keeping these values in sync prevents
+# clipping and keeps the UI readable in the larger DesktopViewport.
+const DESIGN_W := 1920
+const DESIGN_H := 960
 
 enum Phase { INCOMING, ACTIVE, DONE }
 var _phase: Phase = Phase.INCOMING
@@ -217,9 +218,9 @@ func _build_incoming_layer() -> void:
 	card_style.bg_color     = Color(0.10, 0.10, 0.10)
 	card_style.border_color = C_BORDER
 	card_style.set_border_width_all(1)
-	card_style.set_content_margin_all(16)  # inner padding
+	card_style.set_content_margin_all(32)  # inner padding
 	card.add_theme_stylebox_override("panel", card_style)
-	card.custom_minimum_size = Vector2(300, 0)
+	card.custom_minimum_size = Vector2(600, 0)
 	_incoming_layer.add_child(card)
 	_inc_card = card
 
@@ -231,7 +232,7 @@ func _build_incoming_layer() -> void:
 	# VBox — just a normal child; PanelContainer sizes itself around it
 	var vbox := VBoxContainer.new()
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	vbox.add_theme_constant_override("separation", 14)
+	vbox.add_theme_constant_override("separation", 28)
 	card.add_child(vbox)
 
 	# "INCOMING CALL" heading
@@ -242,37 +243,37 @@ func _build_incoming_layer() -> void:
 	_style_label(inc_lbl, FONT_SIZES["heading"], C_AMBER)
 	vbox.add_child(inc_lbl)
 
-	# Photo — fixed 72×72, centred via its own CenterContainer row
+	# Photo — fixed 144×144, centred via its own CenterContainer row
 	var photo_center := CenterContainer.new()
 	photo_center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	vbox.add_child(photo_center)
-	var photo_slot := _make_photo_slot(Vector2(72, 72))
+	var photo_slot := _make_photo_slot(Vector2(144, 144))
 	photo_center.add_child(photo_slot)
 	_inc_photo = photo_slot.get_child(0) as TextureRect
 
-	# Caller name — auto-wraps if long, min width 300 so short names look good
+	# Caller name — auto-wraps if long, min width 600 so short names look good
 	_inc_name = Label.new()
 	_inc_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_inc_name.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_inc_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_inc_name.custom_minimum_size = Vector2(300, 0)
+	_inc_name.custom_minimum_size = Vector2(600, 0)
 	_style_label(_inc_name, FONT_SIZES["caller_name"], C_TEXT)
 	vbox.add_child(_inc_name)
 
 	# Accept / Decline row
 	var btn_row := HBoxContainer.new()
 	btn_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	btn_row.add_theme_constant_override("separation", 20)
+	btn_row.add_theme_constant_override("separation", 40)
 	btn_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	vbox.add_child(btn_row)
 
 	_inc_accept = _make_button("ACCEPT", C_GREEN, Color(0.02, 0.10, 0.04))
-	_inc_accept.custom_minimum_size = Vector2(110, 36)
+	_inc_accept.custom_minimum_size = Vector2(220, 72)
 	_inc_accept.pressed.connect(_on_accept)
 	btn_row.add_child(_inc_accept)
 
 	_inc_decline = _make_button("DECLINE", C_RED, Color(0.10, 0.02, 0.02))
-	_inc_decline.custom_minimum_size = Vector2(110, 36)
+	_inc_decline.custom_minimum_size = Vector2(220, 72)
 	_inc_decline.pressed.connect(_on_decline)
 	btn_row.add_child(_inc_decline)
 
@@ -293,11 +294,11 @@ func _build_active_layer() -> void:
 	_active_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_active_layer)
 
-	const PAD     := 10
+	const PAD     := 20
 	const W       := DESIGN_W
 	const H       := DESIGN_H
-	const HDR_H   := 64
-	const COL_GAP := 10
+	const HDR_H   := 128
+	const COL_GAP := 20
 
 	# ── Header ────────────────────────────────────────────────────────────────
 	var hdr := _make_panel(C_PANEL, C_BORDER)
@@ -306,32 +307,32 @@ func _build_active_layer() -> void:
 	hdr.clip_contents = true
 	_active_layer.add_child(hdr)
 
-	var act_photo_slot := _make_photo_slot(Vector2(56, 56))
-	act_photo_slot.position = Vector2(4, 4)
+	var act_photo_slot := _make_photo_slot(Vector2(112, 112))
+	act_photo_slot.position = Vector2(8, 8)
 	hdr.add_child(act_photo_slot)
 	_act_photo = act_photo_slot.get_child(0) as TextureRect
 
 	_act_name = Label.new()
-	_act_name.position = Vector2(66, 4)
-	_act_name.size = Vector2(W - PAD * 2 - 70, 22)
+	_act_name.position = Vector2(132, 8)
+	_act_name.size = Vector2(W - PAD * 2 - 140, 44)
 	_style_label(_act_name, FONT_SIZES["info"], C_TEXT)
 	hdr.add_child(_act_name)
 
 	_act_bar_bg = ColorRect.new()
-	_act_bar_bg.position = Vector2(66, 30)
-	_act_bar_bg.size = Vector2(W - PAD * 2 - 200, 14)
+	_act_bar_bg.position = Vector2(132, 60)
+	_act_bar_bg.size = Vector2(W - PAD * 2 - 400, 28)
 	_act_bar_bg.color = C_BAR_BG
 	hdr.add_child(_act_bar_bg)
 
 	_act_bar = ColorRect.new()
 	_act_bar.position = Vector2(0, 0)
-	_act_bar.size = Vector2(0, 14)
+	_act_bar.size = Vector2(0, 28)
 	_act_bar.color = C_GREEN
 	_act_bar_bg.add_child(_act_bar)
 
 	_act_time_label = Label.new()
-	_act_time_label.position = Vector2(66, 46)
-	_act_time_label.size = Vector2(160, 16)
+	_act_time_label.position = Vector2(132, 92)
+	_act_time_label.size = Vector2(320, 32)
 	_style_label(_act_time_label, FONT_SIZES["timer"], C_DIM)
 	hdr.add_child(_act_time_label)
 
@@ -359,12 +360,12 @@ func _build_active_layer() -> void:
 
 	var trans_hdr := _make_section_header("TRANSCRIPTION")
 	trans_hdr.position = Vector2(0, 0)
-	trans_hdr.size = Vector2(col1_w, 18)
+	trans_hdr.size = Vector2(col1_w, 36)
 	trans_panel.add_child(trans_hdr)
 
 	var trans_scroll := ScrollContainer.new()
-	trans_scroll.position = Vector2(4, 20)
-	trans_scroll.size = Vector2(col1_w - 8, trans_h - 24)
+	trans_scroll.position = Vector2(8, 40)
+	trans_scroll.size = Vector2(col1_w - 16, trans_h - 48)
 	_hide_scrollbars(trans_scroll)
 	trans_panel.add_child(trans_scroll)
 
@@ -373,7 +374,7 @@ func _build_active_layer() -> void:
 	_transcription_rtl.scroll_active = false
 	_transcription_rtl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_transcription_rtl.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_transcription_rtl.custom_minimum_size = Vector2(col1_w - 20, 0)
+	_transcription_rtl.custom_minimum_size = Vector2(col1_w - 40, 0)
 	_transcription_rtl.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_style_rtl(_transcription_rtl, FONT_SIZES["body"], C_TEXT)
 	trans_scroll.add_child(_transcription_rtl)
@@ -385,12 +386,12 @@ func _build_active_layer() -> void:
 
 	var extra_hdr := _make_section_header("ADDITIONAL DETAILS (NOT IN CALL)")
 	extra_hdr.position = Vector2(0, 0)
-	extra_hdr.size = Vector2(col1_w, 18)
+	extra_hdr.size = Vector2(col1_w, 36)
 	extra_panel.add_child(extra_hdr)
 
 	_extra_rtl = RichTextLabel.new()
-	_extra_rtl.position = Vector2(4, 20)
-	_extra_rtl.size = Vector2(col1_w - 8, extra_h - 24)
+	_extra_rtl.position = Vector2(8, 40)
+	_extra_rtl.size = Vector2(col1_w - 16, extra_h - 48)
 	_extra_rtl.bbcode_enabled = false
 	_extra_rtl.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_extra_rtl.scroll_active = false
@@ -405,22 +406,22 @@ func _build_active_layer() -> void:
 
 	var tasks_hdr := _make_section_header("TASKS BEFORE SUBMIT")
 	tasks_hdr.position = Vector2(0, 0)
-	tasks_hdr.size = Vector2(col2_w, 18)
+	tasks_hdr.size = Vector2(col2_w, 36)
 	tasks_panel.add_child(tasks_hdr)
 
 	var tasks_scroll := ScrollContainer.new()
-	tasks_scroll.position = Vector2(4, 20)
-	tasks_scroll.size = Vector2(col2_w - 8, avail_h - 24)
+	tasks_scroll.position = Vector2(8, 40)
+	tasks_scroll.size = Vector2(col2_w - 16, avail_h - 48)
 	_hide_scrollbars(tasks_scroll)
 	tasks_panel.add_child(tasks_scroll)
 
 	_tasks_vbox = VBoxContainer.new()
 	_tasks_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_tasks_vbox.custom_minimum_size = Vector2(col2_w - 20, 0)
+	_tasks_vbox.custom_minimum_size = Vector2(col2_w - 40, 0)
 	tasks_scroll.add_child(_tasks_vbox)
 
 	# ── COLUMN 3: Anomaly List + Submit button ──────────────────────────────
-	var submit_h: float = 40.0
+	var submit_h: float = 80.0
 	var anom_h: float = avail_h - submit_h - PAD
 
 	var anom_panel := _make_panel(C_PANEL, C_BORDER)
@@ -430,12 +431,12 @@ func _build_active_layer() -> void:
 
 	var anom_hdr := _make_section_header("ANOMALY LIST")
 	anom_hdr.position = Vector2(0, 0)
-	anom_hdr.size = Vector2(col3_w, 18)
+	anom_hdr.size = Vector2(col3_w, 36)
 	anom_panel.add_child(anom_hdr)
 
 	var search := LineEdit.new()
-	search.position = Vector2(4, 20)
-	search.size = Vector2(col3_w - 8, 18)
+	search.position = Vector2(8, 40)
+	search.size = Vector2(col3_w - 16, 36)
 	search.placeholder_text = "search..."
 	search.add_theme_font_size_override("font_size", FONT_SIZES["meta"])
 	if _font:
@@ -444,15 +445,15 @@ func _build_active_layer() -> void:
 	anom_panel.add_child(search)
 
 	_anomaly_scroll = ScrollContainer.new()
-	_anomaly_scroll.position = Vector2(4, 40)
-	_anomaly_scroll.size = Vector2(col3_w - 8, anom_h - 44)
+	_anomaly_scroll.position = Vector2(8, 80)
+	_anomaly_scroll.size = Vector2(col3_w - 16, anom_h - 88)
 	_hide_scrollbars(_anomaly_scroll)
 	anom_panel.add_child(_anomaly_scroll)
 
 	_anomaly_vbox = VBoxContainer.new()
 	_anomaly_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_anomaly_vbox.custom_minimum_size = Vector2(col3_w - 20, 0)
-	_anomaly_vbox.add_theme_constant_override("separation", 1)
+	_anomaly_vbox.custom_minimum_size = Vector2(col3_w - 40, 0)
+	_anomaly_vbox.add_theme_constant_override("separation", 2)
 	_anomaly_scroll.add_child(_anomaly_vbox)
 
 	_populate_anomaly_list("")
@@ -480,7 +481,7 @@ func _populate_anomaly_list(filter: String) -> void:
 		var btn := Button.new()
 		btn.text = "#%d  %s" % [entry_id, name_str]
 		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		btn.custom_minimum_size = Vector2(0, 20)
+		btn.custom_minimum_size = Vector2(0, 40)
 		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		btn.add_theme_font_size_override("font_size", FONT_SIZES["meta"])
 		if _font:

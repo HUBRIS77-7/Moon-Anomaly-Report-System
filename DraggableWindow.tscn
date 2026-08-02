@@ -1,34 +1,34 @@
-[gd_scene load_steps=2 format=3 uid="uid://facis0rgs1kf"]
+[gd_scene format=3 uid="uid://facis0rgs1kf"]
 
 [ext_resource type="Script" uid="uid://b8b330lhj8lly" path="res://DraggableWindow.gd" id="1_rvlah"]
 
-[node name="DraggableWindow" type="Panel"]
+[node name="DraggableWindow" type="Panel" unique_id=1922300573]
 custom_minimum_size = Vector2(200, 150)
 script = ExtResource("1_rvlah")
 
-[node name="TitleBar" type="HBoxContainer" parent="."]
+[node name="TitleBar" type="HBoxContainer" parent="." unique_id=1135616878]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 24.0
 grow_horizontal = 2
 
-[node name="TitleLabel" type="Label" parent="TitleBar"]
+[node name="TitleLabel" type="Label" parent="TitleBar" unique_id=1011243188]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Window"
 
-[node name="MinimizeButton" type="Button" parent="TitleBar"]
+[node name="MinimizeButton" type="Button" parent="TitleBar" unique_id=867477944]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 text = "_"
 
-[node name="CloseButton" type="Button" parent="TitleBar"]
+[node name="CloseButton" type="Button" parent="TitleBar" unique_id=1570697583]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 text = "X"
 
-[node name="ContentArea" type="Control" parent="."]
+[node name="ContentArea" type="Control" parent="." unique_id=1614878643]
 clip_contents = true
 layout_mode = 1
 anchors_preset = 15

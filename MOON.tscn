@@ -325,8 +325,8 @@ script = ExtResource("12_fl3ci")
 
 [node name="DesktopViewport" type="SubViewport" parent="SubViewportContainer/ScreenViewports" unique_id=284819925]
 handle_input_locally = false
-size = Vector2i(1024, 338)
-size_2d_override = Vector2i(1024, 338)
+size = Vector2i(1920, 1080)
+size_2d_override = Vector2i(1920, 1080)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 

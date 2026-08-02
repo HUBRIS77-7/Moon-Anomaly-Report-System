@@ -4,7 +4,9 @@ extends Control
 const CallWindowScene := preload("res://CallWindowUI.tscn")
 const StubAppWindowScript := preload("res://StubAppWindow.gd")
 
-const DESKTOP_SIZE := Vector2(1024, 338)
+const DESKTOP_SIZE := Vector2(1920, 1080)
+const TASKBAR_HEIGHT := 72.0
+const CALL_WINDOW_SIZE := Vector2(DESKTOP_SIZE.x, DESKTOP_SIZE.y - TASKBAR_HEIGHT)
 const ICON_SIZE    := Vector2(64, 64)
 const ICON_SPACING := 16.0
 const ICON_START   := Vector2(16, 16)
@@ -105,8 +107,13 @@ func _open_app(app_id: String) -> void:
 
 func receive_call(data: Dictionary) -> void:
 	var call_ui: Control = CallWindowScene.instantiate()
-	var win = spawn_window("INCOMING CALL", call_ui, Vector2(560, 290))
-	win.position = ((DESKTOP_SIZE - win.size) * 0.5).floor()
+	var call_window_size := window_layer.size
+	if call_window_size == Vector2.ZERO:
+		call_window_size = CALL_WINDOW_SIZE
+	var win = spawn_window("INCOMING CALL", call_ui, call_window_size)
+	win.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	win.position = Vector2.ZERO
+	win.size = call_window_size
 	call_ui.setup(data)
 
 	var correct_id: int = data.get("correct_anomaly_id", -1)
@@ -160,7 +167,8 @@ func spawn_window(window_title: String, content: Control,
 func _add_taskbar_button(window: Panel, window_title: String) -> void:
 	var btn := Button.new()
 	btn.text = window_title
-	btn.custom_minimum_size = Vector2(100, 28)
+	btn.custom_minimum_size = Vector2(220, 56)
+	btn.add_theme_font_size_override("font_size", 24)
 	btn.toggle_mode = true
 	btn.button_pressed = true
 	btn.pressed.connect(_on_taskbar_pressed.bind(window, btn))
