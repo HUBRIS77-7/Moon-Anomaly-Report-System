@@ -84,6 +84,7 @@ interact={
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 viewport/transparent_background=true
 anti_aliasing/overrides/force_vertex_shading=false
 anti_aliasing/stretch/mode="disabled"

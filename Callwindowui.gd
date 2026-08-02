@@ -4,17 +4,17 @@ extends Control
 signal call_submitted(anomaly_id: int)
 signal call_declined
 
-const FONT_PATH := "res://Coolvetica Rg.otf"
+const FONT_PATH := "res://Ac437_IBM_BIOS.ttf"
 @export var transcription_speed: float = 3.0
 
 const FONT_SIZES := {
-	"heading":     20,
-	"caller_name": 24,
-	"info":        22,
-	"body":        20,
-	"meta":        20,
-	"submit":      24,
-	"timer":       20,
+	"heading":     26,
+	"caller_name": 26,
+	"info":        26,
+	"body":        26,
+	"meta":        26,
+	"submit":      26,
+	"timer":       26,
 }
 
 const C_BG        := Color(0.04, 0.04, 0.04)
@@ -34,8 +34,8 @@ const C_BAR_BG    := Color(0.12, 0.12, 0.12)
 # above the 72px taskbar, and DraggableWindow reserves a 48px title bar,
 # leaving 1920x960 for this content. Keeping these values in sync prevents
 # clipping and keeps the UI readable in the larger DesktopViewport.
-const DESIGN_W := 1920
-const DESIGN_H := 960
+const DESIGN_W := 1940
+const DESIGN_H := 640
 
 enum Phase { INCOMING, ACTIVE, DONE }
 var _phase: Phase = Phase.INCOMING
