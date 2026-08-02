@@ -4,7 +4,7 @@ extends Control
 const CallWindowScene := preload("res://CallWindowUI.tscn")
 const StubAppWindowScript := preload("res://StubAppWindow.gd")
 
-const DESKTOP_SIZE := Vector2(1920, 1080)
+const DESKTOP_SIZE := Vector2(1940, 640)
 const TASKBAR_HEIGHT := 72.0
 const CALL_WINDOW_SIZE := Vector2(DESKTOP_SIZE.x, DESKTOP_SIZE.y - TASKBAR_HEIGHT)
 const ICON_SIZE    := Vector2(64, 64)
@@ -20,6 +20,10 @@ var _icon_buttons: Dictionary = {}    # app_id -> Button
 var _app_windows: Dictionary = {}     # app_id -> Panel (currently open window)
 
 func _ready() -> void:
+	# in desktop.gd _ready()
+	print("desktop actual viewport size: ", get_viewport().size)
+	await get_tree().process_frame
+	print("DesktopUI actual size: ", size)
 	icon_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE 
 	_apply_win95_style()
 	_build_icon_layer()

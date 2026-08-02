@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://csws2ywr4k50a" path="res://desktop.gd" id="1_desk"]
 
 [node name="DesktopUI" type="Control" unique_id=548783667]
-custom_minimum_size = Vector2(1920, 1080)
+custom_minimum_size = Vector2(1940, 640)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

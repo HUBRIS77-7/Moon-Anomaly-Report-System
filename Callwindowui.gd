@@ -200,6 +200,7 @@ func _recentre_card() -> void:
 		return
 	await get_tree().process_frame
 	_inc_card.position = ((_incoming_layer.size - _inc_card.size) * 0.5).floor()
+	print("recentre: layer=", _incoming_layer.size, " card=", _inc_card.size, " pos=", _inc_card.position)
 
 func _build_incoming_layer() -> void:
 	_incoming_layer = Control.new()
