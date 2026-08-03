@@ -11,6 +11,14 @@ const ICON_SIZE    := Vector2(64, 64)
 const ICON_SPACING := 16.0
 const ICON_START   := Vector2(16, 16)
 
+# Must match TitleBar's height in DraggableWindow.tscn (ContentArea's offset_top).
+# DraggableWindow's total size = title bar + content area, but CallWindowUI's
+# layout assumes it gets exactly DESIGN_H of vertical space. If we size the
+# window to CALL_WINDOW_SIZE directly, the title bar eats into that space and
+# leaves a dead gap at the bottom equal to this height. Adding it back to the
+# window size (see receive_call) keeps the content area exactly on-spec.
+const TITLE_BAR_HEIGHT := 24.0
+
 @onready var window_layer: Control = $WindowLayer
 @onready var taskbar_items: HBoxContainer = $Taskbar/TaskbarItems
 @onready var icon_layer: Control = $IconLayer
@@ -111,13 +119,17 @@ func _open_app(app_id: String) -> void:
 
 func receive_call(data: Dictionary) -> void:
 	var call_ui: Control = CallWindowScene.instantiate()
-	var call_window_size := window_layer.size
-	if call_window_size == Vector2.ZERO:
-		call_window_size = CALL_WINDOW_SIZE
-	var win = spawn_window("INCOMING CALL", call_ui, call_window_size)
+	var content_size := window_layer.size
+	if content_size == Vector2.ZERO:
+		content_size = CALL_WINDOW_SIZE
+
+	# Window size must include the title bar height, otherwise the title bar
+	# eats into the content area and leaves a gap at the bottom of the window.
+	var window_size := content_size + Vector2(0, TITLE_BAR_HEIGHT)
+	var win = spawn_window("INCOMING CALL", call_ui, window_size)
 	win.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	win.position = Vector2.ZERO
-	win.size = call_window_size
+	win.size = window_size
 	call_ui.setup(data)
 
 	var correct_id: int = data.get("correct_anomaly_id", -1)

@@ -6,10 +6,16 @@ signal minimized(window)
 var _dragging: bool = false
 var _drag_offset: Vector2 = Vector2.ZERO
 
+var _maximized: bool = false
+var _pre_max_position: Vector2 = Vector2.ZERO
+var _pre_max_size: Vector2 = Vector2.ZERO
+
 @onready var title_label: Label = $TitleBar/TitleLabel
 @onready var close_btn: Button = $TitleBar/CloseButton
 @onready var minimize_btn: Button = $TitleBar/MinimizeButton
+@onready var maximize_btn: Button = $TitleBar/MaximizeButton
 @onready var title_bar: Control = $TitleBar
+@onready var title_bar_bg: ColorRect = $TitleBarBg
 @onready var content_area: Control = $ContentArea
 
 @export var title: String = "Window":
@@ -22,10 +28,13 @@ func _ready() -> void:
 	title_label.text = title
 	close_btn.pressed.connect(_on_close)
 	minimize_btn.pressed.connect(_on_minimize)
+	maximize_btn.pressed.connect(toggle_maximize)
 	title_bar.gui_input.connect(_on_titlebar_input)
 	_apply_win95_style()
 
 func _on_titlebar_input(event: InputEvent) -> void:
+	if _maximized:
+		return  # don't let dragging fight with a maximized window
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			_dragging = true
@@ -49,6 +58,22 @@ func _on_minimize() -> void:
 	minimized.emit(self)
 	hide()
 
+## Toggles between the window's normal size/position and filling its parent.
+func toggle_maximize() -> void:
+	if _maximized:
+		size = _pre_max_size
+		position = _pre_max_position
+		_maximized = false
+		maximize_btn.text = "□"
+	else:
+		_pre_max_position = position
+		_pre_max_size = size
+		position = Vector2.ZERO
+		size = get_parent().size
+		_maximized = true
+		maximize_btn.text = "❐"
+	move_to_front()
+
 func set_content(content: Control) -> void:
 	for child in content_area.get_children():
 		child.queue_free()
@@ -66,17 +91,20 @@ func _apply_win95_style() -> void:
 	window_style.border_color = Color("#FFFFFF")
 	add_theme_stylebox_override("panel", window_style)
 
-	# Blue title bar
-	var title_style := StyleBoxFlat.new()
-	title_style.bg_color = Color("#000080")
-	$TitleBar.add_theme_stylebox_override("panel", title_style)
+	# Blue title bar — drawn on TitleBarBg (a plain ColorRect), NOT on
+	# TitleBar itself. TitleBar is an HBoxContainer, which has no "panel"
+	# stylebox slot to draw into — a stylebox override on it is a silent
+	# no-op. Previously the bar only appeared because it happened to sit
+	# over this window's own grey background; that's fragile and broke
+	# once window sizing changed. This makes it render unconditionally.
+	title_bar_bg.color = Color("#000080")
 
 	# Title text
 	title_label.add_theme_color_override("font_color", Color.WHITE)
 	title_label.add_theme_font_size_override("font_size", 28)
 
 	# Buttons
-	for btn in [close_btn, minimize_btn]:
+	for btn in [close_btn, minimize_btn, maximize_btn]:
 		var btn_style := StyleBoxFlat.new()
 		btn_style.bg_color = Color("#C0C0C0")
 		btn_style.border_width_left = 2
