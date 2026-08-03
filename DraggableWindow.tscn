@@ -5,15 +5,17 @@
 [node name="DraggableWindow" type="Panel" unique_id=1922300573]
 custom_minimum_size = Vector2(200, 150)
 script = ExtResource("1_rvlah")
+draggable = false
+show_title_bar = false
 
-[node name="TitleBarBg" type="ColorRect" parent="."]
+[node name="TitleBarBg" type="ColorRect" parent="." unique_id=2035839001]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 24.0
 grow_horizontal = 2
-color = Color(0, 0, 0.5019608, 1)
 mouse_filter = 2
+color = Color(0, 0, 0.5019608, 1)
 
 [node name="TitleBar" type="HBoxContainer" parent="." unique_id=1135616878]
 layout_mode = 1
@@ -32,7 +34,7 @@ custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 text = "_"
 
-[node name="MaximizeButton" type="Button" parent="TitleBar"]
+[node name="MaximizeButton" type="Button" parent="TitleBar" unique_id=1759741144]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 text = "□"

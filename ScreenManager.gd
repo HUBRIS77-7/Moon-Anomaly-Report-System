@@ -90,12 +90,12 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventMouseMotion:
 		if _focused_viewport != null and _focused_screen != null:
-				var pos: Variant = _raycast_screen_pos()
-				if pos != null:
-					_last_vp_pos = pos
-					_forward_event(event, _focused_viewport, _last_vp_pos)
-					get_viewport().set_input_as_handled()
-				return
+			var pos: Vector2 = _project_screen_pos()
+			if pos != Vector2(-1, -1):
+				_last_vp_pos = pos
+				_forward_event(event, _focused_viewport, _last_vp_pos)
+				get_viewport().set_input_as_handled()
+			return
 		return
 
 	if event is InputEventMouseButton and _focused_viewport != null:
@@ -117,6 +117,15 @@ func _input(event: InputEvent) -> void:
 		return
 
 	_handle_click(event)
+
+func _project_screen_pos() -> Vector2:
+	if _focused_screen == null:
+		return Vector2(-1, -1)
+	var mouse_pos := camera.get_viewport().get_mouse_position()
+	var ray_origin := camera.project_ray_origin(mouse_pos)
+	var ray_dir := camera.project_ray_normal(mouse_pos)
+	return _focused_screen.world_to_viewport_pos_from_ray(ray_origin, ray_dir)
+
 
 func _handle_click(event: InputEvent) -> void:
 	var mouse_pos := camera.get_viewport().get_mouse_position()

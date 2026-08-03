@@ -56,6 +56,15 @@ func world_to_viewport_pos(world_pos: Vector3) -> Vector2:
 	uv_y = clamp(uv_y, 0.0, 1.0)
 	return Vector2(uv_x, uv_y) * Vector2(viewport.size)
 
+func world_to_viewport_pos_from_ray(ray_origin: Vector3, ray_dir: Vector3) -> Vector2:
+	var normal: Vector3 = _col_shape.global_transform.basis.x.normalized()
+	var plane := Plane(normal, _col_shape.global_transform.origin)
+	var hit = plane.intersects_ray(ray_origin, ray_dir)
+	if hit == null:
+		return Vector2(-1, -1)
+	return world_to_viewport_pos(hit)
+
+
 func _find_collision_shape() -> CollisionShape3D:
 	for child in get_children():
 		if child is CollisionShape3D:

@@ -127,6 +127,7 @@ func receive_call(data: Dictionary) -> void:
 	# eats into the content area and leaves a gap at the bottom of the window.
 	var window_size := content_size + Vector2(0, TITLE_BAR_HEIGHT)
 	var win = spawn_window("INCOMING CALL", call_ui, window_size)
+	win.draggable = false 
 	win.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	win.position = Vector2.ZERO
 	win.size = window_size
@@ -198,6 +199,7 @@ func _on_taskbar_pressed(window: Panel, btn: Button) -> void:
 	else:
 		window.show()
 		window.move_to_front()
+		window.clamp_to_bounds()   # ← fail-safe
 		btn.button_pressed = true
 
 func _on_window_closed(window: Panel) -> void:
