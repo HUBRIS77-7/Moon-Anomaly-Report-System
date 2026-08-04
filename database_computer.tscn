@@ -4,15 +4,17 @@
 [ext_resource type="Script" uid="uid://dfqelhg17akmp" path="res://interactive_screen.gd" id="2_7l5ow"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7l5ow"]
-size = Vector3(0.47314453, 0.001, 0.42943573)
+size = Vector3(0.001, 0.47314453, 0.42943573)
 
-[node name="DatabaseComputer" unique_id=1279251595 instance=ExtResource("1_81til")]
+[node name="DatabaseComputer" unique_id=345267028 instance=ExtResource("1_81til")]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="DatabaseScreen" parent_id_path=PackedInt32Array(557854581) index="0" unique_id=714886716 node_paths=PackedStringArray("mesh_instance")]
+[node name="StaticBody3D" type="StaticBody3D" parent="DatabaseScreen" parent_id_path=PackedInt32Array(14879884) index="0" unique_id=418120954 node_paths=PackedStringArray("mesh_instance")]
+collision_layer = 2
+collision_mask = 0
 script = ExtResource("2_7l5ow")
-screen_id = "ScreenInfoUI"
+screen_id = "info"
 mesh_instance = NodePath("..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="DatabaseScreen/StaticBody3D" index="0" unique_id=1313967284]
-transform = Transform3D(0.9012967, -0.43318787, 0, 0.43318522, 0.9012302, 0, 0, 0, 1, 0.00024537742, -0.03522706, -0.0006598858)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DatabaseScreen/StaticBody3D" index="0" unique_id=1633052334]
+transform = Transform3D(-0.43318787, 0.9012302, 0, 0.9012967, 0.43318522, 0, 0, 0, 1, 0.00024537742, -0.03522706, 0.019883)
 shape = SubResource("BoxShape3D_7l5ow")

@@ -57,12 +57,24 @@ func world_to_viewport_pos(world_pos: Vector3) -> Vector2:
 	return Vector2(uv_x, uv_y) * Vector2(viewport.size)
 
 func world_to_viewport_pos_from_ray(ray_origin: Vector3, ray_dir: Vector3) -> Vector2:
-	var normal: Vector3 = _col_shape.global_transform.basis.x.normalized()
+	var normal: Vector3 = _get_thin_axis_normal()
 	var plane := Plane(normal, _col_shape.global_transform.origin)
 	var hit = plane.intersects_ray(ray_origin, ray_dir)
 	if hit == null:
 		return Vector2(-1, -1)
 	return world_to_viewport_pos(hit)
+
+func _get_thin_axis_normal() -> Vector3:
+	var box: BoxShape3D = _col_shape.shape as BoxShape3D
+	if box == null:
+		return _col_shape.global_transform.basis.x.normalized()
+	var s := box.size
+	if s.x <= s.y and s.x <= s.z:
+		return _col_shape.global_transform.basis.x.normalized()
+	elif s.y <= s.x and s.y <= s.z:
+		return _col_shape.global_transform.basis.y.normalized()
+	else:
+		return _col_shape.global_transform.basis.z.normalized()
 
 
 func _find_collision_shape() -> CollisionShape3D:

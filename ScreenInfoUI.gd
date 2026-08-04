@@ -26,8 +26,14 @@ const C_TEXT   := Color(0.90, 0.90, 0.90)
 const C_DIM    := Color(0.45, 0.45, 0.45)
 const C_AMBER  := Color(0.95, 0.70, 0.10)
 const C_RED    := Color(0.85, 0.15, 0.15)
-const SEG_ON   := Color(0.0, 0.9, 0.2)
-const SEG_OFF  := Color(0.1, 0.1, 0.1)
+
+# ── Per-bar accent colors ─────────────────────────────────────────────────────
+const SEV_COLOR := Color(0.93, 0.72, 0.15)   # gold/amber
+const DNG_COLOR := Color(0.85, 0.18, 0.18)   # red
+const SCL_COLOR := Color(0.25, 0.55, 0.95)   # blue
+
+# Segment background when "off" — kept dark so the colored border reads clearly.
+const SEG_OFF_BG := Color(0.06, 0.06, 0.06)
 
 const FS_NAME    := 40
 const FS_META    := 22
@@ -93,6 +99,7 @@ func _build_photo(r: Rect2) -> void:
 	var panel := _make_panel(C_PANEL, C_BORDER)
 	panel.position = r.position
 	panel.size = r.size
+	panel.clip_contents = true   # ← add this
 	add_child(panel)
 
 	_photo_rect = TextureRect.new()
@@ -124,11 +131,14 @@ func _build_header(r: Rect2) -> void:
 
 	var bar_y: float = 82.0
 	var bar_col_w: float = (r.size.x - 32.0) / 3.0
-	_sev_segs = _build_bar_group(panel, "SEVERITY", Vector2(16.0, bar_y), bar_col_w)
-	_dng_segs = _build_bar_group(panel, "DANGER",   Vector2(16.0 + bar_col_w, bar_y), bar_col_w)
-	_scl_segs = _build_bar_group(panel, "SCALE",    Vector2(16.0 + bar_col_w * 2.0, bar_y), bar_col_w)
+	_sev_segs = _build_bar_group(panel, "SEVERITY", Vector2(16.0, bar_y), bar_col_w, SEV_COLOR)
+	_dng_segs = _build_bar_group(panel, "DANGER",   Vector2(16.0 + bar_col_w, bar_y), bar_col_w, DNG_COLOR)
+	_scl_segs = _build_bar_group(panel, "SCALE",    Vector2(16.0 + bar_col_w * 2.0, bar_y), bar_col_w, SCL_COLOR)
 
-func _build_bar_group(parent: Control, label_text: String, pos: Vector2, w: float) -> Array:
+## Builds one row of segment "boxes" for a stat bar. Each segment is a Panel
+## with a StyleBoxFlat so it can show a colored border with a dark fill when
+## off, and a solid colored fill when on (see _set_bar).
+func _build_bar_group(parent: Control, label_text: String, pos: Vector2, w: float, color: Color) -> Array:
 	var lbl := Label.new()
 	lbl.position = pos
 	lbl.size = Vector2(w - 16.0, 24)
@@ -143,12 +153,22 @@ func _build_bar_group(parent: Control, label_text: String, pos: Vector2, w: floa
 
 	var segs: Array = []
 	for i in range(5):
-		var seg := ColorRect.new()
+		var seg := Panel.new()
 		seg.custom_minimum_size = Vector2(38, 20)
-		seg.color = SEG_OFF
+		_apply_segment_style(seg, color, false)
 		row.add_child(seg)
 		segs.append(seg)
 	return segs
+
+## Applies the "on" (filled) or "off" (dark with colored border) look to a
+## single segment Panel, using the bar's accent color.
+func _apply_segment_style(seg: Panel, color: Color, on: bool) -> void:
+	var s := StyleBoxFlat.new()
+	s.set_border_width_all(2)
+	s.border_color = color
+	s.bg_color = color if on else SEG_OFF_BG
+	s.set_corner_radius_all(1)
+	seg.add_theme_stylebox_override("panel", s)
 
 func _build_main_column(r: Rect2) -> void:
 	var type_row_h: float = 70.0
@@ -334,9 +354,9 @@ func _populate(entry: Dictionary) -> void:
 	_type_label.text = "TYPE:\n" + AnomalyDatabase.get_category_name(category)
 	_subtype_label.text = "SUB-TYPE:\n" + AnomalyDatabase.get_category_name(subtype)
 
-	_set_bar(_sev_segs, entry.get("severity", 0))
-	_set_bar(_dng_segs, entry.get("danger", 0))
-	_set_bar(_scl_segs, entry.get("scale", 0))
+	_set_bar(_sev_segs, entry.get("severity", 0), SEV_COLOR)
+	_set_bar(_dng_segs, entry.get("danger", 0), DNG_COLOR)
+	_set_bar(_scl_segs, entry.get("scale", 0), SCL_COLOR)
 
 	_description_rtl.text = entry.get("description", "")
 
@@ -372,14 +392,16 @@ func _clear_display() -> void:
 	_subtype_label.text = ""
 	_description_rtl.text = ""
 	_solution_rtl.text = ""
-	_set_bar(_sev_segs, 0)
-	_set_bar(_dng_segs, 0)
-	_set_bar(_scl_segs, 0)
+	_set_bar(_sev_segs, 0, SEV_COLOR)
+	_set_bar(_dng_segs, 0, DNG_COLOR)
+	_set_bar(_scl_segs, 0, SCL_COLOR)
 	_photo_rect.texture = _default_photo_texture()
 
-func _set_bar(segs: Array, value: int) -> void:
+## Sets how many of a bar's segments are filled ("on"), using that bar's
+## accent color for both the fill and the off-state border.
+func _set_bar(segs: Array, value: int, color: Color) -> void:
 	for i in range(segs.size()):
-		segs[i].color = SEG_ON if i < value else SEG_OFF
+		_apply_segment_style(segs[i], color, i < value)
 
 # ── Style helpers ────────────────────────────────────────────────────────────
 

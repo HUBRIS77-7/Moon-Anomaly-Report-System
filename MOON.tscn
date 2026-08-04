@@ -110,7 +110,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.765, 0.527, 6.321)
 [node name="Terminal3" type="Node3D" parent="SubViewportContainer/SubViewport/TerminalStuff" unique_id=456167107]
 
 [node name="CameraAnchor3" type="Marker3D" parent="SubViewportContainer/SubViewport/TerminalStuff/Terminal3" unique_id=244491403]
-transform = Transform3D(-3.8013603e-08, -0.49366856, 0.86964995, -2.1578934e-08, 0.86964995, 0.49366862, -0.99999976, 3.2247916e-15, -4.371138e-08, 4.850069, 1.659242, 6.274049)
+transform = Transform3D(-3.5655095e-08, -0.5784841, 0.8156935, -2.528634e-08, 0.8156935, 0.5784841, -0.9999999, 1.0197133e-14, -4.37114e-08, 4.6593437, 1.6629634, 6.296747)
 
 [node name="Props" type="Node" parent="SubViewportContainer/SubViewport" unique_id=875008838]
 
@@ -343,8 +343,8 @@ render_target_update_mode = 4
 
 [node name="InfoViewport" type="SubViewport" parent="SubViewportContainer/ScreenViewports" unique_id=1090429951]
 handle_input_locally = false
-size = Vector2i(480, 308)
-size_2d_override = Vector2i(480, 308)
+size = Vector2i(1940, 1080)
+size_2d_override = Vector2i(1940, 1080)
 render_target_update_mode = 4
 
 [node name="ScreenInfoUI" parent="SubViewportContainer/ScreenViewports/InfoViewport" unique_id=513253078 instance=ExtResource("14_6073h")]

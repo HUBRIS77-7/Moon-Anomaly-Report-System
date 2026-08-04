@@ -23,7 +23,7 @@ var _last_vp_pos: Vector2 = Vector2.ZERO
 func _ready() -> void:
 	$DesktopViewport.size = Vector2i(1940, 635)
 	$DesktopViewport.handle_input_locally = false
-	$InfoViewport.size  = Vector2i(480, 308)
+	$InfoViewport.size  = Vector2i(1940, 1080)
 	$PanelViewport.size = Vector2i(240, 640)
 	$IconViewport.size  = Vector2i(256, 256)
 	$PanelViewport.handle_input_locally = false
@@ -49,9 +49,13 @@ func _wire_interactive_screens() -> void:
 			screen.assign_viewport(viewport_map[screen.screen_id])
 
 func info_ui_connect() -> void:
+	# ScreenInfoUI now owns entry navigation itself (see ScreenInfoUI.gd) and
+	# emits its own entry_changed signal, so it no longer needs to be wired
+	# to ScreenPanelUI via connect_to_panel(). Only the icon display still
+	# needs to listen for entry changes, and it can listen directly to
+	# ScreenInfoUI now.
 	var info_ui: Control = $InfoViewport/ScreenInfoUI
-	info_ui.connect_to_panel(panel_ui)
-	icon_ui.connect_to_panel(panel_ui)
+	icon_ui.connect_to_panel(info_ui)
 
 func _apply_icon_texture() -> void:
 	if screen_icon_mesh == null:
@@ -143,6 +147,25 @@ func _handle_click(event: InputEvent) -> void:
 		_focused_viewport = screen.viewport
 		_focused_screen   = screen
 		_last_vp_pos = screen.world_to_viewport_pos(result["position"])
+
+		# ── TEMP DEBUG — remove once database screen offset is fixed ──────────
+		if screen.screen_id == "info":
+			var col_shape: CollisionShape3D = screen.get_node("CollisionShape3D") if screen.has_node("CollisionShape3D") else null
+			if col_shape:
+				var box: BoxShape3D = col_shape.shape as BoxShape3D
+				var local: Vector3 = col_shape.global_transform.affine_inverse() * result["position"]
+				print("=== DB SCREEN CLICK DEBUG ===")
+				print("world hit pos: ", result["position"])
+				print("local hit pos: ", local)
+				print("box size: ", box.size if box else "null")
+				print("computed viewport pos (uv * viewport size): ", _last_vp_pos)
+				print("viewport size: ", _focused_viewport.size if _focused_viewport else "null")
+				if box and _focused_viewport:
+					var uv := Vector2(_last_vp_pos) / Vector2(_focused_viewport.size)
+					print("uv: ", uv)
+				print("==============================")
+		# ── END TEMP DEBUG ──────────────────────────────────────────────────────
+
 		_forward_event(event, _focused_viewport, _last_vp_pos)
 		get_viewport().set_input_as_handled()
 		return
