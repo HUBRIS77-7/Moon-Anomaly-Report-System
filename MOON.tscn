@@ -330,7 +330,6 @@ size_2d_override = Vector2i(1940, 635)
 render_target_update_mode = 4
 
 [node name="DesktopUI" parent="SubViewportContainer/ScreenViewports/DesktopViewport" unique_id=416446446 instance=ExtResource("13_6073h")]
-offset_right = 0.0
 
 [node name="PanelViewport" type="SubViewport" parent="SubViewportContainer/ScreenViewports" unique_id=1241327231]
 transparent_bg = true

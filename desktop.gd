@@ -4,20 +4,9 @@ extends Control
 const CallWindowScene := preload("res://CallWindowUI.tscn")
 const StubAppWindowScript := preload("res://StubAppWindow.gd")
 
-const DESKTOP_SIZE := Vector2(1940, 635)
-const TASKBAR_HEIGHT := 72.0   # or scale this down too — 72/635 is a bigger proportion than 72/1080 was
-const CALL_WINDOW_SIZE := Vector2(DESKTOP_SIZE.x, DESKTOP_SIZE.y - TASKBAR_HEIGHT)
 const ICON_SIZE    := Vector2(64, 64)
 const ICON_SPACING := 16.0
 const ICON_START   := Vector2(16, 16)
-
-# Must match TitleBar's height in DraggableWindow.tscn (ContentArea's offset_top).
-# DraggableWindow's total size = title bar + content area, but CallWindowUI's
-# layout assumes it gets exactly DESIGN_H of vertical space. If we size the
-# window to CALL_WINDOW_SIZE directly, the title bar eats into that space and
-# leaves a dead gap at the bottom equal to this height. Adding it back to the
-# window size (see receive_call) keeps the content area exactly on-spec.
-const TITLE_BAR_HEIGHT := 24.0
 
 @onready var window_layer: Control = $WindowLayer
 @onready var taskbar_items: HBoxContainer = $Taskbar/TaskbarItems
@@ -28,10 +17,6 @@ var _icon_buttons: Dictionary = {}    # app_id -> Button
 var _app_windows: Dictionary = {}     # app_id -> Panel (currently open window)
 
 func _ready() -> void:
-	# in desktop.gd _ready()
-	print("desktop actual viewport size: ", get_viewport().size)
-	await get_tree().process_frame
-	print("DesktopUI actual size: ", size)
 	icon_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE 
 	_apply_win95_style()
 	_build_icon_layer()
@@ -119,18 +104,14 @@ func _open_app(app_id: String) -> void:
 
 func receive_call(data: Dictionary) -> void:
 	var call_ui: Control = CallWindowScene.instantiate()
-	var content_size := window_layer.size
-	if content_size == Vector2.ZERO:
-		content_size = CALL_WINDOW_SIZE
 
-	# Window size must include the title bar height, otherwise the title bar
-	# eats into the content area and leaves a gap at the bottom of the window.
-	var window_size := content_size + Vector2(0, TITLE_BAR_HEIGHT)
-	var win = spawn_window("INCOMING CALL", call_ui, window_size)
-	win.draggable = false 
+	# Let the window fill window_layer's live rect via anchors instead of a
+	# hardcoded/stale pixel size — this keeps it correctly excluding the
+	# taskbar even if the desktop viewport resolution changes later.
+	var win := spawn_window("INCOMING CALL", call_ui, window_layer.size)
 	win.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	win.position = Vector2.ZERO
-	win.size = window_size
+	win.borderless = true
+
 	call_ui.setup(data)
 
 	var correct_id: int = data.get("correct_anomaly_id", -1)
@@ -184,8 +165,9 @@ func spawn_window(window_title: String, content: Control,
 func _add_taskbar_button(window: Panel, window_title: String) -> void:
 	var btn := Button.new()
 	btn.text = window_title
-	btn.custom_minimum_size = Vector2(220, 56)
-	btn.add_theme_font_size_override("font_size", 24)
+	btn.custom_minimum_size = Vector2(160, 32)
+	btn.add_theme_font_size_override("font_size", 14)
+	btn.clip_text = true
 	btn.toggle_mode = true
 	btn.button_pressed = true
 	btn.pressed.connect(_on_taskbar_pressed.bind(window, btn))
@@ -199,7 +181,6 @@ func _on_taskbar_pressed(window: Panel, btn: Button) -> void:
 	else:
 		window.show()
 		window.move_to_front()
-		window.clamp_to_bounds()   # ← fail-safe
 		btn.button_pressed = true
 
 func _on_window_closed(window: Panel) -> void:

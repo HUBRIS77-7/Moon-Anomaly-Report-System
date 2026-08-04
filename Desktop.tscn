@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://csrnwa2dbor3q"]
 
-[ext_resource type="Script" uid="uid://csws2ywr4k50a" path="res://desktop.gd" id="1_erx6p"]
+[ext_resource type="Script" uid="uid://csws2ywr4k50a" path="res://desktop.gd" id="1_desk"]
 
 [node name="DesktopUI" type="Control" unique_id=548783667]
+custom_minimum_size = Vector2(1024, 338)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 660.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_erx6p")
+script = ExtResource("1_desk")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=2004937635]
 layout_mode = 1
@@ -35,21 +35,20 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 5.0
-offset_top = 10.0
-offset_right = -1.0
-offset_bottom = -26.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = -34.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Taskbar" type="Panel" parent="." unique_id=365989679]
-custom_minimum_size = Vector2(0, 36)
+custom_minimum_size = Vector2(0, 34)
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -36.0
 grow_horizontal = 2
 grow_vertical = 0
 
