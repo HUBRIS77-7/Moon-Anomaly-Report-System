@@ -9,6 +9,31 @@
 # which anchor the game thinks you're looking at, and it stays disabled
 # during travel tweens and while standing (gated by the same _input_enabled
 # flag PlayerController's pause_control/resume_control already use).
+#
+# ── ANCHOR ADJACENCY (terminal_left / terminal_right) ──────────────────────
+# Browsing between terminals used to be a straight clamped line: anchor N's
+# neighbors were always N-1 and N+1, with the two ends being dead ends. That
+# meant reaching Camera4 from Camera1 required stepping through Camera2 and
+# Camera3 first.
+#
+# anchor_neighbors replaces that with an explicit adjacency list: each anchor
+# has its own left/right neighbor INDEX. If left empty (default), _ready()
+# auto-builds a circular chain — 0↔1↔2↔3↔0 — so every anchor wraps around to
+# every other one, e.g. Camera1's left neighbor is Camera4 and Camera4's
+# right neighbor is Camera1. To customize, set anchor_neighbors directly in
+# the Inspector: one Vector2i per anchor, .x = left-neighbor index,
+# .y = right-neighbor index.
+#
+# ── EXIT ANCHOR ────────────────────────────────────────────────────────────
+# `exit_anchor` is a DIRECT node reference (not an index) to the anchor
+# PlayerController must be at before standing up — e.g. ExitView/CameraAnchor4.
+# Assign it explicitly in the Inspector. This intentionally avoids using a
+# plain int index for this: a numeric "-1 means unset" sentinel is easy to
+# accidentally clobber to a valid-but-wrong index (0) via the Inspector,
+# which silently sends the player out through the wrong camera. A node
+# reference has no such failure mode — if it's unset, get_exit_anchor_index()
+# falls back to the last anchor in the array and prints a warning so it's
+# obvious in the Output panel that nothing was assigned.
 
 extends Node
 
@@ -16,6 +41,16 @@ extends Node
 
 @export var camera: Camera3D
 @export var anchors: Array[Marker3D] = []
+
+## Per-anchor adjacency for terminal_left/terminal_right browsing.
+## anchor_neighbors[i].x = index to go to on "left", .y = index on "right".
+## Leave empty to auto-generate a circular chain (0↔1↔2↔...↔N-1↔0) in _ready().
+@export var anchor_neighbors: Array[Vector2i] = []
+
+## Direct reference to the anchor the player must be at before standing up
+## (e.g. drag in ExitView/CameraAnchor4 here). Must be one of the Marker3Ds
+## already listed in `anchors`.
+@export var exit_anchor: Marker3D
 
 var current_index: int = 0
 var is_traveling: bool = false
@@ -45,6 +80,25 @@ func _ready() -> void:
 		return
 	camera.global_position = anchors[0].global_position
 	camera.global_rotation = anchors[0].global_rotation
+
+	_ensure_neighbor_map()
+
+	if exit_anchor == null:
+		push_warning("TerminalManager: exit_anchor not assigned in Inspector — falling back to the last anchor in the array (%s)." % anchors[anchors.size() - 1].name)
+	elif not anchors.has(exit_anchor):
+		push_warning("TerminalManager: exit_anchor (%s) is not present in the anchors array — falling back to the last anchor." % exit_anchor.name)
+
+## Builds a default circular adjacency map if anchor_neighbors wasn't set
+## (or doesn't match the current anchor count) in the Inspector.
+func _ensure_neighbor_map() -> void:
+	if anchor_neighbors.size() == anchors.size():
+		return
+	anchor_neighbors.clear()
+	var n := anchors.size()
+	for i in range(n):
+		var left_idx: int = wrapi(i - 1, 0, n)
+		var right_idx: int = wrapi(i + 1, 0, n)
+		anchor_neighbors.append(Vector2i(left_idx, right_idx))
 
 # ── Per-frame edge-look ────────────────────────────────────────────────────────
 func _process(delta: float) -> void:
@@ -98,12 +152,19 @@ func _unhandled_input(event: InputEvent) -> void:
 		switch_terminal(1)
 
 # ── Terminal switching ─────────────────────────────────────────────────────────
+## Moves to the adjacent anchor per anchor_neighbors (NOT a clamped linear
+## step). direction < 0 = "left" neighbor, direction > 0 = "right".
 func switch_terminal(direction: int) -> void:
 	if anchors.size() == 0:
 		return
-	var next_index: int = clampi(current_index + direction, 0, anchors.size() - 1)
-	if next_index == current_index:
+	_ensure_neighbor_map()
+
+	var neighbors: Vector2i = anchor_neighbors[current_index]
+	var next_index: int = neighbors.x if direction < 0 else neighbors.y
+
+	if next_index < 0 or next_index >= anchors.size() or next_index == current_index:
 		return
+
 	current_index = next_index
 	await travel_to(anchors[current_index])
 
@@ -126,6 +187,9 @@ func travel_to(anchor: Marker3D) -> void:
 	is_traveling = false
 	_active_tween = null
 
+## Direct jump to any anchor by index — bypasses the adjacency graph
+## entirely. Used by PlayerController to force the player to the exit
+## anchor before standing.
 func go_to_index(index: int) -> void:
 	if is_traveling or index == current_index:
 		return
@@ -133,6 +197,17 @@ func go_to_index(index: int) -> void:
 		return
 	current_index = index
 	await travel_to(anchors[current_index])
+
+## Resolves exit_anchor (a direct node reference) to its index within
+## `anchors`. Falls back to the last anchor in the array if exit_anchor is
+## unset or isn't actually a member of `anchors` (a push_warning fires from
+## _ready() in that case, so this stays silent and just does the safe thing).
+func get_exit_anchor_index() -> int:
+	if exit_anchor != null:
+		var idx: int = anchors.find(exit_anchor)
+		if idx != -1:
+			return idx
+	return anchors.size() - 1
 
 # ── PlayerController integration ──────────────────────────────────────────────
 

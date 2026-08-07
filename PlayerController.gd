@@ -15,6 +15,15 @@
 # INPUT MAP (Project Settings → Input Map):
 #   toggle_seat  → Tab key
 #   (WASD/moon_* actions already exist and are reused for walking)
+#
+# ── STANDING UP ────────────────────────────────────────────────────────────
+# Before actually standing, the player is first routed through
+# TerminalManager's designated "exit anchor" (see TerminalManager.gd,
+# exit_anchor_index / get_exit_anchor_index()). This guarantees the stand-up
+# spawn position is always computed relative to that one safe anchor
+# (e.g. CameraAnchor4 / ExitView) no matter which terminal camera the player
+# was browsing beforehand — so they never stand up into desk geometry that
+# only some of the anchors are safe to view from.
 
 extends CharacterBody3D
 
@@ -36,6 +45,10 @@ const STAND_OFFSET := 0.7
 
 # ── State ─────────────────────────────────────────────────────────────────────
 var _seated: bool = true
+
+# Guards against a second Tab press re-triggering _stand_up() while the
+# travel-to-exit-anchor tween from a previous press is still in flight.
+var _standing_up: bool = false
 
 # Camera orientation tracked independently so we can drive it directly.
 var _yaw:   float = 0.0   # radians, horizontal
@@ -64,7 +77,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	# Toggle seat / standing.
 	if event.is_action_pressed("toggle_seat"):
 		if _seated:
-			_stand_up()
+			if not _standing_up:
+				_stand_up()
 		else:
 			_sit_down()
 		get_viewport().set_input_as_handled()
@@ -123,16 +137,27 @@ func _physics_process(delta: float) -> void:
 
 # ── Stand / Sit ───────────────────────────────────────────────────────────────
 func _stand_up() -> void:
+	_standing_up = true
+
 	# Cancel any in-progress sit-down tween.
 	if _sit_tween and _sit_tween.is_running():
 		_sit_tween.kill()
 		_sit_tween = null
+
+	# Always travel to the designated exit anchor first, regardless of which
+	# terminal camera the player was last browsing. If already there,
+	# go_to_index() returns immediately with no travel performed.
+	if terminal_manager and terminal_manager.has_method("go_to_index") \
+			and terminal_manager.has_method("get_exit_anchor_index"):
+		var exit_idx: int = terminal_manager.get_exit_anchor_index()
+		await terminal_manager.go_to_index(exit_idx)
 
 	# Stop TerminalManager from tweening the camera.
 	if terminal_manager and terminal_manager.has_method("pause_control"):
 		terminal_manager.pause_control()
 
 	# Compute a safe spawn position: just in front of the current camera.
+	# By this point the camera is guaranteed to be at the exit anchor.
 	var cam_pos := camera.global_position
 	var cam_fwd := -camera.global_transform.basis.z
 	cam_fwd.y   = 0.0
@@ -157,6 +182,7 @@ func _stand_up() -> void:
 	_seated = false
 	GameState.is_seated = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	_standing_up = false
 
 func _sit_down() -> void:
 	_seated = true
@@ -164,6 +190,9 @@ func _sit_down() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 	# Ask TerminalManager to smoothly tween back to the current anchor.
+	# Note: current_index was left pointing at the exit anchor by _stand_up(),
+	# so sitting back down returns to that same exit anchor rather than
+	# whichever anchor the player was on before standing.
 	if terminal_manager and terminal_manager.has_method("resume_control"):
 		terminal_manager.resume_control(camera)
 
