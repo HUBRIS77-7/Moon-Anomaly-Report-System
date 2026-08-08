@@ -4,9 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://b05njgix2oxk5" path="res://BreakRoom.tscn" id="2_m0vcd"]
 [ext_resource type="PackedScene" uid="uid://dn6tpngjlv808" path="res://main_computer.tscn" id="3_e1g1q"]
 [ext_resource type="Shader" uid="uid://beul868rkbqby" path="res://post_processing.gdshader" id="3_kjgfg"]
-[ext_resource type="PackedScene" uid="uid://dwbooq8ohp118" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Lifesupportunit.glb" id="4_ofs8x"]
-[ext_resource type="PackedScene" uid="uid://clx6cj5cdv00b" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/LifeSupportComputer.glb" id="5_oximj"]
+[ext_resource type="PackedScene" uid="uid://cpivjb02tvyj7" path="res://TSCN Model/LifeSupportUnit.tscn" id="4_ofs8x"]
+[ext_resource type="PackedScene" uid="uid://bt4mtohhg08ro" path="res://TSCN Model/LifeSupportComputer.tscn" id="5_oximj"]
 [ext_resource type="PackedScene" uid="uid://oki8ftkdu85q" path="res://TSCN Model/themoon.tscn" id="6_dm3ob"]
+[ext_resource type="PackedScene" uid="uid://cl0r6f0mv1n5y" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/LifeSupportBottle.glb" id="6_kpa70"]
+[ext_resource type="PackedScene" uid="uid://c2rgliufs153" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/LifeSupportVent.glb" id="7_oihlp"]
 [ext_resource type="Script" uid="uid://c37mr3amtstah" path="res://TerminalManager.gd" id="8_76u4v"]
 [ext_resource type="AudioStream" uid="uid://bmorglbjlqm0j" path="res://571513__legitcheese__soft-notifications-bell-ding-dong.mp3" id="8_6073h"]
 [ext_resource type="Script" uid="uid://14qfty1t4xpf" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/themoon.gd" id="8_umcxk"]
@@ -84,7 +86,7 @@ fov = 53.5
 environment = SubResource("Environment_nhxhy")
 
 [node name="PrimaryRoom3" parent="SubViewportContainer/SubViewport" unique_id=951945182 instance=ExtResource("37_kgk2l")]
-transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 5.60449, -0.36190617, -7.9835596)
+transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 5.6044984, -0.35087574, -7.9833746)
 
 [node name="HoloProjector" parent="SubViewportContainer/SubViewport" unique_id=1240239144 instance=ExtResource("40_oximj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.333736, 0.5407454, 6.2983217)
@@ -95,10 +97,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.290649, 0.527, 6.321)
 [node name="PrimaryRoom" type="Node" parent="SubViewportContainer/SubViewport" unique_id=859388485]
 
 [node name="Lifesupportunit" parent="SubViewportContainer/SubViewport/PrimaryRoom" unique_id=643134085 instance=ExtResource("4_ofs8x")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.6001844, -0.3595947, -7.9755607)
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.6, -0.36, -7.979)
 
 [node name="LifeSupportComputer" parent="SubViewportContainer/SubViewport/PrimaryRoom" unique_id=1253639356 instance=ExtResource("5_oximj")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -2.6835585, 0.7443954, -2.792238)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.684, 0.744, -2.7673197)
+
+[node name="LifeSupportBottle" parent="SubViewportContainer/SubViewport/PrimaryRoom" unique_id=1431400997 instance=ExtResource("6_kpa70")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5.6778684, -0.32004666, -8.055059)
+
+[node name="LifeSupportVent" parent="SubViewportContainer/SubViewport/PrimaryRoom" unique_id=1367904764 instance=ExtResource("7_oihlp")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.7183878, 1.2568798, -11.685401)
 
 [node name="TerminalStuff" type="Node" parent="SubViewportContainer/SubViewport" unique_id=1810663263]
 
@@ -256,20 +264,6 @@ shadow_enabled = true
 shadow_blur = 0.5
 omni_range = 36.015
 
-[node name="OmniLight3D2" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights" unique_id=117783654]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6236079, 2.6752815, -11.413918)
-light_color = Color(0.9452769, 0.9776916, 1, 1)
-light_energy = 3.0
-shadow_enabled = true
-shadow_blur = 0.5
-
-[node name="OmniLight3D3" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights" unique_id=251016317]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9772587, 2.6752815, 5.3790903)
-light_color = Color(0.9452769, 0.9776916, 1, 1)
-light_energy = 3.0
-shadow_enabled = true
-shadow_blur = 0.5
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/Lights" unique_id=1505821181]
 transform = Transform3D(1, 0, 0, 0, -0.62971365, 0.7768273, 0, -0.7768273, -0.62971365, 51.455673, 141.41414, -209.38472)
 light_energy = 2.5
@@ -281,6 +275,71 @@ sky_mode = 1
 
 [node name="OmniDesk" parent="SubViewportContainer/SubViewport/Lights" unique_id=1974081693 instance=ExtResource("20_6vlk6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3014574, 0.5311074, 6.322235)
+
+[node name="LightsinsideLSTube" type="Node" parent="SubViewportContainer/SubViewport/Lights" unique_id=344703332]
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights/LightsinsideLSTube" unique_id=117783654]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7641134, 1.6319671, -6.901612)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 1.695
+shadow_enabled = true
+shadow_blur = 0.5
+omni_range = 1.574
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights/LightsinsideLSTube" unique_id=1756745340]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5843244, 1.3395004, -5.848612)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 1.695
+shadow_enabled = true
+shadow_blur = 0.5
+omni_range = 1.574
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights/LightsinsideLSTube" unique_id=1487246701]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5843244, 1.3395004, -7.7852464)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 1.695
+shadow_enabled = true
+shadow_blur = 0.5
+omni_range = 1.574
+
+[node name="OmniLight3D6" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights/LightsinsideLSTube" unique_id=727813582]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1107929, 1.3395004, -6.8721457)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 1.695
+shadow_enabled = true
+shadow_blur = 0.5
+omni_range = 1.574
+
+[node name="OmniLight3D7" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights/LightsinsideLSTube" unique_id=366017045]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1107929, 1.3395004, -7.6138773)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 1.695
+shadow_enabled = true
+shadow_blur = 0.5
+omni_range = 1.574
+
+[node name="OmniLight3D8" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights/LightsinsideLSTube" unique_id=2073195818]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4456885, 1.6326576, -6.4051495)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 1.695
+shadow_enabled = true
+shadow_blur = 0.5
+omni_range = 1.574
+
+[node name="OmniLight3D9" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights/LightsinsideLSTube" unique_id=1204102563]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4456885, 1.6326576, -7.54074)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 1.695
+shadow_enabled = true
+shadow_blur = 0.5
+omni_range = 1.574
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Lights/LightsinsideLSTube" unique_id=251016317]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9772587, 2.6752815, 5.3790903)
+light_color = Color(0.9452769, 0.9776916, 1, 1)
+light_energy = 3.0
+shadow_enabled = true
+shadow_blur = 0.5
 
 [node name="Bedroom" type="Node" parent="SubViewportContainer/SubViewport" unique_id=400170277]
 

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cpivjb02tvyj7"]
+
+[ext_resource type="PackedScene" uid="uid://dwbooq8ohp118" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Lifesupportunit.glb" id="1_lma84"]
+
+[node name="Lifesupportunit" unique_id=643134085 instance=ExtResource("1_lma84")]
