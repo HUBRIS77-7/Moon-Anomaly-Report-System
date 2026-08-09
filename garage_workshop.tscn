@@ -5,5 +5,9 @@
 
 [node name="GarageWorkshop" unique_id=600910874 instance=ExtResource("1_fmflg")]
 
+[node name="StaticBody3D" parent="Cube" parent_id_path=PackedInt32Array(1032666229) index="0" unique_id=841608876]
+metadata/key = "floor_material"
+metadata/value = "metal"
+
 [node name="Cube_001" parent="." index="1" unique_id=799351321]
 surface_material_override/0 = ExtResource("2_fmflg")

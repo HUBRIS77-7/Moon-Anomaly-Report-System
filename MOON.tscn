@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://cvtigpfwoj35b"]
 
+[ext_resource type="PackedScene" uid="uid://degu8bxx81pso" path="res://primary_room_3.tscn" id="1_oihlp"]
 [ext_resource type="PackedScene" uid="uid://6jvpx06csd2e" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Testsurface.glb" id="2_7efjl"]
 [ext_resource type="PackedScene" uid="uid://b05njgix2oxk5" path="res://BreakRoom.tscn" id="2_m0vcd"]
 [ext_resource type="PackedScene" uid="uid://dn6tpngjlv808" path="res://main_computer.tscn" id="3_e1g1q"]
@@ -36,12 +37,12 @@
 [ext_resource type="PackedScene" uid="uid://c2tepttwasueo" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Dresser.glb" id="31_oximj"]
 [ext_resource type="PackedScene" uid="uid://cavohwi30315w" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Adaptor.glb" id="32_6vlk6"]
 [ext_resource type="PackedScene" uid="uid://bhs4eq345erh2" path="res://TSCN Model/trisplit.tscn" id="32_20wcy"]
+[ext_resource type="Script" uid="uid://bbux8jb4xbd3m" path="res://AmbienceZone.gd" id="33_5yff8"]
 [ext_resource type="PackedScene" uid="uid://p6gjjbvanlrg" path="res://database_computer.tscn" id="33_ofs8x"]
 [ext_resource type="PackedScene" uid="uid://ci3w6oc27ipxm" path="res://TSCN Model/bedroom.tscn" id="33_tqn76"]
 [ext_resource type="PackedScene" uid="uid://bpp0dgsuo3o3s" path="res://garage_workshop.tscn" id="34_4y5ld"]
 [ext_resource type="PackedScene" uid="uid://uprmdfyn1yj3" path="res://floating_lantern_garage.tscn" id="34_e1g1q"]
 [ext_resource type="PackedScene" uid="uid://cor2t5woftg6p" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/BED.glb" id="34_kyosh"]
-[ext_resource type="PackedScene" uid="uid://cj7l5e2bj6ssx" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/PrimaryRoom3.glb" id="37_kgk2l"]
 [ext_resource type="PackedScene" uid="uid://lffl17obhqnq" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/HoloProjector.glb" id="40_oximj"]
 [ext_resource type="PackedScene" uid="uid://bfcgdp40a0xwq" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Waredrobe.glb" id="42_kpa70"]
 
@@ -56,6 +57,9 @@ shader = ExtResource("3_kjgfg")
 [sub_resource type="QuadMesh" id="QuadMesh_5kih8"]
 flip_faces = true
 size = Vector2(2, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oihlp"]
+size = Vector3(6.541443, 3.7753906, 8.679916)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yepn8"]
 radius = 0.2
@@ -85,8 +89,8 @@ fov = 53.5
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=1503020689]
 environment = SubResource("Environment_nhxhy")
 
-[node name="PrimaryRoom3" parent="SubViewportContainer/SubViewport" unique_id=951945182 instance=ExtResource("37_kgk2l")]
-transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 5.6044984, -0.35087574, -7.9833746)
+[node name="PrimaryRoom3" parent="SubViewportContainer/SubViewport" unique_id=951945182 instance=ExtResource("1_oihlp")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5.604, -0.351, -7.983)
 
 [node name="HoloProjector" parent="SubViewportContainer/SubViewport" unique_id=1240239144 instance=ExtResource("40_oximj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.333736, 0.5407454, 6.2983217)
@@ -161,10 +165,10 @@ skeleton = NodePath("../..")
 [node name="Hallway" type="Node" parent="SubViewportContainer/SubViewport/Props" unique_id=799495659]
 
 [node name="MoonHallway" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=15220334 instance=ExtResource("13_yepn8")]
-transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.357, -14.437)
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.318, -14.437)
 
 [node name="MoonHallway2" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1111706457 instance=ExtResource("13_yepn8")]
-transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.357, -16.619179)
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.318, -16.619)
 
 [node name="MoonHallway5" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1491804426 instance=ExtResource("13_yepn8")]
 transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.290228, 0.22791195, -26.141632)
@@ -185,10 +189,10 @@ transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.
 transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -26.290228, 0.228, -36.846672)
 
 [node name="MoonHallway3" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1326738635 instance=ExtResource("13_yepn8")]
-transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.357, -16.619179)
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.318, -16.619)
 
 [node name="MoonHallway4" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=1924084069 instance=ExtResource("13_yepn8")]
-transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.357, -18.810064)
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, 5.601, 0.3175462, -18.716387)
 
 [node name="OfficeMainMoonHallway" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=490763380 instance=ExtResource("14_kokif")]
 transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 5.619, 0.165, -17.4)
@@ -366,6 +370,18 @@ transform = Transform3D(0.014328661, 0, 0.99989736, 0, 1, 0, -0.99989736, 0, 0.0
 
 [node name="TV" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=448624154 instance=ExtResource("18_d7nsw")]
 transform = Transform3D(1.9106855e-15, -4.3711392e-08, 1.0000001, -1, -4.3711392e-08, 0, 4.371139e-08, -1.0000001, -4.3711392e-08, -34.807014, 2.1415837, -40.597427)
+
+[node name="Marker3D" type="Marker3D" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=232011340]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.552723, 1.1956354, -46.92214)
+
+[node name="Area3D" type="Area3D" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=1594682744]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.307297, 1.2091727, -44.869114)
+script = ExtResource("33_5yff8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/Bedroom/Area3D" unique_id=94944742]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27243042, 0.58496094, 0.4283371)
+shape = SubResource("BoxShape3D_oihlp")
+debug_color = Color(0.8192514, 3.6771893e-05, 0.6068923, 0.41960785)
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="SubViewportContainer/SubViewport" unique_id=1743543267 node_paths=PackedStringArray("camera", "terminal_manager")]
 script = ExtResource("13_5yptt")

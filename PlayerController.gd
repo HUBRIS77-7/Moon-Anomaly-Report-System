@@ -36,6 +36,15 @@ extends CharacterBody3D
 @export var gravity_strength: float  = 12.0
 @export var eye_height: float        = 0.52     # camera Y offset from body centre
 
+# ── Initial spawn ─────────────────────────────────────────────────────────────
+## If true, the player starts seated at a terminal (old behaviour: position is
+## derived from the camera). If false, the player spawns standing at
+## spawn_position instead, and TerminalManager is told to stand down so it
+## doesn't fight for control of the camera before the player ever sits.
+@export var start_seated: bool = false
+@export var spawn_position: Vector3 = Vector3(-36.55, 1.196, -46.92)
+@export var spawn_yaw_degrees: float = 0.0
+
 # ── Constants ─────────────────────────────────────────────────────────────────
 const PITCH_MIN_DEG := -75.0
 const PITCH_MAX_DEG :=  75.0
@@ -61,17 +70,38 @@ var _sit_tween: Tween = null
 func _ready() -> void:
 	floor_snap_length = 0.1
 	wall_min_slide_angle = deg_to_rad(15)  # helps slide past thin edges
-	# Player starts seated; TerminalManager owns the camera.
-	_seated = true
-	GameState.is_seated = true
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	FootstepManager.register_player(self)
+	if start_seated:
+		_seated = true
+		GameState.is_seated = true
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		if camera:
+			var cam := camera.global_position
+			global_position = Vector3(cam.x, cam.y - eye_height, cam.z + STAND_OFFSET)
+		return
 
-	# Park the CharacterBody3D somewhere reasonable so it doesn't fall through.
-	# We'll teleport it properly when the player actually stands up.
+	# ── Spawn standing at spawn_position ──────────────────────────────────────
+	_seated = false
+	GameState.is_seated = false
+	global_position = spawn_position
+	velocity = Vector3.ZERO
+
+	# Wait a frame so TerminalManager finishes its own _ready() first (it
+	# snaps the camera to anchors[0] on ready) — otherwise it can stomp on
+	# the camera placement we're about to do here.
+	await get_tree().process_frame
+
+	if terminal_manager and terminal_manager.has_method("pause_control"):
+		terminal_manager.pause_control()
+
+	_yaw   = deg_to_rad(spawn_yaw_degrees)
+	_pitch = 0.0
+
 	if camera:
-		var cam := camera.global_position
-		global_position = Vector3(cam.x, cam.y - eye_height, cam.z + STAND_OFFSET)
+		camera.global_position = global_position + Vector3(0.0, eye_height, 0.0)
+		_apply_camera_rotation()
 
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 # ── Input ─────────────────────────────────────────────────────────────────────
 func _unhandled_input(event: InputEvent) -> void:
 	# Toggle seat / standing.
@@ -100,6 +130,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if _seated:
 		return
+
+	FootstepManager.update(delta, global_position, velocity, _seated)
 
 	# ── Gravity ───────────────────────────────────────────────────────────────
 	if not is_on_floor():
