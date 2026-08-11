@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://facis0rgs1kf"]
 
-[ext_resource type="Script" uid="uid://b8b330lhj8lly" path="res://DraggableWindow.gd" id="1_rvlah"]
+[ext_resource type="Script" uid="uid://b8b330lhj8lly" path="res://Script/DraggableWindow.gd" id="1_rvlah"]
 
 [node name="DraggableWindow" type="Panel" unique_id=1922300573]
 custom_minimum_size = Vector2(200, 150)

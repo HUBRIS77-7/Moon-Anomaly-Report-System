@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b0igj4h1h2rw7"]
 
 [ext_resource type="PackedScene" uid="uid://bj8v8px6wp862" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Lamp.glb" id="1_bekw5"]
-[ext_resource type="Script" uid="uid://d1ouf1kkmqtn4" path="res://lamp.gd" id="2_uno5e"]
+[ext_resource type="Script" uid="uid://d1ouf1kkmqtn4" path="res://Script/lamp.gd" id="2_uno5e"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vxcd3"]
 size = Vector3(1.6946106, 1, 1)

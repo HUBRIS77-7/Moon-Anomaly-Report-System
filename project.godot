@@ -21,9 +21,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GameState="*res://gamestate.gd"
-AnomalyDatabase="*res://AnomalyDatabase.gd"
-CallDatabase="*res://CallDatabase.gd"
+GameState="*res://Script/gamestate.gd"
+AnomalyDatabase="*res://Script/AnomalyDatabase.gd"
+CallDatabase="*res://Script/CallDatabase.gd"
 DayEndScreen="*uid://iigee6tx1jp"
 WeekDatabase="*uid://b6vvtxtebdvvc"
 DialogBox="*uid://df2ihi1nih5e"
@@ -32,6 +32,8 @@ DialogManager="*uid://de3yhitskyq6a"
 AppRegistry="*uid://b3pkucwp66fdv"
 FootstepManager="*uid://dtxee0pg0vpx6"
 AmbienceManager="*uid://caebd0vpwipof"
+TaskDatabase="*uid://cjuggi4o4syen"
+ObjectiveViewer="*uid://chd4xnyipk0h1"
 
 [display]
 

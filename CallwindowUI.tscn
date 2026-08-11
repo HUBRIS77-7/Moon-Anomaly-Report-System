@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bc5ug5gciilir"]
 
-[ext_resource type="Script" uid="uid://bxdoy870f3asm" path="res://Callwindowui.gd" id="1_qo1k4"]
+[ext_resource type="Script" uid="uid://bxdoy870f3asm" path="res://Script/Callwindowui.gd" id="1_qo1k4"]
 
 [node name="CallWindowUI" type="Control" unique_id=1168842611]
 custom_minimum_size = Vector2(1940, 563)

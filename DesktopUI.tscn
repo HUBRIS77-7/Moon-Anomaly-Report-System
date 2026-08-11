@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://3qub3c3whiju"]
+[gd_scene format=3 uid="uid://3qub3c3whiju"]
 
-[ext_resource type="Script" uid="uid://csws2ywr4k50a" path="res://desktop.gd" id="1_hnsd0"]
+[ext_resource type="Script" uid="uid://csws2ywr4k50a" path="res://Script/desktop.gd" id="1_hnsd0"]
 
 [node name="DesktopUI" type="Control"]
 layout_mode = 3

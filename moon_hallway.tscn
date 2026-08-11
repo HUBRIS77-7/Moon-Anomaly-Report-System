@@ -8,8 +8,7 @@ shading_mode = 0
 [node name="MoonHallway" unique_id=15220334 instance=ExtResource("1_h2p5p")]
 
 [node name="StaticBody3D" parent="Hallway" parent_id_path=PackedInt32Array(808662581) index="0" unique_id=508056158]
-metadata/key = "floor_material"
-metadata/value = "metal"
+metadata/floor_material = "metal"
 
 [node name="Cube" parent="." index="5" unique_id=1896404572]
 surface_material_override/0 = SubResource("StandardMaterial3D_h2p5p")

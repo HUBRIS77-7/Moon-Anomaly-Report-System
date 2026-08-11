@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://degu8bxx81pso"]
 
-[ext_resource type="Script" uid="uid://c2dllofl8yyai" path="res://PrimaryRoomEntryTrigger.gd" id="1_cwouh"]
+[ext_resource type="Script" uid="uid://c2dllofl8yyai" path="res://Script/PrimaryRoomEntryTrigger.gd" id="1_cwouh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vlnjl"]
 resource_name = "Material.172"
@@ -1435,6 +1435,7 @@ size = Vector3(4.0844116, 4.290161, 1)
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 mesh = SubResource("ArrayMesh_xf3po")
 skeleton = NodePath("")
+metadata/floor_material = "metal"
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Cube" unique_id=796370707]
 

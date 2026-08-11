@@ -10,14 +10,16 @@
 [ext_resource type="PackedScene" uid="uid://oki8ftkdu85q" path="res://TSCN Model/themoon.tscn" id="6_dm3ob"]
 [ext_resource type="PackedScene" uid="uid://cl0r6f0mv1n5y" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/LifeSupportBottle.glb" id="6_kpa70"]
 [ext_resource type="PackedScene" uid="uid://c2rgliufs153" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/LifeSupportVent.glb" id="7_oihlp"]
-[ext_resource type="Script" uid="uid://c37mr3amtstah" path="res://TerminalManager.gd" id="8_76u4v"]
-[ext_resource type="AudioStream" uid="uid://bmorglbjlqm0j" path="res://571513__legitcheese__soft-notifications-bell-ding-dong.mp3" id="8_6073h"]
+[ext_resource type="Script" uid="uid://c37mr3amtstah" path="res://Script/TerminalManager.gd" id="8_76u4v"]
+[ext_resource type="AudioStream" uid="uid://bmorglbjlqm0j" path="res://Audio/571513__legitcheese__soft-notifications-bell-ding-dong.mp3" id="8_6073h"]
 [ext_resource type="Script" uid="uid://14qfty1t4xpf" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/themoon.gd" id="8_umcxk"]
+[ext_resource type="AudioStream" uid="uid://bcpu37r78hd10" path="res://Audio/ambience/80994__stomp__ventilation-04-10min.wav" id="9_rtxii"]
 [ext_resource type="PackedScene" uid="uid://b5fkrugdl6yll" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/VendingMachine.glb" id="10_iyo8o"]
+[ext_resource type="Script" uid="uid://bqmlgq71n8sse" path="res://Script/TaskLocationTrigger.gd" id="10_otwcu"]
 [ext_resource type="PackedScene" uid="uid://bbttgqod6jd38" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/BulletinBoard.glb" id="11_hw2fg"]
 [ext_resource type="PackedScene" uid="uid://bvhfw6vrrt15k" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Radio.glb" id="12_7efjl"]
-[ext_resource type="Script" uid="uid://qjdfhebko8hu" path="res://ScreenManager.gd" id="12_fl3ci"]
-[ext_resource type="Script" uid="uid://wvon02ptbj58" path="res://PlayerController.gd" id="13_5yptt"]
+[ext_resource type="Script" uid="uid://qjdfhebko8hu" path="res://Script/ScreenManager.gd" id="12_fl3ci"]
+[ext_resource type="Script" uid="uid://wvon02ptbj58" path="res://Script/PlayerController.gd" id="13_5yptt"]
 [ext_resource type="PackedScene" uid="uid://dfqubr6vhfdjv" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/cup.glb" id="13_20wcy"]
 [ext_resource type="PackedScene" uid="uid://csrnwa2dbor3q" path="res://Desktop.tscn" id="13_6073h"]
 [ext_resource type="PackedScene" uid="uid://bks7g0pqa1872" path="res://ScreenPanelUI.tscn" id="13_dm3ob"]
@@ -37,11 +39,12 @@
 [ext_resource type="PackedScene" uid="uid://c2tepttwasueo" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Dresser.glb" id="31_oximj"]
 [ext_resource type="PackedScene" uid="uid://cavohwi30315w" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Adaptor.glb" id="32_6vlk6"]
 [ext_resource type="PackedScene" uid="uid://bhs4eq345erh2" path="res://TSCN Model/trisplit.tscn" id="32_20wcy"]
-[ext_resource type="Script" uid="uid://bbux8jb4xbd3m" path="res://AmbienceZone.gd" id="33_5yff8"]
+[ext_resource type="Script" uid="uid://bbux8jb4xbd3m" path="res://Script/AmbienceZone.gd" id="33_5yff8"]
 [ext_resource type="PackedScene" uid="uid://p6gjjbvanlrg" path="res://database_computer.tscn" id="33_ofs8x"]
 [ext_resource type="PackedScene" uid="uid://ci3w6oc27ipxm" path="res://TSCN Model/bedroom.tscn" id="33_tqn76"]
 [ext_resource type="PackedScene" uid="uid://bpp0dgsuo3o3s" path="res://garage_workshop.tscn" id="34_4y5ld"]
 [ext_resource type="PackedScene" uid="uid://uprmdfyn1yj3" path="res://floating_lantern_garage.tscn" id="34_e1g1q"]
+[ext_resource type="AudioStream" uid="uid://s8hbjjlbda5b" path="res://Audio/ambience/377637__jgrzinich__mechanical-noise-of-ventilation-system-room.wav" id="34_f48fd"]
 [ext_resource type="PackedScene" uid="uid://cor2t5woftg6p" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/BED.glb" id="34_kyosh"]
 [ext_resource type="PackedScene" uid="uid://lffl17obhqnq" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/HoloProjector.glb" id="40_oximj"]
 [ext_resource type="PackedScene" uid="uid://bfcgdp40a0xwq" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Waredrobe.glb" id="42_kpa70"]
@@ -50,6 +53,15 @@
 ambient_light_source = 2
 ambient_light_energy = 0.3
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_otwcu"]
+size = Vector3(16.305786, 4.439453, 12.573242)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_awfoe"]
+size = Vector3(23.049744, 4.475586, 15.30249)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7scsk"]
+size = Vector3(4.1658936, 3.5477295, 1)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kjgfg"]
 render_priority = 0
 shader = ExtResource("3_kjgfg")
@@ -57,6 +69,15 @@ shader = ExtResource("3_kjgfg")
 [sub_resource type="QuadMesh" id="QuadMesh_5kih8"]
 flip_faces = true
 size = Vector2(2, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f48fd"]
+size = Vector3(34.67297, 3.3823242, 4.768158)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rtxii"]
+size = Vector3(2.9129333, 3.2557373, 28.267578)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_rtxii"]
+radius = 6.0126925
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_oihlp"]
 size = Vector3(6.541443, 3.7753906, 8.679916)
@@ -77,6 +98,7 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=615433541]
 handle_input_locally = false
+audio_listener_enable_3d = true
 canvas_cull_mask = 4294967039
 size = Vector2i(1280, 720)
 size_2d_override = Vector2i(320, 180)
@@ -111,6 +133,29 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5.67
 
 [node name="LifeSupportVent" parent="SubViewportContainer/SubViewport/PrimaryRoom" unique_id=1367904764 instance=ExtResource("7_oihlp")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.7183878, 1.2568798, -11.685401)
+
+[node name="Area3D" type="Area3D" parent="SubViewportContainer/SubViewport/PrimaryRoom" unique_id=1294043623]
+script = ExtResource("33_5yff8")
+zone_id = "PrimaryRoom"
+bed_stream = ExtResource("9_rtxii")
+bed_volume_db = -27.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/PrimaryRoom/Area3D" unique_id=1471254908]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6065054, 1.7197266, -7.4234953)
+shape = SubResource("BoxShape3D_otwcu")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/PrimaryRoom/Area3D" unique_id=654937984]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6532497, 1.737793, 6.282193)
+shape = SubResource("BoxShape3D_awfoe")
+
+[node name="Area3D2" type="Area3D" parent="SubViewportContainer/SubViewport/PrimaryRoom" unique_id=1893875369]
+script = ExtResource("10_otwcu")
+task_id = "TEST"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/PrimaryRoom/Area3D2" unique_id=1322972978]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5829468, 1.2738647, 0)
+shape = SubResource("BoxShape3D_7scsk")
+debug_color = Color(0.9318825, 0.14531013, 0.54431665, 0.41960785)
 
 [node name="TerminalStuff" type="Node" parent="SubViewportContainer/SubViewport" unique_id=1810663263]
 
@@ -218,6 +263,26 @@ transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, -26.
 [node name="MoonHallway16" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=239617751 instance=ExtResource("13_yepn8")]
 transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, -26.29, 0.224, -52.091793)
 
+[node name="Area3D" type="Area3D" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=215513798]
+script = ExtResource("33_5yff8")
+zone_id = "Hallway1"
+bed_stream = ExtResource("34_f48fd")
+bed_volume_db = -30.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/Props/Hallway/Area3D" unique_id=71455052]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9280415, 1.8257132, -21.130238)
+shape = SubResource("BoxShape3D_f48fd")
+
+[node name="Area3D2" type="Area3D" parent="SubViewportContainer/SubViewport/Props/Hallway" unique_id=831297579]
+script = ExtResource("33_5yff8")
+zone_id = "Hallway2"
+bed_stream = ExtResource("34_f48fd")
+bed_volume_db = -30.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/Props/Hallway/Area3D2" unique_id=66911444]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.827831, 1.1278687, -39.332275)
+shape = SubResource("BoxShape3D_rtxii")
+
 [node name="BreakRoom2" type="Node" parent="SubViewportContainer/SubViewport/Props" unique_id=999146065]
 
 [node name="Fridge" parent="SubViewportContainer/SubViewport/Props/BreakRoom2" unique_id=1763003229 instance=ExtResource("15_yfue1")]
@@ -257,6 +322,16 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 8.89
 
 [node name="Observatory" parent="SubViewportContainer/SubViewport/Props/Observatory" unique_id=1291694653 instance=ExtResource("25_20wcy")]
 transform = Transform3D(1, -8.742278e-08, 8.742278e-08, -8.742278e-08, -1, 0, 8.742278e-08, -7.642742e-15, -1, -17.18, 0.125263, -24.727472)
+
+[node name="Area3D" type="Area3D" parent="SubViewportContainer/SubViewport/Props/Observatory" unique_id=305272574]
+script = ExtResource("33_5yff8")
+zone_id = "Observatory"
+bed_stream = ExtResource("34_f48fd")
+bed_volume_db = -30.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/Props/Observatory/Area3D" unique_id=381286609]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.760567, 3.3688428, -21.16216)
+shape = SubResource("SphereShape3D_rtxii")
 
 [node name="Lights" type="Node" parent="SubViewportContainer/SubViewport" unique_id=470235784]
 
@@ -369,14 +444,16 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -36.
 transform = Transform3D(0.014328661, 0, 0.99989736, 0, 1, 0, -0.99989736, 0, 0.014328661, -34.44488, 0.5073751, -40.45258)
 
 [node name="TV" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=448624154 instance=ExtResource("18_d7nsw")]
-transform = Transform3D(1.9106855e-15, -4.3711392e-08, 1.0000001, -1, -4.3711392e-08, 0, 4.371139e-08, -1.0000001, -4.3711392e-08, -34.807014, 2.1415837, -40.597427)
-
-[node name="Marker3D" type="Marker3D" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=232011340]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.552723, 1.1956354, -46.92214)
+transform = Transform3D(1.9106855e-15, -4.3711392e-08, 1.0000001, -1, -4.3711392e-08, 0, 4.371139e-08, -1.0000001, -4.3711392e-08, -34.807014, 2.1415837, -40.023834)
 
 [node name="Area3D" type="Area3D" parent="SubViewportContainer/SubViewport/Bedroom" unique_id=1594682744]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.307297, 1.2091727, -44.869114)
+priority = 1
 script = ExtResource("33_5yff8")
+zone_id = "Bedroom"
+bed_stream = ExtResource("34_f48fd")
+bed_volume_db = -30.0
+zone_priority = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/Bedroom/Area3D" unique_id=94944742]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27243042, 0.58496094, 0.4283371)

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bks7g0pqa1872"]
 
-[ext_resource type="Script" uid="uid://dotav83vemse2" path="res://ScreenPanelUI.gd" id="1_qs53h"]
+[ext_resource type="Script" uid="uid://dotav83vemse2" path="res://Script/ScreenPanelUI.gd" id="1_qs53h"]
 
 [node name="Control" type="Control" unique_id=690158070]
 custom_minimum_size = Vector2(240, 640)

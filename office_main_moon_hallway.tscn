@@ -7,7 +7,10 @@ shading_mode = 0
 
 [node name="OfficeMainMoonHallway" unique_id=490763380 instance=ExtResource("1_lex4v")]
 
-[node name="Lights" parent="." index="1" unique_id=658805377]
+[node name="MainHall" parent="." index="0" unique_id=1245799834]
+metadata/floor_material = "metal"
+
+[node name="Lights" parent="." index="1" unique_id=125851598]
 surface_material_override/0 = SubResource("StandardMaterial3D_lex4v")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Lights" index="1" unique_id=1047646819]

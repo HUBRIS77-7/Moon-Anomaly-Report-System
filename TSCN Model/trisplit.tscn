@@ -4,6 +4,9 @@
 
 [node name="Trisplit" unique_id=1594440203 instance=ExtResource("1_nsso0")]
 
+[node name="Hallway" parent="." index="0" unique_id=1221698706]
+metadata/floor_material = "metal"
+
 [node name="OmniLight3D" type="OmniLight3D" parent="Cube_001" parent_id_path=PackedInt32Array(198420614) index="0" unique_id=879034931]
 transform = Transform3D(1.8528352, 0, 0, 0, 13.082717, 0, 0, 0, 1, 0, -2.9597645, 0)
 light_color = Color(0.8156863, 0.9098039, 1, 1)
