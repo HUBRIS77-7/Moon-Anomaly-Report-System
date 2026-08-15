@@ -4,18 +4,30 @@ extends Node
 # ── Signals ───────────────────────────────────────────────────────────────────
 signal day_ended(day_number: int, correct: int, total: int, credits_earned: int)
 signal day_started(day_number: int)
+## Emitted once the day is actually ready for calls to start coming in — either
+## immediately after day_started (no day-start task for this day), or once a
+## pending day-start task is completed. themoon.gd waits on this instead of
+## day_started so it doesn't spawn call icons before a morning task is done.
+signal day_ready(day_number: int)
 ## Emitted after any call is submitted or declined. themoon.gd listens to this
 ## to know when to start the next-icon countdown.
 signal call_completed
 signal app_unlocked(app_id: String)
 
 ## ── Post-call task gating ─────────────────────────────────────────────────
-## On some days, once every call is handled, TaskDatabase may have a task
-## registered for that day. If so, day_ended is HELD BACK — task_assigned
-## fires instead, and day_ended only fires once something calls
+## On some days, once every call is handled, TaskDatabase may have a
+## "day_end" task registered for that day. If so, day_ended is HELD BACK —
+## task_assigned fires instead, and day_ended only fires once something calls
 ## complete_task() with the matching id. If TaskDatabase has nothing for
 ## that day, behavior is unchanged: day_ended fires immediately, same as
 ## before this system existed.
+##
+## ── Pre-call task gating ──────────────────────────────────────────────────
+## Symmetric to the above but at the start of the day: if TaskDatabase has a
+## "day_start" task for the day, task_assigned fires and day_ready is held
+## back until complete_task() is called with the matching id. Otherwise
+## day_ready fires immediately after day_started, same as before this
+## system existed.
 signal task_assigned(task_id: String)
 signal task_completed(task_id: String)
 
@@ -61,6 +73,14 @@ var is_seated: bool = true
 var current_task_id: String = ""
 var _day_end_pending: bool = false
 
+# ── Pre-call (day-start) task state ───────────────────────────────────────────
+var current_start_task_id: String = ""
+var _day_start_pending: bool = false
+
+## Whether call icons / anything gated on the day being "ready" should wait.
+func is_day_start_pending() -> bool:
+	return _day_start_pending
+
 #---APPs----------------------------------------------------------------------------
 var unlocked_apps: Array[String] = []
 
@@ -81,7 +101,8 @@ func _refresh_unlocked_apps() -> void:
 # ── Lifecycle ─────────────────────────────────────────────────────────────────
 func _ready() -> void:
 	_setup_day(current_day)
-	_refresh_unlocked_apps()  
+	_refresh_unlocked_apps()
+	_check_day_start_task()
 
 # ── Internal helpers ──────────────────────────────────────────────────────────
 func _setup_day(day: int) -> void:
@@ -95,13 +116,26 @@ func _decrement_remaining() -> void:
 		last_day_credits_earned = calculate_credits(calls_correct, total_calls)
 		lunar_credits += last_day_credits_earned
 
-		var task: Dictionary = TaskDatabase.get_task_for_day(current_week_id, current_day)
+		var task: Dictionary = TaskDatabase.get_end_task_for_day(current_week_id, current_day)
 		if not task.is_empty():
 			current_task_id = task.get("id", "")
 			_day_end_pending = true
 			task_assigned.emit(current_task_id)
 		else:
 			day_ended.emit(current_day, calls_correct, total_calls, last_day_credits_earned)
+
+## Checks TaskDatabase for a day-start task on the current day. If one
+## exists, task_assigned fires and day_ready is held back until it's
+## completed. Otherwise day_ready fires right away.
+func _check_day_start_task() -> void:
+	var task: Dictionary = TaskDatabase.get_start_task_for_day(current_week_id, current_day)
+	if not task.is_empty():
+		current_start_task_id = task.get("id", "")
+		_day_start_pending = true
+		task_assigned.emit(current_start_task_id)
+	else:
+		_day_start_pending = false
+		day_ready.emit(current_day)
 
 # ── Public API ────────────────────────────────────────────────────────────────
 
@@ -122,16 +156,27 @@ func record_decline() -> void:
 ## Generic task-completion entrypoint. ANYTHING can call this — a location
 ## Area3D (TaskLocationTrigger.gd), an interact-prop (TaskInteractable.gd),
 ## a DialogManager.choice_selected callback, a button on a future BigTerminal
-## app, whatever. It only does something if task_id matches the currently
-## active task; otherwise it's a silent no-op, so it's always safe to call.
+## app, whatever. It checks the day-start slot first, then the day-end slot;
+## if task_id doesn't match either active task, it's a silent no-op, so it's
+## always safe to call.
 func complete_task(task_id: String) -> void:
-	if task_id == "" or task_id != current_task_id:
+	if task_id == "":
 		return
-	task_completed.emit(current_task_id)
-	current_task_id = ""
-	if _day_end_pending:
-		_day_end_pending = false
-		day_ended.emit(current_day, calls_correct, total_calls, last_day_credits_earned)
+
+	if task_id == current_start_task_id:
+		task_completed.emit(current_start_task_id)
+		current_start_task_id = ""
+		if _day_start_pending:
+			_day_start_pending = false
+			day_ready.emit(current_day)
+		return
+
+	if task_id == current_task_id:
+		task_completed.emit(current_task_id)
+		current_task_id = ""
+		if _day_end_pending:
+			_day_end_pending = false
+			day_ended.emit(current_day, calls_correct, total_calls, last_day_credits_earned)
 
 ## Advance to the next day. Called by DayEndScreen "Next Day" button.
 func advance_day() -> void:
@@ -140,14 +185,17 @@ func advance_day() -> void:
 		current_day = 1
 		current_week += 1
 
-	calls_correct    = 0
-	calls_incorrect  = 0
-	current_task_id  = ""
-	_day_end_pending = false
+	calls_correct       = 0
+	calls_incorrect     = 0
+	current_task_id      = ""
+	_day_end_pending      = false
+	current_start_task_id = ""
+	_day_start_pending     = false
 	_setup_day(current_day)
 	_refresh_unlocked_apps()
 
 	day_started.emit(current_day)
+	_check_day_start_task()
 
 func reset_stats() -> void:
 	calls_correct   = 0

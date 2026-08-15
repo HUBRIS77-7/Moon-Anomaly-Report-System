@@ -54,9 +54,10 @@ func _ready() -> void:
 	_update_day_display(GameState.current_day)
 
 	GameState.day_started.connect(_on_day_started)
+	GameState.day_ready.connect(_on_day_ready)
 	GameState.call_completed.connect(_schedule_next_spawn)
 
-	_spawn_icons_for_day(GameState.current_day)
+	_try_spawn_for_current_day()
 
 	print("Moon icon queue loaded for day %d: %d pending" % [
 		GameState.current_day, _pending_calls.size()
@@ -131,8 +132,20 @@ func _on_day_started(day_number: int) -> void:
 	_pending_calls.clear()
 	_spawn_timer.stop()
 	await get_tree().process_frame
-	_spawn_icons_for_day(day_number)
+	_try_spawn_for_current_day()
 	print("Moon icons refreshed for day %d" % day_number)
+
+## Spawns the day's calls immediately, UNLESS a day-start task is currently
+## pending — in that case we wait for GameState.day_ready instead, so the
+## player can't start taking calls before the morning task is done.
+func _try_spawn_for_current_day() -> void:
+	if GameState.is_day_start_pending():
+		return
+	_spawn_icons_for_day(GameState.current_day)
+
+func _on_day_ready(day_number: int) -> void:
+	_spawn_icons_for_day(day_number)
+
 
 func _clear_all_icons() -> void:
 	for body: AnimatableBody3D in _body_to_call_id.keys():
