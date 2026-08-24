@@ -239,106 +239,78 @@ var sequences: Array[Dictionary] = [
 	},
 	
 	# --------------DAY 4 SCIENCE--------------#
-		{
-		"id":      "Day_4_SCI_INTRO",
-		"trigger": "day_start",
-		"day":     4,
-		"steps": [
-			{
-				"speaker":  "LUNA!!!",
-				"portrait": "",
-				"text":     "Good Morning! Did you sleep good? We had some tremors last night. The moon has been a bit active lately.",
-				"choices":  [
-					{ "text": "Good enough.", "id": "choice_1784439412032" },
-				],
-			},
-			{
-				"speaker":  "LUNA!!!",
-				"portrait": "",
-				"text":     "Excellent! Anyhow, today is your Science rotation! ",
-				"choices":  [
-					{ "text": "Wait, Science?", "id": "choice_1784439472950" },
-				],
-			},
-			{
-				"speaker":  "LUNA!!!",
-				"portrait": "",
-				"text":     "Yes. Is there a problem?",
-				"choices":  [
-					{ "text": "Is Issac still the Head over there?", "id": "choice_1784439489030" },
-				],
-			},
-			{
-				"speaker":  "LUNA!!!",
-				"portrait": "",
-				"text":     "Indeed. Do you have a history?",
-				"choices":  [
-					{ "text": "...", "id": "choice_1784439528333" },
-				],
-			},
-			{
-				"speaker":  "LUNA!!!",
-				"portrait": "",
-				"text":     "Sir?",
-				"choices":  [
-					{ "text": "Just patch him in.", "id": "choice_1784439540901" },
-				],
-			},
-			{
-				"speaker":  "Science Head: Issac Alderman",
-				"portrait": "",
-				"text":     "Ah! Mr-.",
-				"choices":  [
-					{ "text": "Don't.", "id": "choice_1784439746994" },
-				],
-			},
-			{
-				"speaker":  "Science Head: Issac Alderman",
-				"portrait": "",
-				"text":     "What?",
-				"choices":  [
-					{ "text": "Do not remind me.", "id": "choice_1784439764524" },
-				],
-			},
-			{
-				"speaker":  "Science Head: Issac Alderman",
-				"portrait": "",
-				"text":     "It's your last name. Just because you got-",
-				"choices":  [
-					{ "text": "END CALL", "id": "choice_1784439789790" },
-				],
-			}
-		]
-	},
-	
 	{
-		"id":      "Day_4_SCI_OUTRO",
+		"id":      "DAY_4_SCI_INTRO",
 		"trigger": "day_start",
 		"day":     4,
 		"steps": [
 			{
-				"speaker":  "Issac Alderman",
+				"speaker":  "LUNA!!!",
 				"portrait": "",
-				"text":     "What gives you the right?",
+				"text":     "Good morning! How was your sleep? We had some tremors last night, and I want to make sure they didn't impact you. We've been having an uptick in occurrences for the past couple of months.",
 				"choices":  [
-					{ "text": "To what?", "id": "choice_1784439412032" },
+					{ "text": "It was fine.", "id": "choice_1786904206879" },
 				],
 			},
 			{
-				"speaker":  "Issac Alderman",
+				"speaker":  "LUNA!!!",
 				"portrait": "",
-				"text":     "Talk to me that way? Who the fuck do you think you are?",
+				"text":     "Good! Anyhow, today you'll be meeting with the Head of Science, who runs the Geology, Biological and Scientific departments. ",
 				"choices":  [
-					{ "text": "What does it matter? Just move on.", "id": "choice_1784452302163" },
+					{ "text": "Issac?", "id": "choice_1786907610117" },
 				],
 			},
 			{
-				"speaker":  "Issac Alderman",
+				"speaker":  "LUNA!!!",
 				"portrait": "",
-				"text":     "Move on? *Laughter* You want me to move on? Me? You move on! I still get SAT image of junk on the outside of the compromised office! Go pick it up! Move on!",
+				"text":     "Uh, yes? Mr. Issac Alderman. ",
 				"choices":  [
-					{ "text": "Fine", "id": "choice_1784452447353" },
+					{ "text": "Do I have to talk to him?", "id": "choice_1786907698035" },
 				],
+			},
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Yes. It's a mandatory part of your retraining",
+				"choices":  [
+					{ "text": "Fine. Patch him through.", "id": "choice_1786907765736" },
+				],
+			},
+			{
+				"speaker":  "LUNA!!!",
+				"portrait": "",
+				"text":     "Patching!",
+				"choices":  [],
+			},
+			{
+				"speaker":  "SCI Head: Issac Alderman",
+				"portrait": "",
+				"text":     "Hello. Are you doing good? I know you just got back and everything, and I want to make sure you're doing good.",
+				"choices":  [
+					{ "text": "Can we not?", "id": "choice_1786908167651" },
+				],
+			},
+			{
+				"speaker":  "SCI Head: Issac Alderman",
+				"portrait": "",
+				"text":     "Not what?",
+				"choices":  [
+					{ "text": "I just want to move on. ", "id": "choice_1786908268139" },
+				],
+			},
+			{
+				"speaker":  "SCI Head: Issac Alderman",
+				"portrait": "",
+				"text":     "We have to talk about it at some-",
+				"choices":  [
+					{ "text": "No. No we don't.", "id": "choice_1786908299431" },
+				],
+			},
+			{
+				"speaker":  "SCI Head: Issac Alderman",
+				"portrait": "",
+				"text":     "Fine. You have access to more science entries now. I'll patch in the Science line. Enjoy the calls, I guess.",
+				"choices":  [],
 			}
 		]
 	},

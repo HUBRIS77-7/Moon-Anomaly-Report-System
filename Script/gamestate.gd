@@ -102,7 +102,7 @@ func _refresh_unlocked_apps() -> void:
 func _ready() -> void:
 	_setup_day(current_day)
 	_refresh_unlocked_apps()
-	_check_day_start_task()
+	call_deferred("_check_day_start_task")
 
 # ── Internal helpers ──────────────────────────────────────────────────────────
 func _setup_day(day: int) -> void:

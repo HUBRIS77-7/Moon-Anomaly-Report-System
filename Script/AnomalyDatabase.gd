@@ -1119,7 +1119,7 @@ var entries: Array[Dictionary] = [
 	},
 	{
 		"id": 79,
-		"name": "Suspicious Vehicle ",
+		"name": "Suspicious Vehicle",
 		"category": Category.SECURITY,
 		"severity": 2,
 		"danger": 1,
