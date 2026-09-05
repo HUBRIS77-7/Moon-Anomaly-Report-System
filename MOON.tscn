@@ -49,6 +49,7 @@
 [ext_resource type="PackedScene" uid="uid://cor2t5woftg6p" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/BED.glb" id="34_kyosh"]
 [ext_resource type="PackedScene" uid="uid://lffl17obhqnq" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/HoloProjector.glb" id="40_oximj"]
 [ext_resource type="PackedScene" uid="uid://bfcgdp40a0xwq" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Waredrobe.glb" id="42_kpa70"]
+[ext_resource type="Script" uid="uid://b286ahphp3es2" path="res://HoverVehicle.gd" id="46_7fdp0"]
 [ext_resource type="PackedScene" uid="uid://rhqch7a75jeh" path="res://testtest_surface.tscn" id="47_x6w5m"]
 [ext_resource type="PackedScene" uid="uid://b8miyfm5n1vxv" path="res://guppy.tscn" id="48_x6w5m"]
 [ext_resource type="PackedScene" uid="uid://dpkfvmq2us1js" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/CraterElevator.glb" id="51_rx041"]
@@ -532,8 +533,11 @@ transform = Transform3D(-1, 8.742278e-08, -3.821371e-15, 0, -4.371139e-08, -1, -
 
 [node name="Outside" type="Node" parent="SubViewportContainer/SubViewport" unique_id=150107535]
 
-[node name="Guppy" parent="SubViewportContainer/SubViewport/Outside" unique_id=352724340 instance=ExtResource("48_x6w5m")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -12.86, 0.839, -73.852264)
+[node name="Guppy" parent="SubViewportContainer/SubViewport/Outside" unique_id=352724340 node_paths=PackedStringArray("hover_points", "camera_seat") instance=ExtResource("48_x6w5m")]
+transform = Transform3D(0.99993426, 0, -0.0114667285, 0, 1, 0, 0.0114667285, 0, 0.99993426, -12.86, 1.5581448, -77.52604)
+script = ExtResource("46_7fdp0")
+hover_points = [NodePath("Marker3D"), NodePath("Marker3D2"), NodePath("Marker3D3"), NodePath("Marker3D4")]
+camera_seat = NodePath("Marker3D5")
 
 [node name="CraterElevator" parent="SubViewportContainer/SubViewport/Outside" unique_id=280708660 instance=ExtResource("51_rx041")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 62.657406, 2.138616, 27.584265)
