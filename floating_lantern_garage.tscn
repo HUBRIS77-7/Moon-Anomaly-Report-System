@@ -2,6 +2,44 @@
 
 [ext_resource type="PackedScene" uid="uid://bni5gdrv0plk3" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Floating Lantern Garage.glb" id="1_jdmdd"]
 
+[sub_resource type="Gradient" id="Gradient_jdmdd"]
+offsets = PackedFloat32Array(0, 0.48431373, 1)
+colors = PackedColorArray(1, 0.7977378, 0.48452926, 1, 1, 0.6651851, 0.3491902, 1, 1, 0.58383155, 0.24780053, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rkheo"]
+gradient = SubResource("Gradient_jdmdd")
+
+[sub_resource type="Curve" id="Curve_jdmdd"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.47099382), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_rkheo"]
+curve = SubResource("Curve_jdmdd")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jdmdd"]
+emission_shape = 1
+emission_sphere_radius = 0.38
+direction = Vector3(0, -1, 0)
+spread = 0.15
+initial_velocity_min = 0.14999999
+initial_velocity_max = 0.35
+gravity = Vector3(0, -0.05, 0)
+scale_min = 0.59999996
+scale_curve = SubResource("CurveTexture_rkheo")
+color = Color(1, 0.76737565, 0.42358288, 1)
+color_ramp = SubResource("GradientTexture1D_rkheo")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rftgj"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+grow_amount = -11.376
+
+[sub_resource type="SphereMesh" id="SphereMesh_17gu5"]
+material = SubResource("StandardMaterial3D_rftgj")
+
 [node name="Floating Lantern Garage" unique_id=5192719 instance=ExtResource("1_jdmdd")]
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Cube" parent_id_path=PackedInt32Array(1618430912) index="0" unique_id=560498151]
@@ -27,3 +65,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002928853, 0, -1.1101363)
 light_energy = 2.0
 shadow_enabled = true
 omni_range = 10.0
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Sphere" parent_id_path=PackedInt32Array(1889403403) index="0" unique_id=1778695417]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.44943094, 0)
+amount = 24
+lifetime = 1.19
+randomness = 0.3
+draw_order = 1
+process_material = SubResource("ParticleProcessMaterial_jdmdd")
+draw_pass_1 = SubResource("SphereMesh_17gu5")

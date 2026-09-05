@@ -57,7 +57,7 @@ var weeks: Array[Dictionary] = [
 		"flavour":               "LUNA guides you back through the basics. Nothing too serious.",
 		"theme_tags":            ["general", "complaint"],
 		"calls_per_day":         {1: 6, 2: 8, 3: 7, 4: 6, 5: 5},
-		"required_call_ids":     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+		"required_call_ids":     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
 		"leads_to":              ["geological_unrest", "biological_bloom", "security_lockdown"],
 		"has_exclusive_content": false,
 	},

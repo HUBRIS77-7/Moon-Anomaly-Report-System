@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://b8miyfm5n1vxv"]
+
+[ext_resource type="PackedScene" uid="uid://cxxmcj7gpj6ub" path="res://NOTACTUALLYMODELS/ACTUALLYMODELS/Guppy.glb" id="1_67syx"]
+[ext_resource type="Script" uid="uid://b286ahphp3es2" path="res://HoverVehicle.gd" id="2_gbp3i"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y2eiy"]
+size = Vector3(2.0915527, 2.3217773, 2.2631836)
+
+[node name="Guppy" unique_id=352724340 instance=ExtResource("1_67syx")]
+
+[node name="RigidBody3D" type="RigidBody3D" parent="Cube" parent_id_path=PackedInt32Array(1045334481) index="0" unique_id=1547246206 node_paths=PackedStringArray("hover_points")]
+transform = Transform3D(0.4380522, 0, 0, 0, 1, 0, 0, 0, 0.2507176, 0, 0, 0)
+script = ExtResource("2_gbp3i")
+hover_points = [NodePath("../../Marker3D"), NodePath("../../Marker3D2"), NodePath("../../Marker3D3"), NodePath("../../Marker3D4")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube/RigidBody3D" index="0" unique_id=780158855]
+transform = Transform3D(2.2828329, 0, 0, 0, 1, 0, 0, 0, 3.9886193, 0.09502518, 0.25610352, 2.519147)
+shape = SubResource("BoxShape3D_y2eiy")
+
+[node name="Marker3D" type="Marker3D" parent="." index="4" unique_id=879781500]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8041713, -1.0151658, 4.862268)
+
+[node name="Marker3D2" type="Marker3D" parent="." index="5" unique_id=401673997]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8370898, -1.0151658, 4.862268)
+
+[node name="Marker3D3" type="Marker3D" parent="." index="6" unique_id=1980414599]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0104098, -1.0151658, -1.1008)
+
+[node name="Marker3D4" type="Marker3D" parent="." index="7" unique_id=1402286533]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.196409, -1.0151658, -1.1008)

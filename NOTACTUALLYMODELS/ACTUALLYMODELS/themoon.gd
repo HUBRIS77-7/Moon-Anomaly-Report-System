@@ -54,10 +54,9 @@ func _ready() -> void:
 	_update_day_display(GameState.current_day)
 
 	GameState.day_started.connect(_on_day_started)
-	GameState.day_ready.connect(_on_day_ready)
 	GameState.call_completed.connect(_schedule_next_spawn)
 
-	_try_spawn_for_current_day()
+	_spawn_icons_for_day(GameState.current_day)
 
 	print("Moon icon queue loaded for day %d: %d pending" % [
 		GameState.current_day, _pending_calls.size()
@@ -73,6 +72,14 @@ func _process(delta: float) -> void:
 		if Input.is_action_pressed("moon_down"):  pitch -= spin_speed * delta
 		if yaw   != 0.0: rotate_y(yaw)
 		if pitch  != 0.0: rotate_object_local(Vector3.RIGHT, pitch)
+
+	# Safety net: no matter what path got us here, the billboard must never
+	# be visible once we're past day 1. This is intentionally redundant with
+	# _update_day_display() — it costs nothing and guarantees the billboard
+	# can never get permanently stuck on top of the revealed moon again,
+	# regardless of dialog signal timing.
+	if _logo_billboard != null and GameState.current_day != 1 and _logo_billboard.visible:
+		_logo_billboard.visible = false
 
 	if camera == null:
 		return
@@ -132,20 +139,8 @@ func _on_day_started(day_number: int) -> void:
 	_pending_calls.clear()
 	_spawn_timer.stop()
 	await get_tree().process_frame
-	_try_spawn_for_current_day()
-	print("Moon icons refreshed for day %d" % day_number)
-
-## Spawns the day's calls immediately, UNLESS a day-start task is currently
-## pending — in that case we wait for GameState.day_ready instead, so the
-## player can't start taking calls before the morning task is done.
-func _try_spawn_for_current_day() -> void:
-	if GameState.is_day_start_pending():
-		return
-	_spawn_icons_for_day(GameState.current_day)
-
-func _on_day_ready(day_number: int) -> void:
 	_spawn_icons_for_day(day_number)
-
+	print("Moon icons refreshed for day %d" % day_number)
 
 func _clear_all_icons() -> void:
 	for body: AnimatableBody3D in _body_to_call_id.keys():
@@ -167,16 +162,28 @@ func _spawn_icons_for_day(day: int) -> void:
 	# Day 1: hold icons until LUNA's intro dialog finishes.
 	if day == 1:
 		if not DialogManager.dialog_finished.is_connected(_on_day1_dialog_done):
-			DialogManager.dialog_finished.connect(_on_day1_dialog_done, CONNECT_ONE_SHOT)
+			DialogManager.dialog_finished.connect(_on_day1_dialog_done)
 		return
 
 	if _pending_calls.size() > 0:
 		var first = _pending_calls.pop_front()
 		add_icon(first["id"], first["icon_direction"])
 
-func _on_day1_dialog_done(_sequence_id: String) -> void:
+## NOTE: intentionally NOT one-shot. DialogManager.dialog_finished fires for
+## every dialog in the game, not just the day-1 intro — if this were
+## CONNECT_ONE_SHOT and some other dialog happened to resolve first, this
+## callback would consume itself on the wrong sequence id and never fire
+## again for "day_1_intro", leaving the LogoBillboard permanently stuck on
+## top of the already-revealed moon (this is the bug you were seeing). We
+## check the id every time instead and disconnect manually once it's right.
+func _on_day1_dialog_done(sequence_id: String) -> void:
+	if sequence_id != "day_1_intro":
+		return
+
+	if DialogManager.dialog_finished.is_connected(_on_day1_dialog_done):
+		DialogManager.dialog_finished.disconnect(_on_day1_dialog_done)
+
 	_update_day_display(2)
-	_logo_billboard.visible = false
 
 	if _pending_calls.size() > 0:
 		var first = _pending_calls.pop_front()

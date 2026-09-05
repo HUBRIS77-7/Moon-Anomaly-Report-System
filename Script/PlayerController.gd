@@ -8,28 +8,41 @@
 #     Add a CollisionShape3D child:
 #       Shape: CapsuleShape3D  radius=0.3  height=1.0
 #
+# ── SEAT ZONES ──────────────────────────────────────────────────────────────
+# Pressing [Tab] to sit down no longer teleports you to a fixed
+# `terminal_manager` from anywhere in the level. Instead, drop a SeatZone
+# Area3D (see SeatZone.gd) around each desk, and assign that zone's
+# `terminal_manager` to the TerminalManager that owns that desk's camera
+# anchors. The player tracks which SeatZone(s) they're currently standing
+# in; pressing Tab only sits down if you're inside at least one, and it
+# seats you at whichever zone's TerminalManager (the most recently entered
+# one, if more than one overlaps). Standing up with no zones nearby is
+# always allowed as before.
+#
 # INSPECTOR EXPORTS (assign in the editor):
-#   camera          → SubViewportContainer/SubViewport/Camera3D
-#   terminal_manager→ SubViewportContainer/SubViewport/TerminalStuff/TerminalManager
+#   camera            → SubViewportContainer/SubViewport/Camera3D
+#   terminal_manager  → optional fallback/default TerminalManager, used only
+#                       if start_seated is true (spawning already seated).
+#                       Ignored once the player is standing — from then on
+#                       the active SeatZone decides which TerminalManager
+#                       to use.
 #
 # INPUT MAP (Project Settings → Input Map):
 #   toggle_seat  → Tab key
 #   (WASD/moon_* actions already exist and are reused for walking)
 #
 # ── STANDING UP ────────────────────────────────────────────────────────────
-# Before actually standing, the player is first routed through
+# Before actually standing, the player is first routed through the ACTIVE
 # TerminalManager's designated "exit anchor" (see TerminalManager.gd,
 # exit_anchor_index / get_exit_anchor_index()). This guarantees the stand-up
 # spawn position is always computed relative to that one safe anchor
-# (e.g. CameraAnchor4 / ExitView) no matter which terminal camera the player
-# was browsing beforehand — so they never stand up into desk geometry that
-# only some of the anchors are safe to view from.
+# no matter which terminal camera the player was browsing beforehand.
 
 extends CharacterBody3D
 
 # ── Exports ───────────────────────────────────────────────────────────────────
 @export var camera: Camera3D
-@export var terminal_manager: Node
+@export var terminal_manager: Node   # default/fallback only — see note above
 
 @export var move_speed: float       = 2.2
 @export var mouse_sensitivity: float = 0.0018   # radians per pixel
@@ -37,10 +50,6 @@ extends CharacterBody3D
 @export var eye_height: float        = 0.52     # camera Y offset from body centre
 
 # ── Initial spawn ─────────────────────────────────────────────────────────────
-## If true, the player starts seated at a terminal (old behaviour: position is
-## derived from the camera). If false, the player spawns standing at
-## spawn_position instead, and TerminalManager is told to stand down so it
-## doesn't fight for control of the camera before the player ever sits.
 @export var start_seated: bool = false
 @export var spawn_position: Vector3 = Vector3(-36.55, 1.196, -46.92)
 @export var spawn_yaw_degrees: float = 0.0
@@ -48,28 +57,26 @@ extends CharacterBody3D
 # ── Constants ─────────────────────────────────────────────────────────────────
 const PITCH_MIN_DEG := -75.0
 const PITCH_MAX_DEG :=  75.0
-
-# How far in front of the terminal anchor the player spawns when standing up.
 const STAND_OFFSET := 0.7
 
 # ── State ─────────────────────────────────────────────────────────────────────
 var _seated: bool = true
-
-# Guards against a second Tab press re-triggering _stand_up() while the
-# travel-to-exit-anchor tween from a previous press is still in flight.
 var _standing_up: bool = false
 
-# Camera orientation tracked independently so we can drive it directly.
-var _yaw:   float = 0.0   # radians, horizontal
-var _pitch: float = 0.0   # radians, vertical
+var _yaw:   float = 0.0
+var _pitch: float = 0.0
 
-# A tween used for the sit-down camera return journey.
 var _sit_tween: Tween = null
+
+# Stack of SeatZones the player is currently physically standing inside.
+# Most-recently-entered zone wins if more than one overlaps (e.g. two desk
+# clusters placed close together).
+var _nearby_seat_zones: Array[SeatZone] = []
 
 # ── Ready ─────────────────────────────────────────────────────────────────────
 func _ready() -> void:
 	floor_snap_length = 0.1
-	wall_min_slide_angle = deg_to_rad(15)  # helps slide past thin edges
+	wall_min_slide_angle = deg_to_rad(15)
 	FootstepManager.register_player(self)
 	if start_seated:
 		_seated = true
@@ -80,15 +87,11 @@ func _ready() -> void:
 			global_position = Vector3(cam.x, cam.y - eye_height, cam.z + STAND_OFFSET)
 		return
 
-	# ── Spawn standing at spawn_position ──────────────────────────────────────
 	_seated = false
 	GameState.is_seated = false
 	global_position = spawn_position
 	velocity = Vector3.ZERO
 
-	# Wait a frame so TerminalManager finishes its own _ready() first (it
-	# snaps the camera to anchors[0] on ready) — otherwise it can stomp on
-	# the camera placement we're about to do here.
 	await get_tree().process_frame
 
 	if terminal_manager and terminal_manager.has_method("pause_control"):
@@ -102,29 +105,43 @@ func _ready() -> void:
 		_apply_camera_rotation()
 
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+# ── Seat zone tracking (called by SeatZone.gd) ────────────────────────────────
+func _on_seat_zone_entered(zone: SeatZone) -> void:
+	if not _nearby_seat_zones.has(zone):
+		_nearby_seat_zones.append(zone)
+
+func _on_seat_zone_exited(zone: SeatZone) -> void:
+	_nearby_seat_zones.erase(zone)
+
 # ── Input ─────────────────────────────────────────────────────────────────────
 func _unhandled_input(event: InputEvent) -> void:
-	# Toggle seat / standing.
 	if event.is_action_pressed("toggle_seat"):
 		if _seated:
 			if not _standing_up:
 				_stand_up()
 		else:
-			_sit_down()
+			_try_sit_down()
 		get_viewport().set_input_as_handled()
 		return
 
-	# Mouse look — only when standing.
 	if not _seated and event is InputEventMouseMotion:
 		_yaw   -= event.relative.x * mouse_sensitivity
 		_pitch -= event.relative.y * mouse_sensitivity
-		_pitch  = clamp(
-			_pitch,
-			deg_to_rad(PITCH_MIN_DEG),
-			deg_to_rad(PITCH_MAX_DEG)
-		)
+		_pitch  = clamp(_pitch, deg_to_rad(PITCH_MIN_DEG), deg_to_rad(PITCH_MAX_DEG))
 		_apply_camera_rotation()
 		get_viewport().set_input_as_handled()
+
+func _try_sit_down() -> void:
+	if _nearby_seat_zones.is_empty():
+		# Not standing near any desk — Tab does nothing.
+		return
+	var zone: SeatZone = _nearby_seat_zones.back()
+	if zone.terminal_manager == null:
+		push_warning("SeatZone '%s' has no terminal_manager assigned." % zone.name)
+		return
+	terminal_manager = zone.terminal_manager
+	_sit_down()
 
 # ── Physics ───────────────────────────────────────────────────────────────────
 func _physics_process(delta: float) -> void:
@@ -133,13 +150,11 @@ func _physics_process(delta: float) -> void:
 
 	FootstepManager.update(delta, global_position, velocity, _seated)
 
-	# ── Gravity ───────────────────────────────────────────────────────────────
 	if not is_on_floor():
 		velocity.y -= gravity_strength * delta
 	else:
 		velocity.y = 0.0
 
-	# ── Horizontal movement ───────────────────────────────────────────────────
 	var input_dir := Vector2.ZERO
 	if Input.is_action_pressed("moon_up"):    input_dir.y -= 1.0
 	if Input.is_action_pressed("moon_down"):  input_dir.y += 1.0
@@ -149,7 +164,6 @@ func _physics_process(delta: float) -> void:
 	if input_dir.length_squared() > 0.001:
 		input_dir = input_dir.normalized()
 
-	# Walk in the direction the camera is facing (horizontal plane only).
 	var cam_basis := camera.global_transform.basis
 	var forward   := -cam_basis.z;  forward.y = 0.0
 	var right     :=  cam_basis.x;  right.y   = 0.0
@@ -163,7 +177,6 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-	# Keep camera glued to the player's head position.
 	if camera:
 		camera.global_position = global_position + Vector3(0.0, eye_height, 0.0)
 
@@ -171,25 +184,18 @@ func _physics_process(delta: float) -> void:
 func _stand_up() -> void:
 	_standing_up = true
 
-	# Cancel any in-progress sit-down tween.
 	if _sit_tween and _sit_tween.is_running():
 		_sit_tween.kill()
 		_sit_tween = null
 
-	# Always travel to the designated exit anchor first, regardless of which
-	# terminal camera the player was last browsing. If already there,
-	# go_to_index() returns immediately with no travel performed.
 	if terminal_manager and terminal_manager.has_method("go_to_index") \
 			and terminal_manager.has_method("get_exit_anchor_index"):
 		var exit_idx: int = terminal_manager.get_exit_anchor_index()
 		await terminal_manager.go_to_index(exit_idx)
 
-	# Stop TerminalManager from tweening the camera.
 	if terminal_manager and terminal_manager.has_method("pause_control"):
 		terminal_manager.pause_control()
 
-	# Compute a safe spawn position: just in front of the current camera.
-	# By this point the camera is guaranteed to be at the exit anchor.
 	var cam_pos := camera.global_position
 	var cam_fwd := -camera.global_transform.basis.z
 	cam_fwd.y   = 0.0
@@ -198,14 +204,12 @@ func _stand_up() -> void:
 	else:
 		cam_fwd = Vector3.FORWARD
 
-	# Body centre sits eye_height below the camera.
 	global_position = Vector3(
 		cam_pos.x + cam_fwd.x * STAND_OFFSET,
 		cam_pos.y - eye_height,
 		cam_pos.z + cam_fwd.z * STAND_OFFSET
 	)
 
-	# Sync the look angles from wherever the camera currently points.
 	var euler := camera.global_transform.basis.get_euler(EULER_ORDER_YXZ)
 	_yaw   = euler.y
 	_pitch = clamp(euler.x, deg_to_rad(PITCH_MIN_DEG), deg_to_rad(PITCH_MAX_DEG))
@@ -221,10 +225,6 @@ func _sit_down() -> void:
 	GameState.is_seated = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
-	# Ask TerminalManager to smoothly tween back to the current anchor.
-	# Note: current_index was left pointing at the exit anchor by _stand_up(),
-	# so sitting back down returns to that same exit anchor rather than
-	# whichever anchor the player was on before standing.
 	if terminal_manager and terminal_manager.has_method("resume_control"):
 		terminal_manager.resume_control(camera)
 
@@ -232,7 +232,6 @@ func _sit_down() -> void:
 func _apply_camera_rotation() -> void:
 	if camera == null:
 		return
-	# Build the basis from yaw then pitch so there's no roll.
 	var basis := Basis.IDENTITY
 	basis = basis.rotated(Vector3.UP, _yaw)
 	basis = basis.rotated(basis.x, _pitch)
