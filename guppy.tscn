@@ -10,36 +10,36 @@ size = Vector3(2.0915527, 2.3217773, 2.2631836)
 [sub_resource type="BoxShape3D" id="BoxShape3D_bfyts"]
 size = Vector3(4.2858887, 1.9571533, 6.4571533)
 
-[node name="Guppy" unique_id=1382614061 instance=ExtResource("1_67syx")]
-
-[node name="RigidBody3D" type="RigidBody3D" parent="Cube" parent_id_path=PackedInt32Array(331773782) index="0" unique_id=1547246206 node_paths=PackedStringArray("hover_points", "camera_seat")]
+[node name="Guppy" type="RigidBody3D" unique_id=1382614061 node_paths=PackedStringArray("hover_points", "camera_seat")]
 script = ExtResource("2_gbp3i")
-hover_points = [NodePath("../../Marker3D"), NodePath("../../Marker3D2"), NodePath("../../Marker3D3"), NodePath("../../Marker3D4")]
-camera_seat = NodePath("../../Marker3D5")
+hover_points = [NodePath("Marker3D"), NodePath("Marker3D2"), NodePath("Marker3D3"), NodePath("Marker3D4")]
+camera_seat = NodePath("Marker3D5")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube/RigidBody3D" index="0" unique_id=780158855]
-transform = Transform3D(2.2828329, 0, 0, 0, 1, 0, 0, 0, 3.9886193, 0.09502518, 0.25610352, 2.519147)
+[node name="GuppyVisual" parent="." index="0" unique_id=1547246206 instance=ExtResource("1_67syx")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1" unique_id=780158855]
+transform = Transform3D(1.597983, 0, 0, 0, 0.7, 0, 0, 0, 2.7920334, 0.06651763, 0.17927246, 1.7634029)
 shape = SubResource("BoxShape3D_y2eiy")
 
-[node name="Marker3D" type="Marker3D" parent="." index="4" unique_id=879781500]
+[node name="Marker3D" type="Marker3D" parent="." index="2" unique_id=879781500]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2975533, -0.73390526, 3.5137444)
 
-[node name="Marker3D2" type="Marker3D" parent="." index="5" unique_id=401673997]
+[node name="Marker3D2" type="Marker3D" parent="." index="3" unique_id=401673997]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.321054, -0.68739456, 3.3540244)
 
-[node name="Marker3D3" type="Marker3D" parent="." index="6" unique_id=1980414599]
+[node name="Marker3D3" type="Marker3D" parent="." index="4" unique_id=1980414599]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7621957, -1.0151658, 0.17908168)
 
-[node name="Marker3D4" type="Marker3D" parent="." index="7" unique_id=1402286533]
+[node name="Marker3D4" type="Marker3D" parent="." index="5" unique_id=1402286533]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.96602, -1.0151658, 0.17908168)
 
-[node name="Area3D" type="Area3D" parent="." index="8" unique_id=1323280396 node_paths=PackedStringArray("vehicle")]
+[node name="Area3D" type="Area3D" parent="." index="6" unique_id=1323280396 node_paths=PackedStringArray("vehicle")]
 script = ExtResource("3_y2eiy")
-vehicle = NodePath("../Cube/RigidBody3D")
+vehicle = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0" unique_id=722749278]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17858887, 0.47857666, 2.7285767)
 shape = SubResource("BoxShape3D_bfyts")
 
-[node name="Marker3D5" type="Marker3D" parent="." index="9" unique_id=1994336246]
+[node name="Marker3D5" type="Marker3D" parent="." index="7" unique_id=1994336246]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 1.0334132, 3.0120807)
