@@ -19,6 +19,15 @@
 # one, if more than one overlaps). Standing up with no zones nearby is
 # always allowed as before.
 #
+# ── VEHICLE PILOTING ──────────────────────────────────────────────────────
+# Pressing [E] ("interact") while standing inside a VehicleEntryZone
+# (dropped around a vehicle's driver seat, pointing at a HoverVehicle)
+# hands camera + input control over to that vehicle. Pressing [E] again
+# while piloting exits: the player's body is hidden/disabled while piloted
+# and restored at the vehicle's exit_offset on exit. This runs in parallel
+# with the SeatZone/terminal system — they don't interact with each other,
+# but both are blocked while the other is active.
+#
 # INSPECTOR EXPORTS (assign in the editor):
 #   camera            → SubViewportContainer/SubViewport/Camera3D
 #   terminal_manager  → optional fallback/default TerminalManager, used only
@@ -29,6 +38,7 @@
 #
 # INPUT MAP (Project Settings → Input Map):
 #   toggle_seat  → Tab key
+#   interact     → E key
 #   (WASD/moon_* actions already exist and are reused for walking)
 #
 # ── STANDING UP ────────────────────────────────────────────────────────────
@@ -51,7 +61,8 @@ extends CharacterBody3D
 
 # ── Initial spawn ─────────────────────────────────────────────────────────────
 @export var start_seated: bool = false
-@export var spawn_position: Vector3 = Vector3(-36.55, 1.196, -46.92)
+@export var spawn_position: Vector3 = Vector3(-19.35, 0.839, -73.80)
+#Vector3(-36.55, 1.196, -46.92)
 @export var spawn_yaw_degrees: float = 0.0
 
 # ── Constants ─────────────────────────────────────────────────────────────────
@@ -72,6 +83,14 @@ var _sit_tween: Tween = null
 # Most-recently-entered zone wins if more than one overlaps (e.g. two desk
 # clusters placed close together).
 var _nearby_seat_zones: Array[SeatZone] = []
+
+# Stack of VehicleEntryZones the player is currently physically standing
+# inside. Same "most-recently-entered wins" rule as seat zones.
+var _nearby_vehicle_zones: Array[VehicleEntryZone] = []
+
+# Non-null while the player is piloting a HoverVehicle — movement/mouse-look
+# and physics are handed off to the vehicle while this is set.
+var _piloted_vehicle: HoverVehicle = null
 
 # ── Ready ─────────────────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -114,9 +133,21 @@ func _on_seat_zone_entered(zone: SeatZone) -> void:
 func _on_seat_zone_exited(zone: SeatZone) -> void:
 	_nearby_seat_zones.erase(zone)
 
+# ── Vehicle zone tracking (called by VehicleEntryZone.gd) ─────────────────────
+func _on_vehicle_zone_entered(zone: VehicleEntryZone) -> void:
+	if not _nearby_vehicle_zones.has(zone):
+		_nearby_vehicle_zones.append(zone)
+
+func _on_vehicle_zone_exited(zone: VehicleEntryZone) -> void:
+	_nearby_vehicle_zones.erase(zone)
+
 # ── Input ─────────────────────────────────────────────────────────────────────
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_seat"):
+		if _piloted_vehicle != null:
+			# Don't let Tab do anything weird while driving.
+			get_viewport().set_input_as_handled()
+			return
 		if _seated:
 			if not _standing_up:
 				_stand_up()
@@ -125,7 +156,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 
-	if not _seated and event is InputEventMouseMotion:
+	if event.is_action_pressed("interact"):
+		if _piloted_vehicle != null:
+			_exit_vehicle()
+			get_viewport().set_input_as_handled()
+		elif not _seated and not _nearby_vehicle_zones.is_empty():
+			_enter_vehicle(_nearby_vehicle_zones.back().vehicle)
+			get_viewport().set_input_as_handled()
+		return
+
+	if not _seated and _piloted_vehicle == null and event is InputEventMouseMotion:
 		_yaw   -= event.relative.x * mouse_sensitivity
 		_pitch -= event.relative.y * mouse_sensitivity
 		_pitch  = clamp(_pitch, deg_to_rad(PITCH_MIN_DEG), deg_to_rad(PITCH_MAX_DEG))
@@ -145,7 +185,7 @@ func _try_sit_down() -> void:
 
 # ── Physics ───────────────────────────────────────────────────────────────────
 func _physics_process(delta: float) -> void:
-	if _seated:
+	if _seated or _piloted_vehicle != null:
 		return
 
 	FootstepManager.update(delta, global_position, velocity, _seated)
@@ -227,6 +267,29 @@ func _sit_down() -> void:
 
 	if terminal_manager and terminal_manager.has_method("resume_control"):
 		terminal_manager.resume_control(camera)
+
+# ── Vehicle enter / exit ───────────────────────────────────────────────────────
+func _enter_vehicle(vehicle: HoverVehicle) -> void:
+	if vehicle == null:
+		return
+	_piloted_vehicle = vehicle
+	visible = false
+	collision_layer = 0
+	velocity = Vector3.ZERO
+	vehicle.start_piloting(camera)
+
+func _exit_vehicle() -> void:
+	if _piloted_vehicle == null:
+		return
+	var exit_pos: Vector3 = _piloted_vehicle.get_exit_position()
+	_piloted_vehicle.stop_piloting()
+	_piloted_vehicle = null
+	visible = true
+	collision_layer = 1
+	global_position = exit_pos
+	velocity = Vector3.ZERO
+	camera.global_position = global_position + Vector3(0.0, eye_height, 0.0)
+	_apply_camera_rotation()
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 func _apply_camera_rotation() -> void:
